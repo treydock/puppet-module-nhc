@@ -1,0 +1,27 @@
+# File managed by Puppet, do not edit!
+#
+# NHC Configuration File
+#
+# Lines are in the form "<hostmask>||<check>"
+# Hostmask is a glob or /regexp/
+# Comments begin with '#'
+#
+# $Id$
+#
+
+<%
+targets           = @data.keys.sort
+if ! targets.empty?
+  longest_target    = targets.group_by(&:size).max.last.first
+  target_str_length = longest_target.size
+end
+-%>
+
+<% targets.each do |target| -%>
+<% values = Array(@data[target]) -%>
+<% values.sort.each do |value| -%>
+<% if value != '' -%>
+<%= target.ljust(target_str_length) %> || <%= value %>
+<% end -%>
+<% end -%>
+<% end -%>

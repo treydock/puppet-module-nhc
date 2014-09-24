@@ -1,0 +1,8 @@
+<% @nhc_configs.keys.sort.each do |key| -%>
+<% value = @nhc_configs[key] -%>
+<% if scope.function_is_bool([value]) -%>
+<%= key %>=<%= value ? "1" : "0" %>
+<% else -%>
+<%= key %>=<%= value %>
+<% end -%>
+<% end -%>
