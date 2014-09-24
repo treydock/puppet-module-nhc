@@ -10,6 +10,7 @@ class warewulf (
 
   # repo
   $manage_repo      = true,
+  $repo_ensure      = 'present',
   $repo_baseurl     = $warewulf::params::repo_baseurl,
   $repo_descr       = $warewulf::params::repo_descr,
   $repo_enabled     = '1',

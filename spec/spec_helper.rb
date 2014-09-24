@@ -12,6 +12,8 @@ rescue Exception => e
   warn "Coveralls disabled"
 end
 
+PUPPET_VERSION = Gem.loaded_specs['puppet'].version.to_s
+
 dir = File.expand_path(File.dirname(__FILE__))
 Dir["#{dir}/support/**/*.rb"].sort.each {|f| require f}
 

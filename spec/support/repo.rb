@@ -4,6 +4,7 @@ shared_examples_for 'warewulf::repo' do
       :osfamily                   => 'RedHat',
       :operatingsystemrelease     => '6.5',
       :operatingsystemmajrelease  => '6',
+      :puppetversion              => PUPPET_VERSION,
     }
   end
 
@@ -15,11 +16,12 @@ shared_examples_for 'warewulf::repo' do
         :osfamily                   => 'RedHat',
         :operatingsystemrelease     => '6.5',
         :operatingsystemmajrelease  => '6',
+        :puppetversion              => PUPPET_VERSION,
       }
     end
 
     it do
-      should contain_yumrepo('warewulf').only_with({
+      should contain_yumrepo('warewulf').with({
         :name         => 'warewulf',
         :descr        => 'Warewulf Releases -- RHEL 6',
         :baseurl      => 'http://warewulf.lbl.gov/downloads/repo/rhel6/',
@@ -45,6 +47,15 @@ shared_examples_for 'warewulf::repo' do
       let(:params) {{ :repo_includepkgs => 'warewulf-nhc' }}
 
       it { should contain_yumrepo('warewulf').with_includepkgs('warewulf-nhc') }
+    end
+
+    if Gem::Version.new(PUPPET_VERSION) >= Gem::Version.new('3.5.0')
+      it { should contain_yumrepo('warewulf').with_ensure('present') }
+
+      context 'when repo_ensure => "absent"' do
+        let(:params) {{ :repo_ensure => "absent" }}
+        it { should contain_yumrepo('warewulf').with_ensure('absent') }
+      end
     end
   end
 end
