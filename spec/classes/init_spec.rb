@@ -30,19 +30,12 @@ describe 'warewulf' do
     end
   end
 
-  context 'when nhc_checks => "foo"' do
-    let(:params) {{ :nhc_checks => 'foo' }}
-    it "should raise an error" do
-      expect { should compile }.to raise_error(/Module warewulf: nhc_checks parameter must be a Hash or an Array./)
-    end
-  end
-
   # Test validate_bool parameters
   [
     :nhc,
     :manage_repo,
-    :detached_mode,
-    :detached_mode_fail_nodata,
+    :nhc_detached_mode,
+    :nhc_detached_mode_fail_nodata,
     :manage_nhc_logrotate,
   ].each do |param|
     context "with #{param} => 'foo'" do
@@ -53,8 +46,21 @@ describe 'warewulf' do
     end
   end
 
+  # Test validate_array parameters
+  [
+    :nhc_checks,
+  ].each do |param|
+    context "with #{param} => 'foo'" do
+      let(:params) {{ param.to_sym => 'foo' }}
+      it "should raise an error" do
+        expect { should compile }.to raise_error(/is not an Array/)
+      end
+    end
+  end
+
   # Test validate_hash parameters
   [
+    :nhc_settings,
     :nhc_config_overrides,
   ].each do |param|
     context "with #{param} => 'foo'" do
@@ -64,4 +70,5 @@ describe 'warewulf' do
       end
     end
   end
+
 end

@@ -2,6 +2,7 @@
 class warewulf::params {
 
   $nhc_checks           = hiera_array('warewulf_nhc_checks', [])
+  $nhc_settings         = {}
   $nhc_config_overrides = {}
 
   case $::osfamily {

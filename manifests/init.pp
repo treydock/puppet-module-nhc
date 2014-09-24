@@ -19,26 +19,30 @@ class warewulf (
   $nhc_package_ensure = 'present',
 
   # NHC configuration
-  $nhc_checks                 = $warewulf::params::nhc_checks,
-  $nhc_config_overrides       = $warewulf::params::nhc_config_overrides,
-  $detached_mode              = false,
-  $detached_mode_fail_nodata  = false,
-  $nhc_name                   = $warewulf::params::nhc_name,
-  $nhc_conf_dir               = $warewulf::params::nhc_conf_dir,
-  $nhc_conf_file              = $warewulf::params::nhc_conf_file,
-  $nhc_include_dir            = $warewulf::params::nhc_include_dir,
-  $nhc_log_file               = $warewulf::params::nhc_log_file,
-  $nhc_sysconfig_path         = $warewulf::params::nhc_sysconfig_path,
-  $manage_nhc_logrotate       = true,
-  $nhc_log_rotate_every       = 'weekly',
+  $nhc_checks                     = $warewulf::params::nhc_checks,
+  $nhc_settings                   = $warewulf::params::nhc_settings,
+  $nhc_config_overrides           = $warewulf::params::nhc_config_overrides,
+  $nhc_detached_mode              = false,
+  $nhc_detached_mode_fail_nodata  = false,
+  $nhc_name                       = $warewulf::params::nhc_name,
+  $nhc_conf_dir                   = $warewulf::params::nhc_conf_dir,
+  $nhc_conf_file                  = $warewulf::params::nhc_conf_file,
+  $nhc_include_dir                = $warewulf::params::nhc_include_dir,
+  $nhc_log_file                   = $warewulf::params::nhc_log_file,
+  $nhc_sysconfig_path             = $warewulf::params::nhc_sysconfig_path,
+  $manage_nhc_logrotate           = true,
+  $nhc_log_rotate_every           = 'weekly',
 ) inherits warewulf::params {
 
   validate_bool($nhc)
   validate_bool($manage_repo)
-  validate_bool($detached_mode)
-  validate_bool($detached_mode_fail_nodata)
+  validate_bool($nhc_detached_mode)
+  validate_bool($nhc_detached_mode_fail_nodata)
   validate_bool($manage_nhc_logrotate)
 
+  validate_array($nhc_checks)
+
+  validate_hash($nhc_settings)
   validate_hash($nhc_config_overrides)
 
   case $ensure {
@@ -55,23 +59,11 @@ class warewulf (
     }
   }
 
-  case type($warewulf::nhc_checks) {
-    'hash': {
-      $nhc_checks_hash  = $warewulf::nhc_checks
-    }
-    'array': {
-      $nhc_checks_array = $warewulf::nhc_checks
-    }
-    default: {
-      fail("Module ${module_name}: nhc_checks parameter must be a Hash or an Array.")
-    }
-  }
-
   $nhc_default_configs = {
     'CONFDIR'                   => $nhc_conf_dir,
     'CONFFILE'                  => $nhc_conf_file,
-    'DETACHED_MODE'             => $detached_mode,
-    'DETACHED_MODE_FAIL_NODATA' => $detached_mode_fail_nodata,
+    'DETACHED_MODE'             => $nhc_detached_mode,
+    'DETACHED_MODE_FAIL_NODATA' => $nhc_detached_mode_fail_nodata,
     'INCDIR'                    => $nhc_include_dir,
     'NAME'                      => $nhc_name,
   }

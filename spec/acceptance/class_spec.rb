@@ -15,13 +15,16 @@ describe 'warewulf class:' do
     it_behaves_like 'warewulf::nhc default'
   end
 
-  context 'when nhc_checks defined' do
+  context 'when nhc_settings and nhc_checks defined' do
     it 'should run successfully' do
       pp =<<-EOS
       class { 'warewulf':
+        nhc_settings => {
+          'MARK_OFFLINE' => false,
+        },
         nhc_checks  => [
-          'check_fs_mount_rw /',
-          'check_fs_mount_rw /tmp',
+          'check_fs_mount_rw -f /',
+          'check_fs_mount_rw -t tmpfs -f /tmp',
         ]
       }
       EOS
@@ -37,8 +40,9 @@ describe 'warewulf class:' do
       it do
         content = subject.content.split(/\n/).reject { |c| c =~ /(^#|^$)/ }
         expected = [
-          '* || check_fs_mount_rw /',
-          '* || check_fs_mount_rw /tmp',
+          '* || export MARK_OFFLINE=0',
+          '* || check_fs_mount_rw -f /',
+          '* || check_fs_mount_rw -t tmpfs -f /tmp',
         ]
         expect(content).to match_array(expected)
       end

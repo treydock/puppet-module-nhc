@@ -56,7 +56,7 @@ shared_examples_for "warewulf::nhc default" do
         'DETACHED_MODE=0',
         'DETACHED_MODE_FAIL_NODATA=0',
         'INCDIR=/etc/nhc/scripts',
-         'NAME=nhc',
+        'NAME=nhc',
       ]
       expect(content).to match_array(expected)
     end

@@ -15,10 +15,6 @@
     {
       "version_range": "1.x",
       "name": "rodjek-logrotate"
-    },
-    {
-      "version_range": "0.x",
-      "name": "richardc-datacat"
     }
   ]
 }

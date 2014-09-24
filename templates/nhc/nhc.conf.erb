@@ -9,19 +9,27 @@
 # $Id$
 #
 
-<%
-targets           = @data.keys.sort
-if ! targets.empty?
-  longest_target    = targets.group_by(&:size).max.last.first
-  target_str_length = longest_target.size
-end
--%>
+#######################################################################
+###
+### NHC Configuration Variables
+###
 
-<% targets.each do |target| -%>
-<% values = Array(@data[target]) -%>
-<% values.sort.each do |value| -%>
-<% if value != '' -%>
-<%= target.ljust(target_str_length) %> || <%= value %>
+<% @nhc_settings.keys.sort.each do |setting| -%>
+<% value = @nhc_settings[setting] -%>
+<% if scope.function_is_bool([value]) -%>
+* || export <%= setting %>=<%= value ? "1" : "0" %>
+<% else -%>
+* || export <%= setting %>=<%= value %>
 <% end -%>
+<% end -%>
+
+#######################################################################
+###
+### Checks
+###
+
+<% @nhc_checks.each do |check| -%>
+<% if check != '' -%>
+* || <%= check %>
 <% end -%>
 <% end -%>

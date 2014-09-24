@@ -10,10 +10,9 @@ shared_examples_for "warewulf::nhc::config" do
   end
 
   it do
-    should contain_datacat('/etc/nhc/nhc.conf').with({
+    should contain_file('/etc/nhc/nhc.conf').with({
       :ensure   => 'file',
       :path     => '/etc/nhc/nhc.conf',
-      :template => 'warewulf/nhc/nhc.conf.erb',
       :owner    => 'root',
       :group    => 'root',
       :mode     => '0644',
@@ -21,9 +20,9 @@ shared_examples_for "warewulf::nhc::config" do
     })
   end
 
-  it { should contain_datacat_collector('/etc/nhc/nhc.conf') }
-  it { should have_warewulf__nhc__setting_resource_count(0) }
-  it { should have_datacat_fragment_resource_count(0) }
+  it do
+    verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [])
+  end
 
   it do
     should contain_file('/etc/nhc/scripts').with({
@@ -47,7 +46,7 @@ shared_examples_for "warewulf::nhc::config" do
   end
 
   it do
-    verify_contents(catalogue, '/etc/sysconfig/nhc', [
+    verify_exact_contents(catalogue, '/etc/sysconfig/nhc', [
       'CONFDIR=/etc/nhc',
       'CONFFILE=/etc/nhc/nhc.conf',
       'DETACHED_MODE=0',
@@ -77,13 +76,13 @@ shared_examples_for "warewulf::nhc::config" do
     ])
   end
 
-  context 'when detached_mode => true' do
-    let(:params) {{ :detached_mode => true }}
+  context 'when nhc_detached_mode => true' do
+    let(:params) {{ :nhc_detached_mode => true }}
     it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['DETACHED_MODE=1']) }
   end
 
-  context 'when detached_mode_fail_nodata => true' do
-    let(:params) {{ :detached_mode_fail_nodata => true }}
+  context 'when nhc_detached_mode_fail_nodata => true' do
+    let(:params) {{ :nhc_detached_mode_fail_nodata => true }}
     it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['DETACHED_MODE_FAIL_NODATA=1']) }
   end
 
@@ -99,81 +98,34 @@ shared_examples_for "warewulf::nhc::config" do
     it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['HOSTNAME=$HOSTNAME_S']) }
   end
 
-  context 'when nhc_checks defined as an Array' do
+  context 'when nhc_settings is defined' do
     let(:params) do
       {
-        :nhc_checks => [
-          'check_fs_mount_rw /tmp',
-          'check_fs_mount_rw /',
-        ]
-      }
-    end
-
-    it { should have_warewulf__nhc__check_resource_count(2) }
-    it { should have_datacat_fragment_resource_count(2) }
-
-    it do
-      should contain_warewulf__nhc__check('check_fs_mount_rw /tmp').with({
-        :value  => 'check_fs_mount_rw /tmp',
-        :target => '*',
-        :order  => '50',
-      })
-    end
-
-    it do
-      should contain_warewulf__nhc__check('check_fs_mount_rw /').with({
-        :value  => 'check_fs_mount_rw /',
-        :target => '*',
-        :order  => '50',
-      })
-    end
-
-    it { should contain_datacat_fragment('warewulf::nhc::check check_fs_mount_rw /tmp') }
-    it { should contain_datacat_fragment('warewulf::nhc::check check_fs_mount_rw /') }
-  end
-
-  context 'when nhc_checks defined as a Hash' do
-    let(:params) do
-      {
-        :nhc_checks => {
-          'tmp rw' => {
-            'value'   => 'check_fs_mount_rw /tmp',
-            'target'  => '*',
-          },
-          'root rw' => {
-            'value'   => 'check_fs_mount_rw /',
-            'target'  => '*',
-          }
+        :nhc_settings => {
+          'HOSTNAME'  => '$HOSTNAME_S',
         }
       }
     end
 
-    it { should have_warewulf__nhc__check_resource_count(2) }
-    it { should have_datacat_fragment_resource_count(2) }
-
-    it do
-      should contain_warewulf__nhc__check('tmp rw').with({
-        :value  => 'check_fs_mount_rw /tmp',
-        :target => '*',
-        :order  => '50',
-      })
-    end
-
-    it do
-      should contain_warewulf__nhc__check('root rw').with({
-        :value  => 'check_fs_mount_rw /',
-        :target => '*',
-        :order  => '50',
-      })
-    end
-
-    it { should contain_datacat_fragment('warewulf::nhc::check tmp rw') }
-    it { should contain_datacat_fragment('warewulf::nhc::check root rw') }
+    it { verify_contents(catalogue, '/etc/nhc/nhc.conf', ['* || export HOSTNAME=$HOSTNAME_S']) }
   end
 
-  context 'when manage_nhc_logrotate => false' do
-    let(:params) {{ :manage_nhc_logrotate => false }}
-    it { should_not contain_logrotate__rule('nhc') }
+  context 'when nhc_checks defined' do
+    let(:params) do
+      {
+        :nhc_checks => [
+          'check_fs_mount_rw -f /',
+          'check_fs_mount_rw -t tmpfs -f /tmp',
+        ]
+      }
+    end
+
+    it do
+      verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
+        '* || check_fs_mount_rw -f /',
+        '* || check_fs_mount_rw -t tmpfs -f /tmp',
+      ])
+    end
   end
 
   context 'when ensure => "absent"' do

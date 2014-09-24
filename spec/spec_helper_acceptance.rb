@@ -28,7 +28,6 @@ RSpec.configure do |c|
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'rodjek-logrotate'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet('module', 'install', 'richardc-datacat'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end
