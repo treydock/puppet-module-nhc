@@ -49,6 +49,32 @@ This is an example of using Hiera to define the default checks installed with NH
       - 'check_hw_gm myri0'
       - 'check_hw_eth eth1'
 
+A Hash can also be used to define checks
+
+    warewulf::nhc_checks:
+      '*':
+        - 'check_fs_mount_rw /tmp'
+        - 'check_fs_mount_rw /'
+        - 'check_fs_mount_rw /dev/pts '/(none|devpts)/' devpts'
+      'foo.baz':
+        - 'check_ps_daemon sshd root'
+        - 'check_ps_daemon provisiond root'
+        - 'check_ps_daemon wulfd root'
+        - 'check_ps_unauth_users log syslog'
+        - 'check_ps_userproc_lineage log syslog'
+        - 'check_ps_kswapd 1800000 100 log syslog'
+      'foo.bar':
+        - 'check_hw_cpuinfo 2 8 8'
+        - 'check_hw_physmem 1024 1073741824'
+        - 'check_hw_swap 1 1073741824'
+        - 'check_hw_mem 1024 1073741824'
+        - 'check_hw_physmem_free 1'
+        - 'check_hw_swap_free 1'
+        - 'check_hw_mem_free 1'
+        - 'check_hw_ib 40'
+        - 'check_hw_gm myri0'
+        - 'check_hw_eth eth1'
+
 ## Reference
 
 ### Classes

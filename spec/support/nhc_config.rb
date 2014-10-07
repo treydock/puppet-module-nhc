@@ -110,7 +110,7 @@ shared_examples_for "warewulf::nhc::config" do
     it { verify_contents(catalogue, '/etc/nhc/nhc.conf', ['* || export HOSTNAME=$HOSTNAME_S']) }
   end
 
-  context 'when nhc_checks defined' do
+  context 'when nhc_checks defined as an Array' do
     let(:params) do
       {
         :nhc_checks => [
@@ -124,6 +124,34 @@ shared_examples_for "warewulf::nhc::config" do
       verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
         '* || check_fs_mount_rw -f /',
         '* || check_fs_mount_rw -t tmpfs -f /tmp',
+      ])
+    end
+  end
+
+  context 'when nhc_checks defined as a Hash' do
+    let(:params) do
+      {
+        :nhc_checks => {
+          '*' => [
+            'check_fs_mount_rw -f /',
+            'check_fs_mount_rw -t tmpfs -f /tmp',
+          ],
+          'foo.bar' => [
+            'check_hw_physmem_free 1MB',
+          ],
+          'foo.baz' => 'check_hw_swap_free 1MB',
+        }
+      }
+    end
+
+    it do
+      content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
+      pp content.split(/\n/)
+      verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
+        '* || check_fs_mount_rw -f /',
+        '* || check_fs_mount_rw -t tmpfs -f /tmp',
+        'foo.bar || check_hw_physmem_free 1MB',
+        'foo.baz || check_hw_swap_free 1MB',
       ])
     end
   end

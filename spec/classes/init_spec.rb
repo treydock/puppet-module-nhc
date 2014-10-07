@@ -30,6 +30,13 @@ describe 'warewulf' do
     end
   end
 
+  context "with nhc_checks => 'foo'" do
+    let(:params) {{ :nhc_checks => 'foo' }}
+    it "should raise an error" do
+      expect { should compile }.to raise_error(/Module warewulf: nhc_checks parameter must be a Hash or an Array, string given./)
+    end
+  end
+
   # Test validate_bool parameters
   [
     :nhc,
@@ -42,18 +49,6 @@ describe 'warewulf' do
       let(:params) {{ param.to_sym => 'foo' }}
       it "should raise an error" do
         expect { should compile }.to raise_error(/is not a boolean/)
-      end
-    end
-  end
-
-  # Test validate_array parameters
-  [
-    :nhc_checks,
-  ].each do |param|
-    context "with #{param} => 'foo'" do
-      let(:params) {{ param.to_sym => 'foo' }}
-      it "should raise an error" do
-        expect { should compile }.to raise_error(/is not an Array/)
       end
     end
   end

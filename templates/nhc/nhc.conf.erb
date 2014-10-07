@@ -28,8 +28,24 @@
 ### Checks
 ###
 
-<% @nhc_checks.each do |check| -%>
-<% if check != '' -%>
+<% checks = @nhc_checks -%>
+<% if @nhc_checks_type == 'array' -%>
+<% checks.each do |check| -%>
 * || <%= check %>
+<% end -%>
+<% else -%>
+<% if all_hosts = checks.delete('*') -%>
+<% all_hosts.each do |check| -%>
+* || <%= check %>
+<% end -%>
+<% end -%>
+<% checks.keys.sort.each do |host| %>
+<% if checks[host].is_a?(Array) -%>
+<% checks[host].each do |check| -%>
+<%= host %> || <%= check %>
+<% end -%>
+<% else -%>
+<%= host %> || <%= checks[host] %>
+<% end -%>
 <% end -%>
 <% end -%>
