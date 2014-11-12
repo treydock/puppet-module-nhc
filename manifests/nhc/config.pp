@@ -6,7 +6,7 @@ class warewulf::nhc::config {
     path   => $warewulf::nhc_conf_dir,
     owner  => 'root',
     group  => 'root',
-    mode   => '0755',
+    mode   => '0700',
   }
 
   file { '/etc/nhc/nhc.conf':
@@ -24,7 +24,7 @@ class warewulf::nhc::config {
     path    => $warewulf::nhc_include_dir,
     owner   => 'root',
     group   => 'root',
-    mode    => '0755',
+    mode    => '0700',
     require => File['/etc/nhc'],
   }
 

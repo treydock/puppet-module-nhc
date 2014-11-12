@@ -5,7 +5,7 @@ shared_examples_for "warewulf::nhc::config" do
       :path    => '/etc/nhc',
       :owner   => 'root',
       :group   => 'root',
-      :mode    => '0755',
+      :mode    => '0700',
     })
   end
 
@@ -30,7 +30,7 @@ shared_examples_for "warewulf::nhc::config" do
       :path     => '/etc/nhc/scripts',
       :owner    => 'root',
       :group    => 'root',
-      :mode     => '0755',
+      :mode     => '0700',
       :require  => 'File[/etc/nhc]',
     })
   end
