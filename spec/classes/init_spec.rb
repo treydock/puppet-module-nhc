@@ -33,7 +33,7 @@ describe 'warewulf' do
   context "with nhc_checks => 'foo'" do
     let(:params) {{ :nhc_checks => 'foo' }}
     it "should raise an error" do
-      expect { should compile }.to raise_error(/Module warewulf: nhc_checks parameter must be a Hash or an Array, string given./)
+      expect { should compile }.to raise_error(/Module warewulf: nhc_checks parameter must be a Hash or an Array./)
     end
   end
 

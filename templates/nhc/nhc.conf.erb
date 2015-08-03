@@ -29,7 +29,7 @@
 ###
 
 <% checks = @nhc_checks -%>
-<% if @nhc_checks_type == 'array' -%>
+<% if checks.is_a?(Array) -%>
 <% checks.each do |check| -%>
 * || <%= check %>
 <% end -%>

@@ -41,9 +41,8 @@ class warewulf (
   validate_bool($nhc_detached_mode_fail_nodata)
   validate_bool($manage_nhc_logrotate)
 
-  $nhc_checks_type = type($nhc_checks)
-  if ! member(['hash', 'array'], $nhc_checks_type) {
-    fail("Module ${module_name}: nhc_checks parameter must be a Hash or an Array, ${nhc_checks_type} given.")
+  if ! is_hash($nhc_checks) and ! is_array($nhc_checks) {
+    fail("Module ${module_name}: nhc_checks parameter must be a Hash or an Array.")
   }
 
   validate_hash($nhc_settings)
