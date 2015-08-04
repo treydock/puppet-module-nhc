@@ -13,9 +13,9 @@
 ###
 ### NHC Configuration Variables
 ###
-
-<% @nhc_settings.keys.sort.each do |setting| -%>
-<% value = @nhc_settings[setting] -%>
+<% nhc_settings = scope.lookupvar('warewulf::nhc_settings') -%>
+<% nhc_settings.keys.sort.each do |setting| -%>
+<% value = nhc_settings[setting] -%>
 <% if scope.function_is_bool([value]) -%>
 * || export <%= setting %>=<%= value ? "1" : "0" %>
 <% else -%>
@@ -28,7 +28,7 @@
 ### Checks
 ###
 
-<% checks = @nhc_checks -%>
+<% checks = scope.lookupvar('warewulf::nhc_checks') -%>
 <% if checks.is_a?(Array) -%>
 <% checks.each do |check| -%>
 * || <%= check %>

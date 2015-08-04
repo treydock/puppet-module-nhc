@@ -1,5 +1,6 @@
-<% @nhc_configs.keys.sort.each do |key| -%>
-<% value = @nhc_configs[key] -%>
+<% nhc_configs = scope.lookupvar('warewulf::nhc_configs') -%>
+<% nhc_configs.keys.sort.each do |key| -%>
+<% value = nhc_configs[key] -%>
 <% if scope.function_is_bool([value]) -%>
 <%= key %>=<%= value ? "1" : "0" %>
 <% else -%>
