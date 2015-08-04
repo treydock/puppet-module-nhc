@@ -13,6 +13,7 @@
 ###
 ### NHC Configuration Variables
 ###
+
 <% nhc_settings = scope.lookupvar('warewulf::nhc_settings') -%>
 <% nhc_settings.keys.sort.each do |setting| -%>
 <% value = nhc_settings[setting] -%>
