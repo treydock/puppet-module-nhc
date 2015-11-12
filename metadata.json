@@ -1,21 +1,29 @@
 {
-  "name": "treydock-warewulf",
+  "name": "treydock-nhc",
   "version": "0.0.1",
   "author": "treydock",
-  "summary": "Warewulf Puppet module",
+  "summary": "NHC Puppet module",
   "license": "Apache 2.0",
-  "source": "git://github.com/treydock/puppet-module-warewulf.git",
-  "issues_url": "https://github.com/treydock/puppet-module-warewulf/issues",
-  "project_page": "https://github.com/treydock/puppet-module-warewulf",
-  "dependencies": [
+  "source": "git://github.com/treydock/puppet-module-nhc.git",
+  "issues_url": "https://github.com/treydock/puppet-module-nhc/issues",
+  "project_page": "https://github.com/treydock/puppet-module-nhc",
+  "operatingsystem_support": [
     {
-      "version_range": ">= 3.2.0 <5.0.0",
-      "name": "puppetlabs-stdlib"
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "5", "6", "7" ]
     },
     {
-      "version_range": "1.x",
-      "name": "rodjek-logrotate"
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "5", "6", "7" ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [ "5", "6", "7" ]
     }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_range": ">= 3.2.0 <5.0.0" },
+    { "name": "rodjek/logrotate", "version_range": "1.x" }
   ]
 }
 

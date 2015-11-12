@@ -1,60 +1,59 @@
-# == Class: warewulf
+# == Class: nhc
 #
 # See README.md for more details.
 #
-class warewulf (
-  $ensure = 'present',
-
-  # which subcomponents should be managed
-  $nhc  = true,
-
-  # repo
-  $manage_repo      = true,
-  $repo_ensure      = 'present',
-  $repo_baseurl     = $warewulf::params::repo_baseurl,
-  $repo_descr       = $warewulf::params::repo_descr,
-  $repo_enabled     = '1',
-  $repo_includepkgs = 'absent',
+class nhc (
+  $ensure                     = 'present',
 
   # packages
-  $nhc_package_ensure = 'present',
+  $package_ensure             = undef,
+  $package_version            = '1.4.2',
+  $package_release            = '1',
+  $package_url                = undef,
+  $install_from_repo          = undef,
 
   # NHC configuration
-  $nhc_checks                     = $warewulf::params::nhc_checks,
-  $nhc_settings                   = $warewulf::params::nhc_settings,
-  $nhc_config_overrides           = $warewulf::params::nhc_config_overrides,
-  $nhc_detached_mode              = false,
-  $nhc_detached_mode_fail_nodata  = false,
-  $nhc_name                       = $warewulf::params::nhc_name,
-  $nhc_conf_dir                   = $warewulf::params::nhc_conf_dir,
-  $nhc_conf_file                  = $warewulf::params::nhc_conf_file,
-  $nhc_include_dir                = $warewulf::params::nhc_include_dir,
-  $nhc_log_file                   = $warewulf::params::nhc_log_file,
-  $nhc_sysconfig_path             = $warewulf::params::nhc_sysconfig_path,
-  $manage_nhc_logrotate           = true,
-  $nhc_log_rotate_every           = 'weekly',
-) inherits warewulf::params {
+  $checks                     = $nhc::params::checks,
+  $settings                   = $nhc::params::settings,
+  $config_overrides           = $nhc::params::config_overrides,
+  $detached_mode              = false,
+  $detached_mode_fail_nodata  = false,
+  $program_name               = $nhc::params::program_name,
+  $conf_dir                   = $nhc::params::conf_dir,
+  $conf_file                  = $nhc::params::conf_file,
+  $include_dir                = $nhc::params::include_dir,
+  $log_file                   = $nhc::params::log_file,
+  $sysconfig_path             = $nhc::params::sysconfig_path,
+  $manage_logrotate           = true,
+  $log_rotate_every           = 'weekly',
+) inherits nhc::params {
 
-  validate_bool($nhc)
-  validate_bool($manage_repo)
-  validate_bool($nhc_detached_mode)
-  validate_bool($nhc_detached_mode_fail_nodata)
-  validate_bool($manage_nhc_logrotate)
+  validate_bool($detached_mode)
+  validate_bool($detached_mode_fail_nodata)
+  validate_bool($manage_logrotate)
 
-  if ! is_hash($nhc_checks) and ! is_array($nhc_checks) {
-    fail("Module ${module_name}: nhc_checks parameter must be a Hash or an Array.")
+  if ! is_hash($checks) and ! is_array($checks) {
+    fail("Module ${module_name}: checks parameter must be a Hash or an Array.")
   }
 
-  validate_hash($nhc_settings)
-  validate_hash($nhc_config_overrides)
+  validate_hash($settings)
+  validate_hash($config_overrides)
 
   case $ensure {
     'present': {
+      if $install_from_repo {
+        $_package_ensure  = pick($package_ensure, "${package_version}-${package_release}.el${::operatingsystemmajrelease}")
+      } else {
+        $_package_ensure  = pick($package_ensure, 'installed')
+      }
       $directory_ensure = 'directory'
+      $_directory_force = undef
       $file_ensure      = 'file'
     }
     'absent': {
+      $_package_ensure  = 'absent'
       $directory_ensure = 'absent'
+      $_directory_force = true
       $file_ensure      = 'absent'
     }
     default: {
@@ -62,26 +61,35 @@ class warewulf (
     }
   }
 
-  $nhc_default_configs = {
-    'CONFDIR'                   => $nhc_conf_dir,
-    'CONFFILE'                  => $nhc_conf_file,
-    'DETACHED_MODE'             => $nhc_detached_mode,
-    'DETACHED_MODE_FAIL_NODATA' => $nhc_detached_mode_fail_nodata,
-    'INCDIR'                    => $nhc_include_dir,
-    'NAME'                      => $nhc_name,
+  if $install_from_repo {
+    $_package_require             = Yumrepo[$install_from_repo]
+    $_package_source              = undef
+    $_package_provider            = 'yum'
+  } else {
+    $_package_require             = undef
+    $_package_url_version         = regsubst($nhc::params::package_url, '%VERSION%', $package_version, 'G')
+    $_package_url_version_release = regsubst($_package_url_version, '%RELEASE%', $package_release)
+    $_package_source              = pick($package_url, $_package_url_version_release)
+    $_package_provider            = 'rpm'
   }
 
-  $nhc_configs = merge($nhc_default_configs, $nhc_config_overrides)
-
-  anchor { 'warewulf::start': }
-  anchor { 'warewulf::end': }
-
-  if $nhc {
-    include warewulf::nhc
-
-    Anchor['warewulf::start']->
-    Class['warewulf::nhc']->
-    Anchor['warewulf::end']
+  $default_configs = {
+    'CONFDIR'                   => $conf_dir,
+    'CONFFILE'                  => $conf_file,
+    'DETACHED_MODE'             => $detached_mode,
+    'DETACHED_MODE_FAIL_NODATA' => $detached_mode_fail_nodata,
+    'INCDIR'                    => $include_dir,
+    'NAME'                      => $program_name,
   }
+
+  $configs = merge($default_configs, $config_overrides)
+
+  include nhc::install
+  include nhc::config
+  
+  anchor { 'nhc::start': }->
+  Class['nhc::install']->
+  Class['nhc::config']->
+  anchor { 'nhc::end': }
 
 }

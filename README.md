@@ -1,6 +1,6 @@
-# puppet-module-warewulf
+# puppet-module-nhc
 
-[![Build Status](https://travis-ci.org/treydock/puppet-module-warewulf.png)](https://travis-ci.org/treydock/puppet-module-warewulf)
+[![Build Status](https://travis-ci.org/treydock/puppet-module-nhc.png)](https://travis-ci.org/treydock/puppet-module-nhc)
 
 ####Table of Contents
 
@@ -14,21 +14,21 @@
 
 ## Overview
 
-This module currently manages the installation and configuration of Warewulf Node Health CHeck (NHC).
+This module manages the installation and configuration of LBNL Node Health CHeck (NHC).
 
 ## Usage
 
-### warewulf
+### Class: nhc
 
 Configure a host with NHC.
 
-    class { 'warewulf': }
+    class { 'nhc': }
+
+**Note**: The `nhc_checks` Hiera key can be used and is collected using the *hiera_array* lookup function.  If `nhc_checks` in present in Hiera, it is used as the default value for `checks`.
 
 This is an example of using Hiera to define the default checks installed with NHC.
 
-**Note**: The warewulf\_nhc\_checks Hiera variable can be used and is collected using the *hiera_array* lookup function.
-
-    warewulf::nhc_checks:
+    nhc::checks:
       - 'check_fs_mount_rw /tmp'
       - 'check_fs_mount_rw /'
       - 'check_fs_mount_rw /dev/pts '/(none|devpts)/' devpts'
@@ -51,7 +51,7 @@ This is an example of using Hiera to define the default checks installed with NH
 
 A Hash can also be used to define checks
 
-    warewulf::nhc_checks:
+    nhc::checks:
       '*':
         - 'check_fs_mount_rw /tmp'
         - 'check_fs_mount_rw /'
@@ -75,26 +75,40 @@ A Hash can also be used to define checks
         - 'check_hw_gm myri0'
         - 'check_hw_eth eth1'
 
+This is an example of using a local yum repository to install NHC.
+
+    nhc::install_from_repo: 'foo-repo'
+
 ## Reference
 
-### Classes
+### Public Classes
 
-#### Public classes
+#### Class: `nhc`:
 
-* `warewulf`: Installs and configures warewulf.
+Installs and configures NHC.  Default values in Hiera format are below.
 
-#### Private classes
+$::osfamily == 'RedHat'
 
-* `warewulf::nhc`: Install and configure NHC.
-* `warewulf::nhc::install`: Installs warewulf-nhc package.
-* `warewulf::nhc::config`: Configures NHC.
-* `warewulf::params`: Sets parameter defaults based on fact values.
+    nhc::ensure: 'present'
+    nhc::package_ensure: undef
+    nhc::package_version: '1.4.2'
+    nhc::package_release: '1'
+    nhc::package_url: "https://github.com/mej/nhc/releases/download/%VERSION%/lbnl-nhc-%VERSION%-%RELEASE%.el%{::operatingsystemmajrelease}.noarch.rpm"
+    nhc::install_from_repo: undef
+    nhc::checks: []
+    nhc::settings: {}
+    nhc::config_overrides: {}
+    nhc::detached_mode: false
+    nhc::detached_mode_fail_nodata: false
+    nhc::program_name: 'nhc'
+    nhc::conf_dir: '/etc/nhc'
+    nhc::conf_file: '/etc/nhc/nhc.conf'
+    nhc::include_dir: '/etc/nhc/scripts'
+    nhc::log_file: '/var/log/nhc.log'
+    nhc::sysconfig_path: '/etc/sysconfig/nhc'
+    nhc::manage_logrotate: true
+    nhc::log_rotate_every: 'weekly'
 
-### Parameters
-
-#### warewulf
-
-#####`foo`
 
 ## Limitations
 

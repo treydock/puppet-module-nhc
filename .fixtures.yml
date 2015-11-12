@@ -5,4 +5,4 @@ fixtures:
       ref: 4.3.1
     logrotate: git://github.com/rodjek/puppet-logrotate.git
   symlinks:
-    warewulf: "#{source_dir}"
+    nhc: "#{source_dir}"

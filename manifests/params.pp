@@ -1,20 +1,19 @@
 # private class
-class warewulf::params {
+class nhc::params {
 
-  $nhc_checks           = hiera_array('warewulf_nhc_checks', [])
-  $nhc_settings         = {}
-  $nhc_config_overrides = {}
+  $checks           = hiera_array('nhc_checks', [])
+  $settings         = {}
+  $config_overrides = {}
 
   case $::osfamily {
     'RedHat': {
-      $repo_descr         = "Warewulf Releases -- RHEL ${::operatingsystemmajrelease}"
-      $repo_baseurl       = "http://warewulf.lbl.gov/downloads/repo/rhel${::operatingsystemmajrelease}/"
-      $nhc_name           = 'nhc'
-      $nhc_conf_dir       = '/etc/nhc'
-      $nhc_conf_file      = '/etc/nhc/nhc.conf'
-      $nhc_include_dir    = '/etc/nhc/scripts'
-      $nhc_log_file       = '/var/log/nhc.log'
-      $nhc_sysconfig_path = '/etc/sysconfig/nhc'
+      $package_url    = "https://github.com/mej/nhc/releases/download/%VERSION%/lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch.rpm"
+      $program_name   = 'nhc'
+      $conf_dir       = '/etc/nhc'
+      $conf_file      = '/etc/nhc/nhc.conf'
+      $include_dir    = '/etc/nhc/scripts'
+      $log_file       = '/var/log/nhc.log'
+      $sysconfig_path = '/etc/sysconfig/nhc'
     }
 
     default: {
