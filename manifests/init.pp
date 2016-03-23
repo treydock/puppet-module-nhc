@@ -10,6 +10,7 @@ class nhc (
   $package_version            = '1.4.2',
   $package_release            = '1',
   $package_url                = undef,
+  $package_name               = undef,
   $install_from_repo          = undef,
 
   # NHC configuration
@@ -64,12 +65,16 @@ class nhc (
   if $install_from_repo {
     $_package_require             = Yumrepo[$install_from_repo]
     $_package_source              = undef
+    $_package_name                = 'libnl-nhc'
     $_package_provider            = 'yum'
   } else {
     $_package_require             = undef
     $_package_url_version         = regsubst($nhc::params::package_url, '%VERSION%', $package_version, 'G')
     $_package_url_version_release = regsubst($_package_url_version, '%RELEASE%', $package_release)
     $_package_source              = pick($package_url, $_package_url_version_release)
+    $_package_name_version        = regsubst($nhc::params::package_name, '%VERSION%', $package_version, 'G')
+    $_package_name_version_release= regsubst($_package_name_version, '%RELEASE%', $package_release)
+    $_package_name                = pick($package_name, $_package_name_version_release)
     $_package_provider            = 'rpm'
   }
 

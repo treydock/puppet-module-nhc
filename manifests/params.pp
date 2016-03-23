@@ -8,6 +8,7 @@ class nhc::params {
   case $::osfamily {
     'RedHat': {
       $package_url    = "https://github.com/mej/nhc/releases/download/%VERSION%/lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch.rpm"
+      $package_name   = "lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch"
       $program_name   = 'nhc'
       $conf_dir       = '/etc/nhc'
       $conf_file      = '/etc/nhc/nhc.conf'
