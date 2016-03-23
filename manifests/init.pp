@@ -65,7 +65,7 @@ class nhc (
   if $install_from_repo {
     $_package_require             = Yumrepo[$install_from_repo]
     $_package_source              = undef
-    $_package_name                = 'libnl-nhc'
+    $_package_name                = 'lbnl-nhc'
     $_package_provider            = 'yum'
   } else {
     $_package_require             = undef
