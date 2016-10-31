@@ -4,6 +4,10 @@ class nhc::config {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
+  $configs  = $nhc::configs
+  $settings = $nhc::settings
+  $checks   = $nhc::checks
+
   file { '/etc/nhc':
     ensure => $nhc::directory_ensure,
     path   => $nhc::conf_dir,

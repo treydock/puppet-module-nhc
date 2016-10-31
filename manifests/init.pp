@@ -87,7 +87,7 @@ class nhc (
 
   include nhc::install
   include nhc::config
-  
+
   anchor { 'nhc::start': }->
   Class['nhc::install']->
   Class['nhc::config']->

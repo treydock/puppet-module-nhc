@@ -12,6 +12,7 @@ describe 'nhc' do
     context "on #{os}" do
       let(:facts) { facts }
 
+      it { should compile.with_all_deps }
       it { should create_class('nhc') }
       it { should contain_class('nhc::params') }
 
