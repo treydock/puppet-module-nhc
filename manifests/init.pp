@@ -26,6 +26,7 @@ class nhc (
   $sysconfig_path             = $nhc::params::sysconfig_path,
   $manage_logrotate           = true,
   $log_rotate_every           = 'weekly',
+  $custom_checks              = {},
 ) inherits nhc::params {
 
   validate_bool($detached_mode)
@@ -91,5 +92,7 @@ class nhc (
   Class['nhc::install']->
   Class['nhc::config']->
   anchor { 'nhc::end': }
+
+  create_resources('nhc::custom_check', $custom_checks)
 
 }
