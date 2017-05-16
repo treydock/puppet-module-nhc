@@ -4,7 +4,7 @@ class nhc::install {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  package { 'lbnl-nhc':
+  package { $nhc::_package_name:
     ensure   => $nhc::_package_ensure,
     source   => $nhc::_package_source,
     provider => $nhc::_package_provider,

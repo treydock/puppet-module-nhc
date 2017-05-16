@@ -79,6 +79,11 @@ This is an example of using a local yum repository to install NHC.
 
     nhc::install_from_repo: 'foo-repo'
 
+This is an other example of using a custom package url.
+
+    nhc::package_url: "http://warewulf.lbl.gov/downloads/repo/rhel6/warewulf-nhc-1.4.1-1.el6.noarch.rpm"
+    nhc::package_name: "warewulf-nhc-1.4.1-1.el6.noarch"
+
 ## Reference
 
 ### Public Classes
@@ -94,6 +99,7 @@ $::osfamily == 'RedHat'
     nhc::package_version: '1.4.2'
     nhc::package_release: '1'
     nhc::package_url: "https://github.com/mej/nhc/releases/download/%VERSION%/lbnl-nhc-%VERSION%-%RELEASE%.el%{::operatingsystemmajrelease}.noarch.rpm"
+    nhc::package_name: "lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch"
     nhc::install_from_repo: undef
     nhc::checks: []
     nhc::settings: {}
