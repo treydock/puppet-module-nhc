@@ -23,9 +23,9 @@ describe 'nhc' do
 
       context "nhc::install" do
         it do
-          should contain_package('lbnl-nhc').only_with({
+          should contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with({
             :ensure   => 'installed',
-            :name     => 'lbnl-nhc',
+            :name     => "lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch",
             :source   => "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
             :provider => 'rpm',
           })
@@ -68,7 +68,7 @@ describe 'nhc' do
 
         context 'when ensure => "absent"' do
           let(:params) {{ :ensure => "absent" }}
-          it { should contain_package('lbnl-nhc').with_ensure('absent') }
+          it { should contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
         end
       end
 
