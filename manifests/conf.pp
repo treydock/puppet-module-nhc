@@ -45,7 +45,7 @@ define nhc::conf (
   $_conf_dir = pick($conf_dir, $nhc::conf_dir)
   $_conf_file = pick($conf_file, "${_conf_dir}/${name}.conf")
   $_include_dir = pick($include_dir, $nhc::include_dir)
-  $_sysconfig_path = pick($sysconfig_path, $nhc::sysconfig_path)
+  $_sysconfig_path = pick($sysconfig_path, "/etc/sysconfig/${name}")
 
   $default_configs = {
     'CONFDIR'                   => $_conf_dir,
@@ -88,7 +88,7 @@ define nhc::conf (
   }
 
   if $_sysconfig_path != $nhc::sysconfig_path {
-    file { $sysconfig_path:
+    file { $_sysconfig_path:
       ensure  => $file_ensure,
       content => template('nhc/sysconfig.erb'),
       owner   => 'root',
