@@ -176,6 +176,24 @@ describe 'nhc' do
           let(:params) do
             {
               :settings => {
+                'HOSTNAME'  => '$HOSTNAME_S',
+              }
+            }
+          end
+
+          it do
+            content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
+            pp content.split(/\n/)
+            verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
+              '* || export HOSTNAME=$HOSTNAME_S',
+            ])
+          end
+        end
+
+        context 'when settings is defined with host' do
+          let(:params) do
+            {
+              :settings => {
                 '*' => {'HOSTNAME'  => '$HOSTNAME_S'},
                 'foo' => {'MARK_OFFLINE'  => false},
               }
@@ -183,7 +201,9 @@ describe 'nhc' do
           end
 
           it do
-            verify_contents(catalogue, '/etc/nhc/nhc.conf', [
+            content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
+            pp content.split(/\n/)
+            verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
               '* || export HOSTNAME=$HOSTNAME_S',
               'foo || export MARK_OFFLINE=0',
             ])

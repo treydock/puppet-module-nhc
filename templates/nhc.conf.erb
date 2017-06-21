@@ -13,10 +13,28 @@
 ###
 ### NHC Configuration Variables
 ###
+<%-
+host_settings = {}
+@settings.keys.sort.each do |setting|
+  if @settings[setting].is_a?(Hash)
+    if ! host_settings.has_key?(setting)
+      host_settings[setting] = {}
+    end
+    @settings[setting].keys.sort.each do |s|
+      host_settings[setting][s] = @settings[setting][s]
+    end
+  else
+    if ! host_settings.has_key?('*')
+      host_settings['*'] = {}
+    end
+    host_settings['*'][setting] = @settings[setting]
+  end
+end
+-%>
 
-<%- @settings.keys.sort.each do |host| -%>
-  <%- @settings[host].keys.sort.each do |setting| -%>
-    <%- value = @settings[host][setting] -%>
+<%- host_settings.keys.sort.each do |host| -%>
+  <%- host_settings[host].keys.sort.each do |setting| -%>
+    <%- value = host_settings[host][setting] -%>
     <%- if scope.function_is_bool([value]) -%>
 <%= host %> || export <%= setting %>=<%= value ? "1" : "0" %>
     <%- else -%>
