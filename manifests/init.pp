@@ -90,13 +90,13 @@ class nhc (
 
   $configs = merge($default_configs, $config_overrides)
 
-  include nhc::install
-  include nhc::config
+  include ::nhc::install
+  include ::nhc::config
 
-  anchor { 'nhc::start': }->
-  Class['nhc::install']->
-  Class['nhc::config']->
-  anchor { 'nhc::end': }
+  anchor { 'nhc::start': }
+  -> Class['nhc::install']
+  -> Class['nhc::config']
+  -> anchor { 'nhc::end': }
 
   create_resources('nhc::custom_check', $custom_checks)
 

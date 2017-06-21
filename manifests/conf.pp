@@ -40,7 +40,7 @@ define nhc::conf (
     }
   }
 
-  require 'nhc'
+  require '::nhc'
 
   $_conf_dir = pick($conf_dir, $nhc::conf_dir)
   $_conf_file = pick($conf_file, "${_conf_dir}/${name}.conf")

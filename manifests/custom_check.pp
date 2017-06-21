@@ -4,7 +4,7 @@ define nhc::custom_check (
   $source = undef,
 ) {
 
-  include nhc
+  include ::nhc
 
   file { "${nhc::include_dir}/${name}.nhc":
     ensure => 'file',
