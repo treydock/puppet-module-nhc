@@ -5,7 +5,7 @@ describe 'nhc' do
     :supported_os => [
       {
         "operatingsystem" => "CentOS",
-        "operatingsystemrelease" => ["5", "6", "7"],
+        "operatingsystemrelease" => ["6", "7"],
       }
     ]
   }).each do |os, facts|
