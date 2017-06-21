@@ -14,14 +14,16 @@
 ### NHC Configuration Variables
 ###
 
-<% @settings.keys.sort.each do |setting| -%>
-  <%- value = @settings[setting] -%>
-  <%- if scope.function_is_bool([value]) -%>
-* || export <%= setting %>=<%= value ? "1" : "0" %>
-  <%- else -%>
-* || export <%= setting %>=<%= value %>
+<%- @settings.keys.sort.each do |host| -%>
+  <%- @settings[host].keys.sort.each do |setting| -%>
+    <%- value = @settings[host][setting] -%>
+    <%- if scope.function_is_bool([value]) -%>
+<%= host %> || export <%= setting %>=<%= value ? "1" : "0" %>
+    <%- else -%>
+<%= host %> || export <%= setting %>=<%= value %>
+    <%- end -%>
   <%- end -%>
-<% end -%>
+<%- end -%>
 
 #######################################################################
 ###

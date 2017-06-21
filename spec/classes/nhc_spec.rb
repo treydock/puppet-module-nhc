@@ -176,12 +176,18 @@ describe 'nhc' do
           let(:params) do
             {
               :settings => {
-                'HOSTNAME'  => '$HOSTNAME_S',
+                '*' => {'HOSTNAME'  => '$HOSTNAME_S'},
+                'foo' => {'MARK_OFFLINE'  => false},
               }
             }
           end
 
-          it { verify_contents(catalogue, '/etc/nhc/nhc.conf', ['* || export HOSTNAME=$HOSTNAME_S']) }
+          it do
+            verify_contents(catalogue, '/etc/nhc/nhc.conf', [
+              '* || export HOSTNAME=$HOSTNAME_S',
+              'foo || export MARK_OFFLINE=0',
+            ])
+          end
         end
 
         context 'when checks defined as an Array' do
