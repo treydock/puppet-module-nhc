@@ -4,6 +4,7 @@ define nhc::conf (
   $ensure                     = 'present',
   $checks                     = [],
   $settings                   = {},
+  $settings_host              = {},
   $config_overrides           = {},
   $detached_mode              = false,
   $detached_mode_fail_nodata  = false,
@@ -22,6 +23,7 @@ define nhc::conf (
   }
 
   validate_hash($settings)
+  validate_hash($settings_host)
   validate_hash($config_overrides)
 
   case $ensure {

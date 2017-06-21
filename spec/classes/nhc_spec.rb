@@ -172,7 +172,7 @@ describe 'nhc' do
           it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['HOSTNAME=$HOSTNAME_S']) }
         end
 
-        context 'when settings is defined' do
+        context 'when settings are defined' do
           let(:params) do
             {
               :settings => {
@@ -190,11 +190,13 @@ describe 'nhc' do
           end
         end
 
-        context 'when settings is defined with host' do
+        context 'when host settings are defined' do
           let(:params) do
             {
               :settings => {
-                '*' => {'HOSTNAME'  => '$HOSTNAME_S'},
+                'HOSTNAME'  => '$HOSTNAME_S',
+              },
+              :settings_host => {
                 'foo' => {'MARK_OFFLINE'  => false},
               }
             }

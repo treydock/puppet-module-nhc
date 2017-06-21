@@ -16,6 +16,7 @@ class nhc (
   # NHC configuration
   $checks                     = $nhc::params::checks,
   $settings                   = $nhc::params::settings,
+  $settings_host              = $nhc::params::settings_host,
   $config_overrides           = $nhc::params::config_overrides,
   $detached_mode              = false,
   $detached_mode_fail_nodata  = false,

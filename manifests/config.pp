@@ -4,9 +4,11 @@ class nhc::config {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  $configs  = $nhc::configs
-  $settings = $nhc::settings
-  $checks   = $nhc::checks
+  # Define template variables here so that nhc::conf can reuse template
+  $configs        = $::nhc::configs
+  $settings       = $::nhc::settings
+  $settings_host  = $::nhc::settings_host
+  $checks         = $::nhc::checks
 
   file { '/etc/nhc':
     ensure => $nhc::directory_ensure,

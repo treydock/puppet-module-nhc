@@ -3,6 +3,7 @@ class nhc::params {
 
   $checks           = hiera_array('nhc_checks', [])
   $settings         = {}
+  $settings_host    = {}
   $config_overrides = {}
 
   case $::osfamily {

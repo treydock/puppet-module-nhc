@@ -23,7 +23,10 @@ describe 'nhc::conf' do
       let :params do
         {
           :settings => {
-            '*' => { 'HOSTNAME'  => '$HOSTNAME_S' },
+            'HOSTNAME'  => '$HOSTNAME_S',
+          },
+          :settings_host => {
+            'foo' => {'MARK_OFFLINE'  => false},
           },
           :checks => [
             'check_fs_mount_rw -f /',
@@ -46,6 +49,7 @@ describe 'nhc::conf' do
       it do
         verify_exact_contents(catalogue, '/etc/nhc/nhc-cron.conf', [
           '* || export HOSTNAME=$HOSTNAME_S',
+          'foo || export MARK_OFFLINE=0',
           '* || check_fs_mount_rw -f /',
           '* || check_fs_mount_rw -t tmpfs -f /tmp',
         ])
