@@ -15,12 +15,12 @@
 ###
 
 <% @settings.keys.sort.each do |setting| -%>
-<% value = @settings[setting] -%>
-<% if scope.function_is_bool([value]) -%>
+  <%- value = @settings[setting] -%>
+  <%- if scope.function_is_bool([value]) -%>
 * || export <%= setting %>=<%= value ? "1" : "0" %>
-<% else -%>
+  <%- else -%>
 * || export <%= setting %>=<%= value %>
-<% end -%>
+  <%- end -%>
 <% end -%>
 
 #######################################################################
@@ -29,22 +29,22 @@
 ###
 
 <% if @checks.is_a?(Array) -%>
-<% @checks.each do |check| -%>
+  <%- @checks.each do |check| -%>
 * || <%= check %>
-<% end -%>
-<% else -%>
-<% if all_hosts = @checks.delete('*') -%>
-<% all_hosts.each do |check| -%>
+  <%- end -%>
+<%- else -%>
+  <%- if all_hosts = @checks.delete('*') -%>
+    <%- all_hosts.each do |check| -%>
 * || <%= check %>
-<% end -%>
-<% end -%>
-<% @checks.keys.sort.each do |host| %>
-<% if @checks[host].is_a?(Array) -%>
-<% @checks[host].each do |check| -%>
+    <%- end -%>
+  <%- end -%>
+  <%- @checks.keys.sort.each do |host| %>
+    <%- if @checks[host].is_a?(Array) -%>
+      <%- @checks[host].each do |check| -%>
 <%= host %> || <%= check %>
-<% end -%>
-<% else -%>
+      <%- end -%>
+    <%- else -%>
 <%= host %> || <%= @checks[host] %>
-<% end -%>
-<% end -%>
-<% end -%>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
