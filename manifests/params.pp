@@ -1,11 +1,6 @@
 # private class
 class nhc::params {
 
-  $checks           = hiera_array('nhc_checks', [])
-  $settings         = {}
-  $settings_host    = {}
-  $config_overrides = {}
-
   case $::osfamily {
     'RedHat': {
       $package_url    = "https://github.com/mej/nhc/releases/download/%VERSION%/lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch.rpm"

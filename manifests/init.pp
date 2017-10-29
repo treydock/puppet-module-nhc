@@ -3,7 +3,7 @@
 # See README.md for more details.
 #
 class nhc (
-  $ensure                     = 'present',
+  Enum['present', 'absent'] $ensure   = 'present',
 
   # packages
   $package_ensure             = undef,
@@ -14,10 +14,10 @@ class nhc (
   $install_from_repo          = undef,
 
   # NHC configuration
-  Variant[Hash, Array] $checks        = $nhc::params::checks,
-  Hash $settings                      = $nhc::params::settings,
-  $settings_host                      = $nhc::params::settings_host,
-  Hash $config_overrides              = $nhc::params::config_overrides,
+  Variant[Hash, Array] $checks        = [],
+  Hash $settings                      = {},
+  Hash $settings_host                 = {},
+  Hash $config_overrides              = {},
   Boolean $detached_mode              = false,
   Boolean $detached_mode_fail_nodata  = false,
   $program_name                       = $nhc::params::program_name,
@@ -28,7 +28,7 @@ class nhc (
   $sysconfig_path                     = $nhc::params::sysconfig_path,
   Boolean $manage_logrotate           = true,
   $log_rotate_every                   = 'weekly',
-  $custom_checks                      = {},
+  Hash $custom_checks                 = {},
 ) inherits nhc::params {
 
   case $ensure {
