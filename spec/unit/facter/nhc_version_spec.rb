@@ -4,16 +4,16 @@ describe 'nhc_version fact' do
 
   before :each do
     Facter.clear
-    Facter.fact(:osfamily).stubs(:value).returns("RedHat")
+    allow(Facter.fact(:osfamily)).to receive(:value).and_return('RedHat')
   end
 
   it "should return 1.4.1" do
-    Facter::Util::Resolution.stubs(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' lbnl-nhc").returns("lbnl-nhc-1.4.2")
-    Facter.fact(:nhc_version).value.should == "1.4.2"
+    allow(Facter::Util::Resolution).to receive(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' lbnl-nhc").and_return('lbnl-nhc-1.4.2')
+    expect(Facter.fact(:nhc_version).value).to eq('1.4.2')
   end
 
   it "should handle package not installed" do
-    Facter::Util::Resolution.stubs(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' lbnl-nhc").returns("package lbnl-nhc is not installed\n")
-    Facter.fact(:nhc_version).value.should == nil
+    allow(Facter::Util::Resolution).to receive(:exec).with("rpm -q --queryformat '%{NAME}-%{VERSION}' lbnl-nhc").and_return("package lbnl-nhc is not installed\n")
+    expect(Facter.fact(:nhc_version).value).to be_nil
   end
 end

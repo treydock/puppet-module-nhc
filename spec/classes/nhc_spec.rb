@@ -267,47 +267,6 @@ describe 'nhc' do
           it { should contain_logrotate__rule('nhc').with_ensure('absent') }
         end
       end
-
-      context 'when ensure => "foo"' do
-        let(:params) {{ :ensure => 'foo' }}
-        it "should raise an error" do
-          expect { should compile }.to raise_error(/Module nhc: ensure parameter must be 'present' or 'absent', foo given./)
-        end
-      end
-
-      context "with checks => 'foo'" do
-        let(:params) {{ :checks => 'foo' }}
-        it "should raise an error" do
-          expect { should compile }.to raise_error(/Module nhc: checks parameter must be a Hash or an Array./)
-        end
-      end
-
-      # Test validate_bool parameters
-      [
-        :detached_mode,
-        :detached_mode_fail_nodata,
-        :manage_logrotate,
-      ].each do |param|
-        context "with #{param} => 'foo'" do
-          let(:params) {{ param.to_sym => 'foo' }}
-          it "should raise an error" do
-            expect { should compile }.to raise_error(/is not a boolean/)
-          end
-        end
-      end
-
-      # Test validate_hash parameters
-      [
-        :settings,
-        :config_overrides,
-      ].each do |param|
-        context "with #{param} => 'foo'" do
-          let(:params) {{ param.to_sym => 'foo' }}
-          it "should raise an error" do
-            expect { should compile }.to raise_error(/is not a Hash/)
-          end
-        end
-      end
     end # end os context
   end # end on_supported_os
 end # end describe nhc
