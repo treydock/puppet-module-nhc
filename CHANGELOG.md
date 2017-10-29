@@ -3,6 +3,11 @@
 Release notes for the treydock-nhc module.
 
 ------------------------------------------
+
+#### 1.0.1 - 2017-10-29
+
+Set support puppet versions in metadata.json
+
 #### 1.0.0 - 2017-10-29
 
 * Add host_settings parameter to nhc class and nhc::conf defined type
