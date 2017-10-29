@@ -1,30 +1,19 @@
 # == Define: nhc::conf
 #
 define nhc::conf (
-  $ensure                     = 'present',
-  $checks                     = [],
-  $settings                   = {},
-  $settings_host              = {},
-  $config_overrides           = {},
-  $detached_mode              = false,
-  $detached_mode_fail_nodata  = false,
-  $program_name               = $name,
-  $conf_dir                   = undef,
-  $conf_file                  = undef,
-  $include_dir                = undef,
-  $sysconfig_path             = undef,
+  $ensure                          = 'present',
+  Variant[Hash, Array] $checks     = [],
+  Hash $settings                   = {},
+  Hash $settings_host              = {},
+  Hash $config_overrides           = {},
+  Boolean $detached_mode              = false,
+  Boolean $detached_mode_fail_nodata  = false,
+  $program_name                       = $name,
+  $conf_dir                           = undef,
+  $conf_file                          = undef,
+  $include_dir                        = undef,
+  $sysconfig_path                     = undef,
 ) {
-
-  validate_bool($detached_mode)
-  validate_bool($detached_mode_fail_nodata)
-
-  if ! is_hash($checks) and ! is_array($checks) {
-    fail("Module ${module_name}: checks parameter must be a Hash or an Array.")
-  }
-
-  validate_hash($settings)
-  validate_hash($settings_host)
-  validate_hash($config_overrides)
 
   case $ensure {
     'present': {

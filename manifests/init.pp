@@ -14,33 +14,22 @@ class nhc (
   $install_from_repo          = undef,
 
   # NHC configuration
-  $checks                     = $nhc::params::checks,
-  $settings                   = $nhc::params::settings,
-  $settings_host              = $nhc::params::settings_host,
-  $config_overrides           = $nhc::params::config_overrides,
-  $detached_mode              = false,
-  $detached_mode_fail_nodata  = false,
-  $program_name               = $nhc::params::program_name,
-  $conf_dir                   = $nhc::params::conf_dir,
-  $conf_file                  = $nhc::params::conf_file,
-  $include_dir                = $nhc::params::include_dir,
-  $log_file                   = $nhc::params::log_file,
-  $sysconfig_path             = $nhc::params::sysconfig_path,
-  $manage_logrotate           = true,
-  $log_rotate_every           = 'weekly',
-  $custom_checks              = {},
+  Variant[Hash, Array] $checks        = $nhc::params::checks,
+  Hash $settings                      = $nhc::params::settings,
+  $settings_host                      = $nhc::params::settings_host,
+  Hash $config_overrides              = $nhc::params::config_overrides,
+  Boolean $detached_mode              = false,
+  Boolean $detached_mode_fail_nodata  = false,
+  $program_name                       = $nhc::params::program_name,
+  $conf_dir                           = $nhc::params::conf_dir,
+  $conf_file                          = $nhc::params::conf_file,
+  $include_dir                        = $nhc::params::include_dir,
+  $log_file                           = $nhc::params::log_file,
+  $sysconfig_path                     = $nhc::params::sysconfig_path,
+  Boolean $manage_logrotate           = true,
+  $log_rotate_every                   = 'weekly',
+  $custom_checks                      = {},
 ) inherits nhc::params {
-
-  validate_bool($detached_mode)
-  validate_bool($detached_mode_fail_nodata)
-  validate_bool($manage_logrotate)
-
-  if ! is_hash($checks) and ! is_array($checks) {
-    fail("Module ${module_name}: checks parameter must be a Hash or an Array.")
-  }
-
-  validate_hash($settings)
-  validate_hash($config_overrides)
 
   case $ensure {
     'present': {
