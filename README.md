@@ -25,8 +25,6 @@ Configure a host with NHC.
 
     class { 'nhc': }
 
-**Note**: The `nhc_checks` Hiera key can be used and is collected using the *hiera_array* lookup function.  If `nhc_checks` in present in Hiera, it is used as the default value for `checks`.
-
 This is an example of using Hiera to define the default checks installed with NHC.
 
     nhc::checks:
@@ -121,7 +119,8 @@ $::osfamily == 'RedHat'
 
 This module has been tested on:
 
-* CentOS 6 x86_64
+* CentOS/RedHat 6 x86_64
+* CentOS/RedHat 7 x86_64
 
 ## Development
 
