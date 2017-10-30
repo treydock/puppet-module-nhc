@@ -4,6 +4,10 @@ Release notes for the treydock-nhc module.
 
 ------------------------------------------
 
+#### 1.0.2 - 2017-10-29
+
+Update README
+
 #### 1.0.1 - 2017-10-29
 
 Set support puppet versions in metadata.json
