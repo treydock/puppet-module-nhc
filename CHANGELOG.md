@@ -4,6 +4,12 @@ Release notes for the treydock-nhc module.
 
 ------------------------------------------
 
+#### 1.1.0 - 2017-10-30
+
+* Use data types for all parameters
+* Allow logrotate 3.x module
+* Update README
+
 #### 1.0.3 - 2017-10-30
 
 * Fix metadata.json dependency version to use correct syntax
