@@ -1,6 +1,6 @@
 {
   "name": "treydock-nhc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "treydock",
   "summary": "NHC Puppet module",
   "license": "Apache-2.0",

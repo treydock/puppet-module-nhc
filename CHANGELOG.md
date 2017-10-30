@@ -4,6 +4,11 @@ Release notes for the treydock-nhc module.
 
 ------------------------------------------
 
+#### 1.0.3 - 2017-10-30
+
+* Fix metadata.json dependency version to use correct syntax
+* Minor fixes to pass release_checks rake task
+
 #### 1.0.2 - 2017-10-29
 
 Update README
