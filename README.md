@@ -3,7 +3,7 @@
 [![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/nhc.svg)](https://forge.puppetlabs.com/treydock/nhc)
 [![Build Status](https://travis-ci.org/treydock/puppet-module-nhc.png)](https://travis-ci.org/treydock/puppet-module-nhc)
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
 2. [Usage - Configuration options](#usage)
@@ -76,12 +76,28 @@ A Hash can also be used to define checks
 
 This is an example of using a local yum repository to install NHC.
 
-    nhc::install_from_repo: 'foo-repo'
+    nhc::install_from_repo: 'local-repo'
 
 This is an other example of using a custom package url.
 
     nhc::package_url: "http://warewulf.lbl.gov/downloads/repo/rhel6/warewulf-nhc-1.4.1-1.el6.noarch.rpm"
     nhc::package_name: "warewulf-nhc-1.4.1-1.el6.noarch"
+
+### Define: nhc::conf
+
+Below is an example of using a custom nhc configuration for purposes of running NHC with alternate configuration.
+
+    nhc::conf { 'nhc-cron':
+      checks => # insert checks here, same as nhc class
+    }
+
+### Define nhc::custom_check
+
+Define a custom check for use with NHC. The example below would add the file from `source` to `/etc/nhc/scripts/local_hw.nhc`.
+
+    nhc::custom_check { 'local_hw':
+      source => 'puppet:///modules/site_nhc/local_hw.nhc',
+    }
 
 ## Reference
 
@@ -89,31 +105,168 @@ This is an other example of using a custom package url.
 
 #### Class: `nhc`:
 
-Installs and configures NHC.  Default values in Hiera format are below.
+Installs and configures NHC.
 
-$::osfamily == 'RedHat'
+**Parameters**:
 
-    nhc::ensure: 'present'
-    nhc::package_ensure: undef
-    nhc::package_version: '1.4.2'
-    nhc::package_release: '1'
-    nhc::package_url: "https://github.com/mej/nhc/releases/download/%VERSION%/lbnl-nhc-%VERSION%-%RELEASE%.el%{::operatingsystemmajrelease}.noarch.rpm"
-    nhc::package_name: "lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch"
-    nhc::install_from_repo: undef
-    nhc::checks: []
-    nhc::settings: {}
-    nhc::config_overrides: {}
-    nhc::detached_mode: false
-    nhc::detached_mode_fail_nodata: false
-    nhc::program_name: 'nhc'
-    nhc::conf_dir: '/etc/nhc'
-    nhc::conf_file: '/etc/nhc/nhc.conf'
-    nhc::include_dir: '/etc/nhc/scripts'
-    nhc::log_file: '/var/log/nhc.log'
-    nhc::sysconfig_path: '/etc/sysconfig/nhc'
-    nhc::manage_logrotate: true
-    nhc::log_rotate_every: 'weekly'
+##### ensure
 
+Presence state of NHC resources, valid values are `present` or `absent`, default is `present`.
+
+##### package_ensure
+
+Package ensure property.
+
+Default when `install_from_repo` is defined: "${package_version}-${package_release}.el${::operatingsystemmajrelease}"`
+Default when `install_from_repo` is undefined: `installed`
+
+##### package_version
+
+The package version. Default is `1.4.2`.
+
+##### package_release
+
+The package release. Default is `1`.
+
+##### package_url
+
+The URL to install package from. Only used when `install_from_repo` is not defined.  The value `%VERSION%` is substituted with `package_version` and `%RELEASE` is subsituted with `package_release`.
+
+##### package_name
+
+Package name.
+Default when `install_from_repo` is defined: `lbnl-nhc`
+Default when `install_from_repo` is undefined is `lbnl-nhc-%VERSION%-%RELEASE%.el${::operatingsystemmajrelease}.noarch` with same substitutions as `package_url`.
+
+##### install\_from\_repo
+
+The repo to install NHC from. The default value is `undef`, which installs NHC from `package_url`.
+
+##### checks
+
+Array or hash of checks. Default is `[]`.
+
+##### settings
+
+Array of settings that apply to all hosts. Default is `[]`.
+
+##### settings_host
+
+Hash of `host => [settings]`. Default is `{}`
+
+##### config_overrides
+
+Hash of configurations that go into the sysconfig file. Default is `{}`.
+
+##### detached_mode
+
+Boolean that enables DETACHED_MODE in sysconfig. Default is `false`
+
+##### detached\_mode\_fail\_nodata
+
+Boolean that enables DETACHED\_MODE\_FAIL\_NODATA in sysconfig. Default is `false`
+
+##### program_name
+
+The name of the NHC configuration. Defaults to `nhc`.
+
+##### conf_dir
+
+The configuration directory. Defaults to `/etc/nhc`.
+
+##### conf_file
+
+The configuration file. Defaults to `/etc/nhc/$name.conf`.
+
+##### include_dir
+
+The include directory path. Defaults to `/etc/nhc/scripts`.
+
+##### sysconfig_path
+
+Path to sysconfig file. Defaults to `/etc/sysconfig/$name`.
+
+##### manage_logrotate
+
+Boolean that determines if logrotate rules for NHC are managed.
+
+##### log\_rotate\_every
+
+Sets how often to rotate logs for NHC. Default is `weekly`.
+
+##### custom_checks
+
+Hash that defines `nhc::custom_check` defined types.
+
+### Public Defined Types
+
+#### Defined type: `nhc::conf`:
+
+This allows alternative NHC configurations to be use. One possible use case would be a cron based NHC execution that has checks not normally used in the batch environment NHC.
+
+**Parameters**:
+
+##### ensure
+
+Presence state of resource, valid values are `present` or `absent`, default is `present`.
+
+##### checks
+
+Array or hash of checks. Default is `[]`.
+
+##### settings
+
+Array of settings that apply to all hosts. Default is `[]`.
+
+##### settings_host
+
+Hash of `host => [settings]`. Default is `{}`
+
+##### config_overrides
+
+Hash of configurations that go into the sysconfig file. Default is `{}`.
+
+##### detached_mode
+
+Boolean that enables DETACHED_MODE in sysconfig. Default is `false`
+
+##### detached\_mode\_fail\_nodata
+
+Boolean that enables DETACHED\_MODE\_FAIL\_NODATA in sysconfig. Default is `false`
+
+##### program_name
+
+The name of the alternative NHC configuration. Defaults to name of defined type.
+
+##### conf_dir
+
+The configuration directory. Defaults to `/etc/nhc`.
+
+##### conf_file
+
+The configuration file. Defaults to `/etc/nhc/$name.conf`.
+
+##### include_dir
+
+The include directory path. Defaults to `/etc/nhc/scripts`.
+
+##### sysconfig_path
+
+Path to sysconfig file. Defaults to `/etc/sysconfig/$name`.
+
+#### Defined type: `nhc::custom_check`
+
+Defines a custom check to be added to the NHC include directory.
+
+**Parameters**:
+
+##### name
+
+The name of this custom check. The `name` value is used to set path of the `nhc` suffixed file.
+
+##### source
+
+The source path of the custom check.
 
 ## Limitations
 
