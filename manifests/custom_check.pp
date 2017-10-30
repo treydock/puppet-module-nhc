@@ -1,7 +1,7 @@
 # == Define: nhc::custom_check
 #
 define nhc::custom_check (
-  $source = undef,
+  Optional[String] $source = undef,
 ) {
 
   include ::nhc

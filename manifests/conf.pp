@@ -1,18 +1,18 @@
 # == Define: nhc::conf
 #
 define nhc::conf (
-  $ensure                          = 'present',
-  Variant[Hash, Array] $checks     = [],
-  Hash $settings                   = {},
-  Hash $settings_host              = {},
-  Hash $config_overrides           = {},
-  Boolean $detached_mode              = false,
-  Boolean $detached_mode_fail_nodata  = false,
-  $program_name                       = $name,
-  $conf_dir                           = undef,
-  $conf_file                          = undef,
-  $include_dir                        = undef,
-  $sysconfig_path                     = undef,
+  Enum['present', 'absent'] $ensure               = 'present',
+  Variant[Hash, Array] $checks                    = [],
+  Hash $settings                                  = {},
+  Hash $settings_host                             = {},
+  Hash $config_overrides                          = {},
+  Boolean $detached_mode                          = false,
+  Boolean $detached_mode_fail_nodata              = false,
+  String $program_name                            = $name,
+  Optional[Stdlib::Absolutepath] $conf_dir        = undef,
+  Optional[Stdlib::Absolutepath] $conf_file       = undef,
+  Optional[Stdlib::Absolutepath] $include_dir     = undef,
+  Optional[Stdlib::Absolutepath] $sysconfig_path  = undef,
 ) {
 
   case $ensure {
@@ -26,9 +26,7 @@ define nhc::conf (
       $_directory_force = true
       $file_ensure      = 'absent'
     }
-    default: {
-      fail("Define nhc::conf: ensure parameter must be 'present' or 'absent', ${ensure} given.")
-    }
+    default: {}
   }
 
   require '::nhc'

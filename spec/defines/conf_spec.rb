@@ -55,6 +55,15 @@ describe 'nhc::conf' do
         ])
       end
 
+      it 'should manage sysconfig file' do
+        is_expected.to contain_file('/etc/sysconfig/nhc-cron').with({
+          :ensure => 'file',
+          :owner  => 'root',
+          :group  => 'root',
+          :mode   => '0644',
+        })
+      end
+
     end
   end
 end

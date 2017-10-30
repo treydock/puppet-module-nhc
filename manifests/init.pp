@@ -6,29 +6,30 @@ class nhc (
   Enum['present', 'absent'] $ensure   = 'present',
 
   # packages
-  $package_ensure             = undef,
-  $package_version            = '1.4.2',
-  $package_release            = '1',
-  $package_url                = undef,
-  $package_name               = undef,
-  $install_from_repo          = undef,
+  Optional[String] $package_ensure      = undef,
+  Optional[String] $package_version     = '1.4.2',
+  Optional[String] $package_release     = '1',
+  Optional[Variant[Stdlib::HTTPUrl,Stdlib::HTTPSUrl]]
+    $package_url                        = undef,
+  Optional[String] $package_name        = undef,
+  Optional[String] $install_from_repo   = undef,
 
   # NHC configuration
-  Variant[Hash, Array] $checks        = [],
-  Hash $settings                      = {},
-  Hash $settings_host                 = {},
-  Hash $config_overrides              = {},
-  Boolean $detached_mode              = false,
-  Boolean $detached_mode_fail_nodata  = false,
-  $program_name                       = $nhc::params::program_name,
-  $conf_dir                           = $nhc::params::conf_dir,
-  $conf_file                          = $nhc::params::conf_file,
-  $include_dir                        = $nhc::params::include_dir,
-  $log_file                           = $nhc::params::log_file,
-  $sysconfig_path                     = $nhc::params::sysconfig_path,
-  Boolean $manage_logrotate           = true,
-  $log_rotate_every                   = 'weekly',
-  Hash $custom_checks                 = {},
+  Variant[Hash, Array] $checks          = [],
+  Hash $settings                        = {},
+  Hash $settings_host                   = {},
+  Hash $config_overrides                = {},
+  Boolean $detached_mode                = false,
+  Boolean $detached_mode_fail_nodata    = false,
+  String $program_name                  = $nhc::params::program_name,
+  Stdlib::Absolutepath $conf_dir        = $nhc::params::conf_dir,
+  Stdlib::Absolutepath $conf_file       = $nhc::params::conf_file,
+  Stdlib::Absolutepath $include_dir     = $nhc::params::include_dir,
+  Stdlib::Absolutepath $log_file        = $nhc::params::log_file,
+  Stdlib::Absolutepath $sysconfig_path  = $nhc::params::sysconfig_path,
+  Boolean $manage_logrotate             = true,
+  String $log_rotate_every              = 'weekly',
+  Hash $custom_checks                   = {},
 ) inherits nhc::params {
 
   case $ensure {
@@ -48,9 +49,7 @@ class nhc (
       $_directory_force = true
       $file_ensure      = 'absent'
     }
-    default: {
-      fail("Module ${module_name}: ensure parameter must be 'present' or 'absent', ${ensure} given.")
-    }
+    default: {}
   }
 
   if $install_from_repo {
