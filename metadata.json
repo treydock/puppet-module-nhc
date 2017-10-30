@@ -23,7 +23,7 @@
   ],
   "dependencies": [
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <5.0.0" },
-    { "name": "puppet/logrotate", "version_requirement": ">= 2.0.0 < 3.0.0" }
+    { "name": "puppet/logrotate", "version_requirement": ">= 2.0.0 < 4.0.0" }
   ],
   "requirements": [
     {"name": "puppet", "version_requirement": ">= 4.7.0 < 6.0.0" }
