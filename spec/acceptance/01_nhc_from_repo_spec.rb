@@ -2,23 +2,23 @@ require 'spec_helper_acceptance'
 
 describe 'nhc class:' do
   context 'ensure => absent' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'nhc': ensure => 'absent' }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     describe package('lbnl-nhc') do
-      it { should_not be_installed }
+      it { is_expected.not_to be_installed }
     end
   end
 
   context 'when installed from repo' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       yumrepo { 'nhc':
         descr               => 'nhc',
         baseurl             => 'file:///opt/nhc-repo',
@@ -50,8 +50,8 @@ describe 'nhc class:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     it_behaves_like 'nhc-base'

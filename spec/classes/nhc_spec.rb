@@ -1,97 +1,89 @@
 require 'spec_helper'
 
 describe 'nhc' do
-  on_supported_os({
-    :supported_os => [
-      {
-        "operatingsystem" => "CentOS",
-        "operatingsystemrelease" => ["6", "7"],
-      }
-    ]
-  }).each do |os, facts|
+  on_supported_os(supported_os: [
+                    {
+                      'operatingsystem' => 'CentOS',
+                      'operatingsystemrelease' => ['6', '7'],
+                    },
+                  ]).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
+      let(:source) { "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
 
-      it { should compile.with_all_deps }
-      it { should create_class('nhc') }
-      it { should contain_class('nhc::params') }
+      it { is_expected.to compile.with_all_deps }
+      it { is_expected.to create_class('nhc') }
+      it { is_expected.to contain_class('nhc::params') }
 
-      it { should contain_anchor('nhc::start').that_comes_before('Class[nhc::install]') }
-      it { should contain_class('nhc::install').that_comes_before('Class[nhc::config]') }
-      it { should contain_class('nhc::config').that_comes_before('Anchor[nhc::end]') }
-      it { should contain_anchor('nhc::end') }
+      it { is_expected.to contain_anchor('nhc::start').that_comes_before('Class[nhc::install]') }
+      it { is_expected.to contain_class('nhc::install').that_comes_before('Class[nhc::config]') }
+      it { is_expected.to contain_class('nhc::config').that_comes_before('Anchor[nhc::end]') }
+      it { is_expected.to contain_anchor('nhc::end') }
 
-      context "nhc::install" do
+      context 'nhc::install' do
         it do
-          should contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with({
-            :ensure   => 'installed',
-            :name     => "lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch",
-            :source   => "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
-            :provider => 'rpm',
-          })
+          is_expected.to contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'installed',
+                                                                                                                     name: "lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch",
+                                                                                                                     source: source,
+                                                                                                                     provider: 'rpm')
         end
 
         context 'when install_from_repo defined' do
-          let(:params) {{ :install_from_repo => 'local' }}
-          let(:pre_condition) {
+          let(:params) { { install_from_repo: 'local' } }
+          let(:pre_condition) do
             "yumrepo { 'local':
               descr     => 'local',
               baseurl   => 'file:///dne',
               gpgcheck  => '0',
               enabled   => '1',
             }"
-          }
+          end
 
           it do
-            should contain_package('lbnl-nhc').only_with({
-              :ensure   => "1.4.2-1.el#{facts[:operatingsystemmajrelease]}",
-              :name     => 'lbnl-nhc',
-              :provider => 'yum',
-              :require  => 'Yumrepo[local]'
-            })
+            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.2-1.el#{facts[:operatingsystemmajrelease]}",
+                                                                 name: 'lbnl-nhc',
+                                                                 provider: 'yum',
+                                                                 require: 'Yumrepo[local]')
           end
 
           context 'when package_ensure => "latest"' do
-            let(:params) {{ :install_from_repo => 'local', :package_ensure => "latest" }}
-            let(:pre_condition) {
+            let(:params) { { install_from_repo: 'local', package_ensure: 'latest' } }
+            let(:pre_condition) do
               "yumrepo { 'local':
                 descr     => 'local',
                 baseurl   => 'file:///dne',
                 gpgcheck  => '0',
                 enabled   => '1',
               }"
-            }
+            end
 
-            it { should contain_package('lbnl-nhc').with_ensure('latest') }
+            it { is_expected.to contain_package('lbnl-nhc').with_ensure('latest') }
           end
         end
 
         context 'when ensure => "absent"' do
-          let(:params) {{ :ensure => "absent" }}
-          it { should contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+          let(:params) { { ensure: 'absent' } }
+
+          it { is_expected.to contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
         end
       end
 
-      context "nhc::config" do
+      context 'nhc::config' do
         it do
-          should contain_file('/etc/nhc').with({
-            :ensure  => 'directory',
-            :path    => '/etc/nhc',
-            :owner   => 'root',
-            :group   => 'root',
-            :mode    => '0700',
-          })
+          is_expected.to contain_file('/etc/nhc').with(ensure: 'directory',
+                                                       path: '/etc/nhc',
+                                                       owner: 'root',
+                                                       group: 'root',
+                                                       mode: '0700')
         end
 
         it do
-          should contain_file('/etc/nhc/nhc.conf').with({
-            :ensure   => 'file',
-            :path     => '/etc/nhc/nhc.conf',
-            :owner    => 'root',
-            :group    => 'root',
-            :mode     => '0644',
-            :require  => 'File[/etc/nhc]',
-          })
+          is_expected.to contain_file('/etc/nhc/nhc.conf').with(ensure: 'file',
+                                                                path: '/etc/nhc/nhc.conf',
+                                                                owner: 'root',
+                                                                group: 'root',
+                                                                mode: '0644',
+                                                                require: 'File[/etc/nhc]')
         end
 
         it do
@@ -99,73 +91,69 @@ describe 'nhc' do
         end
 
         it do
-          should contain_file('/etc/nhc/scripts').with({
-            :ensure   => 'directory',
-            :path     => '/etc/nhc/scripts',
-            :owner    => 'root',
-            :group    => 'root',
-            :mode     => '0700',
-            :require  => 'File[/etc/nhc]',
-          })
+          is_expected.to contain_file('/etc/nhc/scripts').with(ensure: 'directory',
+                                                               path: '/etc/nhc/scripts',
+                                                               owner: 'root',
+                                                               group: 'root',
+                                                               mode: '0700',
+                                                               require: 'File[/etc/nhc]')
         end
 
         it do
-          should contain_file('/etc/sysconfig/nhc').with({
-            :ensure   => 'file',
-            :path     => '/etc/sysconfig/nhc',
-            :owner    => 'root',
-            :group    => 'root',
-            :mode     => '0644',
-          })
+          is_expected.to contain_file('/etc/sysconfig/nhc').with(ensure: 'file',
+                                                                 path: '/etc/sysconfig/nhc',
+                                                                 owner: 'root',
+                                                                 group: 'root',
+                                                                 mode: '0644')
         end
 
         it do
           verify_exact_contents(catalogue, '/etc/sysconfig/nhc', [
-            'CONFDIR=/etc/nhc',
-            'CONFFILE=/etc/nhc/nhc.conf',
-            'DETACHED_MODE=0',
-            'DETACHED_MODE_FAIL_NODATA=0',
-            'INCDIR=/etc/nhc/scripts',
-            'NAME=nhc',
-          ])
+                                  'CONFDIR=/etc/nhc',
+                                  'CONFFILE=/etc/nhc/nhc.conf',
+                                  'DETACHED_MODE=0',
+                                  'DETACHED_MODE_FAIL_NODATA=0',
+                                  'INCDIR=/etc/nhc/scripts',
+                                  'NAME=nhc',
+                                ])
         end
 
-        it 'should manage logrotate::rule[nhc]' do
-          should contain_logrotate__rule('nhc').with({
-            :ensure       => 'present',
-            :path         => '/var/log/nhc.log',
-            :missingok    => 'true',
-            :ifempty      => 'false',
-            :rotate_every => 'weekly',
-          })
+        it 'manages logrotate::rule[nhc]' do
+          is_expected.to contain_logrotate__rule('nhc').with(ensure: 'present',
+                                                             path: '/var/log/nhc.log',
+                                                             missingok: 'true',
+                                                             ifempty: 'false',
+                                                             rotate_every: 'weekly')
         end
 
         it 'File[/etc/logrotate.d/nhc] should have valid contents' do
           verify_contents(catalogue, '/etc/logrotate.d/nhc', [
-            '/var/log/nhc.log {',
-            '  missingok',
-            '  notifempty',
-            '  weekly',
-            '}',
-          ])
+                            '/var/log/nhc.log {',
+                            '  missingok',
+                            '  notifempty',
+                            '  weekly',
+                            '}',
+                          ])
         end
 
         context 'when detached_mode => true' do
-          let(:params) {{ :detached_mode => true }}
+          let(:params) { { detached_mode: true } }
+
           it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['DETACHED_MODE=1']) }
         end
 
         context 'when detached_mode_fail_nodata => true' do
-          let(:params) {{ :detached_mode_fail_nodata => true }}
+          let(:params) { { detached_mode_fail_nodata: true } }
+
           it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['DETACHED_MODE_FAIL_NODATA=1']) }
         end
 
         context 'when config_overrides is defined' do
           let(:params) do
             {
-              :config_overrides => {
+              config_overrides: {
                 'HOSTNAME'  => '$HOSTNAME_S',
-              }
+              },
             }
           end
 
@@ -175,65 +163,65 @@ describe 'nhc' do
         context 'when settings are defined' do
           let(:params) do
             {
-              :settings => {
+              settings: {
                 'HOSTNAME'  => '$HOSTNAME_S',
-              }
+              },
             }
           end
 
           it do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            pp content.split(/\n/)
+            pp content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
-              '* || export HOSTNAME=$HOSTNAME_S',
-            ])
+                                    '* || export HOSTNAME=$HOSTNAME_S',
+                                  ])
           end
         end
 
         context 'when host settings are defined' do
           let(:params) do
             {
-              :settings => {
+              settings: {
                 'HOSTNAME'  => '$HOSTNAME_S',
               },
-              :settings_host => {
-                'foo' => {'MARK_OFFLINE'  => false},
-              }
+              settings_host: {
+                'foo' => { 'MARK_OFFLINE' => false },
+              },
             }
           end
 
           it do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            pp content.split(/\n/)
+            pp content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
-              '* || export HOSTNAME=$HOSTNAME_S',
-              'foo || export MARK_OFFLINE=0',
-            ])
+                                    '* || export HOSTNAME=$HOSTNAME_S',
+                                    'foo || export MARK_OFFLINE=0',
+                                  ])
           end
         end
 
         context 'when checks defined as an Array' do
           let(:params) do
             {
-              :checks => [
+              checks: [
                 'check_fs_mount_rw -f /',
                 'check_fs_mount_rw -t tmpfs -f /tmp',
-              ]
+              ],
             }
           end
 
           it do
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
-              '* || check_fs_mount_rw -f /',
-              '* || check_fs_mount_rw -t tmpfs -f /tmp',
-            ])
+                                    '* || check_fs_mount_rw -f /',
+                                    '* || check_fs_mount_rw -t tmpfs -f /tmp',
+                                  ])
           end
         end
 
         context 'when checks defined as a Hash' do
           let(:params) do
             {
-              :checks => {
+              checks: {
                 '*' => [
                   'check_fs_mount_rw -f /',
                   'check_fs_mount_rw -t tmpfs -f /tmp',
@@ -242,29 +230,29 @@ describe 'nhc' do
                   'check_hw_physmem_free 1MB',
                 ],
                 'foo.baz' => 'check_hw_swap_free 1MB',
-              }
+              },
             }
           end
 
           it do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            pp content.split(/\n/)
+            pp content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
-              '* || check_fs_mount_rw -f /',
-              '* || check_fs_mount_rw -t tmpfs -f /tmp',
-              'foo.bar || check_hw_physmem_free 1MB',
-              'foo.baz || check_hw_swap_free 1MB',
-            ])
+                                    '* || check_fs_mount_rw -f /',
+                                    '* || check_fs_mount_rw -t tmpfs -f /tmp',
+                                    'foo.bar || check_hw_physmem_free 1MB',
+                                    'foo.baz || check_hw_swap_free 1MB',
+                                  ])
           end
         end
 
         context 'when ensure => "absent"' do
-          let(:params) {{ :ensure => "absent" }}
-          it { should contain_file('/etc/nhc').with_ensure('absent') }
-          it { should contain_file('/etc/nhc/nhc.conf').with_ensure('absent') }
-          it { should contain_file('/etc/nhc').with_ensure('absent') }
-          it { should contain_file('/etc/sysconfig/nhc').with_ensure('absent') }
-          it { should contain_logrotate__rule('nhc').with_ensure('absent') }
+          let(:params) { { ensure: 'absent' } }
+
+          it { is_expected.to contain_file('/etc/nhc').with_ensure('absent') }
+          it { is_expected.to contain_file('/etc/nhc/nhc.conf').with_ensure('absent') }
+          it { is_expected.to contain_file('/etc/sysconfig/nhc').with_ensure('absent') }
+          it { is_expected.to contain_logrotate__rule('nhc').with_ensure('absent') }
         end
       end
     end # end os context

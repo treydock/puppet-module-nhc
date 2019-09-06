@@ -2,20 +2,20 @@ require 'spec_helper_acceptance'
 
 describe 'nhc class:' do
   context 'default parameters' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'nhc': }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     it_behaves_like 'nhc-base'
 
     describe file('/etc/nhc/nhc.conf') do
       it do
-        content = subject.content.split(/\n/).reject { |c| c =~ /(^#|^$)/ }
+        content = subject.content.split(%r{\n}).reject { |c| c =~ %r{(^#|^$)} } # rubocop:disable RSpec/NamedSubject
         expected = []
         expect(content).to match_array(expected)
       end
@@ -23,8 +23,8 @@ describe 'nhc class:' do
   end
 
   context 'when nhc_settings and nhc_checks defined' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'nhc':
         settings => {
           'MARK_OFFLINE' => false,
@@ -36,15 +36,15 @@ describe 'nhc class:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     it_behaves_like 'nhc-base'
 
     describe file('/etc/nhc/nhc.conf') do
       it do
-        content = subject.content.split(/\n/).reject { |c| c =~ /(^#|^$)/ }
+        content = subject.content.split(%r{\n}).reject { |c| c =~ %r{(^#|^$)} } # rubocop:disable RSpec/NamedSubject
         expected = [
           '* || export MARK_OFFLINE=0',
           '* || check_fs_mount_rw -f /',
@@ -56,7 +56,7 @@ describe 'nhc class:' do
 
     describe file('/etc/sysconfig/nhc') do
       it do
-        content = subject.content.split(/\n/).reject { |c| c =~ /(^#|^$)/ }
+        content = subject.content.split(%r{\n}).reject { |c| c =~ %r{(^#|^$)} } # rubocop:disable RSpec/NamedSubject
         expected = [
           'CONFDIR=/etc/nhc',
           'CONFFILE=/etc/nhc/nhc.conf',
