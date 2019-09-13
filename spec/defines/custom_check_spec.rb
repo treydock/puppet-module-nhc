@@ -1,12 +1,7 @@
 require 'spec_helper'
 
 describe 'nhc::custom_check' do
-  on_supported_os(supported_os: [
-                    {
-                      'operatingsystem' => 'CentOS',
-                      'operatingsystemrelease' => ['6', '7'],
-                    },
-                  ]).each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')

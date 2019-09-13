@@ -1,12 +1,7 @@
 require 'spec_helper'
 
 describe 'nhc' do
-  on_supported_os(supported_os: [
-                    {
-                      'operatingsystem' => 'CentOS',
-                      'operatingsystemrelease' => ['6', '7'],
-                    },
-                  ]).each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:source) { "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
@@ -171,7 +166,7 @@ describe 'nhc' do
 
           it do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            pp content.split(%r{\n})
+            puts content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || export HOSTNAME=$HOSTNAME_S',
                                   ])
@@ -192,7 +187,7 @@ describe 'nhc' do
 
           it do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            pp content.split(%r{\n})
+            puts content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || export HOSTNAME=$HOSTNAME_S',
                                     'foo || export MARK_OFFLINE=0',
@@ -236,7 +231,7 @@ describe 'nhc' do
 
           it do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            pp content.split(%r{\n})
+            puts content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || check_fs_mount_rw -f /',
                                     '* || check_fs_mount_rw -t tmpfs -f /tmp',
