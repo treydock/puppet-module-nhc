@@ -1,7 +1,30 @@
-# == Class: nhc
+# @summary Manage Node Health Check (NHC)
 #
-# See README.md for more details.
+# @example
+#   include ::nhc
 #
+# @param ensure
+# @param package_ensure
+# @param package_version
+# @param package_release
+# @param package_url
+# @param package_name
+# @param install_from_repo
+# @param checks
+# @param settings
+# @param settings_host
+# @param config_overrides
+# @param detached_mode
+# @param detached_mode_fail_nodata
+# @param program_name
+# @param conf_dir
+# @param conf_file
+# @param include_dir
+# @param log_file
+# @param sysconfig_path
+# @param manage_logrotate
+# @param log_rotate_every
+# @param custom_checks
 class nhc (
   Enum['present', 'absent'] $ensure   = 'present',
 
