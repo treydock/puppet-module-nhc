@@ -4,29 +4,57 @@
 #   include ::nhc
 #
 # @param ensure
+#   State of NHC resources
 # @param install_method
+#   The method used to install NHC.
+#   Using `repo` will require the `Yumrepo` resource if `repo_name` is defined.
 # @param package_ensure
+#   The ensure state of package if using `install_method` of `repo` or `package`.
 # @param version
+#   The version of NHC to install.
 # @param package_release
+#   The package release NHC to install. Not used if `install_method` is `source`.
 # @param install_source
+#   The source of install.
+#   For `install_method` of `package` this is URL to package
+#   For `install_method` of `source` this is git source URL
 # @param package_name
+#   Name of the NHC package, not used with `install_method` of `source`.
 # @param repo_name
+#   The repo name for NHC, only used with `install_method` of `repo`.
 # @param source_dependencies
+#   The package dependencies for source install.
 # @param checks
+#   NHC checks for nhc.conf
 # @param settings
+#   Settings to add to nhc.conf
 # @param settings_host
+#   Host specific settings for nhc.conf
 # @param config_overrides
+#   Settings to add to /etc/sysconfig/nhc
 # @param detached_mode
+#   Value for DETACHED_MODE
 # @param detached_mode_fail_nodata
+#   Value for DETACHED_MODE_FAIL_NODATA
 # @param program_name
+#   Value for NAME
 # @param conf_dir
+#   Path to NHC configuration directry
 # @param conf_file
+#   Path for this configuration file
 # @param include_dir
+#   Path to directory containing NHC checks
 # @param log_file
+#   Path to log file
 # @param sysconfig_path
+#   Path to sysconfig file
 # @param manage_logrotate
+#   Boolean that sets if logrotate resources should be managed
 # @param log_rotate_every
+#   Frequency of logrotation
 # @param custom_checks
+#   Hash passed to `nhc::custom_check`
+#
 class nhc (
   Enum['present', 'absent'] $ensure   = 'present',
 

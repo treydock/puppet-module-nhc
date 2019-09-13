@@ -2,22 +2,39 @@
 #
 # @example Define additional NHC configuration
 #   nhc::conf { 'nhc-cron':
-#     
+#     settings          => { 'NHC_RM' => 'slurm' },
+#     settings_host     => { 'c0001' => { 'FOO' => 'bar' }},
+#     checks            => { '*' => ['check_fs_free /tmp 10%'] },
+#     config_overrides  => { 'HOSTNAME' => '"$HOSTNAME_S"' },
 #   }
 # 
 # @param ensure
+#   State of nhc::conf
 # @param checks
+#   Checks to add to the configuration file
 # @param settings
+#   Settings to add to the configuration file
 # @param settings_host
+#   Settings specific to a hosts to add to the configuration file
 # @param config_overrides
+#   Overrides for configuration in /etc/sysconfig/$name
 # @param detached_mode
+#   Value for DETACHED_MODE
 # @param detached_mode_fail_nodata
+#   Value for DETACHED_MODE_FAIL_NODATA
 # @param program_name
+#   Value for NAME
 # @param conf_dir
+#   Path to NHC configuration directry. Defaults to `/etc/nhc`
 # @param conf_file
+#   Path for this configuration file. Defaults to `/etc/nhc/$name.conf`
 # @param include_dir
+#   Path to directory containing NHC checks. Defaults to `/etc/nhc/scripts`
 # @param sysconfig_path
+#   Path to sysconfig file. Defaults to `/etc/sysconfig/$name`
 # @param log_file
+#   Path to log file. Defaults to `/var/log/$name.log`
+#
 define nhc::conf (
   Enum['present', 'absent'] $ensure               = 'present',
   Variant[Hash, Array] $checks                    = [],
