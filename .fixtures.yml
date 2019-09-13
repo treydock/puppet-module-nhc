@@ -8,5 +8,7 @@ fixtures:
       ref: 1.0.1
       puppet_version: ">= 6.0.0"
     logrotate: git://github.com/voxpupuli/puppet-logrotate.git
+    yum:
+      repo: https://github.com/voxpupuli/puppet-yum.git
   symlinks:
     nhc: "#{source_dir}"
