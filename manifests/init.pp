@@ -4,12 +4,14 @@
 #   include ::nhc
 #
 # @param ensure
+# @param install_method
 # @param package_ensure
-# @param package_version
+# @param version
 # @param package_release
-# @param package_url
+# @param install_source
 # @param package_name
-# @param install_from_repo
+# @param repo_name
+# @param source_dependencies
 # @param checks
 # @param settings
 # @param settings_host
@@ -29,13 +31,15 @@ class nhc (
   Enum['present', 'absent'] $ensure   = 'present',
 
   # packages
+  Enum['repo','package','source'] $install_method = 'package',
   Optional[String] $package_ensure      = undef,
-  Optional[String] $package_version     = '1.4.2',
+  Optional[String] $version     = '1.4.2',
   Optional[String] $package_release     = '1',
   Optional[Variant[Stdlib::HTTPUrl,Stdlib::HTTPSUrl]]
-    $package_url                        = undef,
+    $install_source                     = undef,
   Optional[String] $package_name        = undef,
-  Optional[String] $install_from_repo   = undef,
+  Optional[String] $repo_name           = undef,
+  Array $source_dependencies            = ['automake','make'],
 
   # NHC configuration
   Variant[Hash, Array] $checks          = [],
@@ -62,8 +66,8 @@ class nhc (
 
   case $ensure {
     'present': {
-      if $install_from_repo {
-        $_package_ensure  = pick($package_ensure, "${package_version}-${package_release}.el${facts['os']['release']['major']}")
+      if $install_method == 'repo' {
+        $_package_ensure  = pick($package_ensure, "${version}-${package_release}.el${facts['os']['release']['major']}")
       } else {
         $_package_ensure  = pick($package_ensure, 'installed')
       }
@@ -80,16 +84,22 @@ class nhc (
     default: {}
   }
 
-  if $install_from_repo {
-    $_package_require             = Yumrepo[$install_from_repo]
-    $_package_source              = undef
+  if $install_method == 'repo' {
+    if $repo_name {
+      $_package_require = Yumrepo[$repo_name]
+    } else {
+      $_package_require = undef
+    }
+    $_install_source              = undef
     $_package_name                = pick($package_name, 'lbnl-nhc')
-  } else {
-    $_default_package_name   = "lbnl-nhc-${package_version}-${package_release}.el${facts['os']['release']['major']}.noarch"
-    $_default_package_url    = "https://github.com/mej/nhc/releases/download/${package_version}/${_default_package_name}.rpm"
+  } elsif $install_method == 'package' {
+    $_default_package_name   = "lbnl-nhc-${version}-${package_release}.el${facts['os']['release']['major']}.noarch"
+    $_default_install_source = "https://github.com/mej/nhc/releases/download/${version}/${_default_package_name}.rpm"
     $_package_require             = undef
-    $_package_source = pick($package_url, $_default_package_url)
+    $_install_source = pick($install_source, $_default_install_source)
     $_package_name = pick($package_name, $_default_package_name)
+  } else {
+    $_install_source = pick($install_source, 'https://github.com/mej/nhc.git')
   }
 
   $default_configs = {

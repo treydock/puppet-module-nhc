@@ -9,7 +9,7 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y wget which cronie iproute'
+      - 'yum install -y wget which cronie iproute git'
     docker_container_name: 'nhc-el6'
 CONFIG:
   log_level: debug

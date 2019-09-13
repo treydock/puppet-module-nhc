@@ -15,6 +15,12 @@
   delete: true
 appveyor.yml:
   delete: true
+spec/acceptance/nodesets/centos-6.yml:
+  packages:
+    - git
+spec/acceptance/nodesets/centos-7.yml:
+  packages:
+    - git
 spec/acceptance/nodesets/debian-8.yml:
   delete: true
 spec/acceptance/nodesets/debian-9.yml:
