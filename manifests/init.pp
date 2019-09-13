@@ -44,21 +44,26 @@ class nhc (
   Hash $config_overrides                = {},
   Boolean $detached_mode                = false,
   Boolean $detached_mode_fail_nodata    = false,
-  String $program_name                  = $nhc::params::program_name,
-  Stdlib::Absolutepath $conf_dir        = $nhc::params::conf_dir,
-  Stdlib::Absolutepath $conf_file       = $nhc::params::conf_file,
-  Stdlib::Absolutepath $include_dir     = $nhc::params::include_dir,
-  Stdlib::Absolutepath $log_file        = $nhc::params::log_file,
-  Stdlib::Absolutepath $sysconfig_path  = $nhc::params::sysconfig_path,
+  String $program_name                  = 'nhc',
+  Stdlib::Absolutepath $conf_dir        = '/etc/nhc',
+  Stdlib::Absolutepath $conf_file       = '/etc/nhc/nhc.conf',
+  Stdlib::Absolutepath $include_dir     = '/etc/nhc/scripts',
+  Stdlib::Absolutepath $log_file        = '/var/log/nhc.log',
+  Stdlib::Absolutepath $sysconfig_path  = '/etc/sysconfig/nhc',
   Boolean $manage_logrotate             = true,
   String $log_rotate_every              = 'weekly',
   Hash $custom_checks                   = {},
-) inherits nhc::params {
+) {
+
+  $osfamily = dig($facts, 'os', 'family')
+  if ! ($osfamily in ['RedHat']) {
+    fail("Unsupported osfamily: ${osfamily}, module ${module_name} only supports RedHat")
+  }
 
   case $ensure {
     'present': {
       if $install_from_repo {
-        $_package_ensure  = pick($package_ensure, "${package_version}-${package_release}.el${::operatingsystemmajrelease}")
+        $_package_ensure  = pick($package_ensure, "${package_version}-${package_release}.el${facts['os']['release']['major']}")
       } else {
         $_package_ensure  = pick($package_ensure, 'installed')
       }
@@ -78,16 +83,14 @@ class nhc (
   if $install_from_repo {
     $_package_require             = Yumrepo[$install_from_repo]
     $_package_source              = undef
-    $_package_name                = 'lbnl-nhc'
+    $_package_name                = pick($package_name, 'lbnl-nhc')
     $_package_provider            = 'yum'
   } else {
+    $_default_package_name   = "lbnl-nhc-${package_version}-${package_release}.el${facts['os']['release']['major']}.noarch"
+    $_default_package_url    = "https://github.com/mej/nhc/releases/download/${package_version}/${_default_package_name}.rpm"
     $_package_require             = undef
-    $_package_url_version         = regsubst($nhc::params::package_url, '%VERSION%', $package_version, 'G')
-    $_package_url_version_release = regsubst($_package_url_version, '%RELEASE%', $package_release)
-    $_package_source              = pick($package_url, $_package_url_version_release)
-    $_package_name_version        = regsubst($nhc::params::package_name, '%VERSION%', $package_version, 'G')
-    $_package_name_version_release= regsubst($_package_name_version, '%RELEASE%', $package_release)
-    $_package_name                = pick($package_name, $_package_name_version_release)
+    $_package_source = pick($package_url, $_default_package_url)
+    $_package_name = pick($package_name, $_default_package_name)
     $_package_provider            = 'rpm'
   }
 
@@ -102,14 +105,14 @@ class nhc (
 
   $configs = merge($default_configs, $config_overrides)
 
-  include ::nhc::install
-  include ::nhc::config
+  contain ::nhc::install
+  contain ::nhc::config
 
-  anchor { 'nhc::start': }
-  -> Class['nhc::install']
+  Class['nhc::install']
   -> Class['nhc::config']
-  -> anchor { 'nhc::end': }
 
-  create_resources('nhc::custom_check', $custom_checks)
+  $custom_checks.each |$name, $params| {
+    ::nhc::custom_check { $name: * => $params }
+  }
 
 }

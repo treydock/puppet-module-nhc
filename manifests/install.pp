@@ -1,14 +1,13 @@
 # private class
 class nhc::install {
-  if $caller_module_name != $module_name {
-    fail("Use of private class ${name} by ${caller_module_name}")
-  }
+  assert_private()
 
-  package { $nhc::_package_name:
-    ensure   => $nhc::_package_ensure,
-    source   => $nhc::_package_source,
-    provider => $nhc::_package_provider,
-    require  => $nhc::_package_require,
+  package { 'lbnl-nhc':
+    ensure   => $::nhc::_package_ensure,
+    name     => $::nhc::_package_name,
+    source   => $::nhc::_package_source,
+    provider => $::nhc::_package_provider,
+    require  => $::nhc::_package_require,
   }
 
 }

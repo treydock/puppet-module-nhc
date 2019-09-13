@@ -1,5 +1,9 @@
 # @summary Manage NHC configurations
 #
+# @example Define additional NHC configuration
+#   nhc::conf { 'nhc-cron':
+#     
+#   }
 # 
 # @param ensure
 # @param checks
@@ -42,11 +46,11 @@ define nhc::conf (
     default: {}
   }
 
-  require '::nhc'
+  include ::nhc
 
-  $_conf_dir = pick($conf_dir, $nhc::conf_dir)
+  $_conf_dir = pick($conf_dir, $::nhc::conf_dir)
   $_conf_file = pick($conf_file, "${_conf_dir}/${name}.conf")
-  $_include_dir = pick($include_dir, $nhc::include_dir)
+  $_include_dir = pick($include_dir, $::nhc::include_dir)
   $_sysconfig_path = pick($sysconfig_path, "/etc/sysconfig/${name}")
 
   $default_configs = {
@@ -60,36 +64,39 @@ define nhc::conf (
 
   $configs = merge($default_configs, $config_overrides)
 
-  if $_conf_dir != $nhc::conf_dir {
+  if $_conf_dir != $::nhc::conf_dir {
     file { $_conf_dir:
-      ensure => $directory_ensure,
-      force  => $_directory_force,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0700',
+      ensure  => $directory_ensure,
+      force   => $_directory_force,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0700',
+      require => Package['lbnl-nhc'],
     }
   }
 
-  if $_conf_file != $nhc::conf_file {
+  if $_conf_file != $::nhc::conf_file {
     file { $_conf_file:
       ensure  => $file_ensure,
       content => template('nhc/nhc.conf.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
+      require => File[$_conf_dir],
     }
   }
 
-  if $_include_dir != $nhc::include_dir {
+  if $_include_dir != $::nhc::include_dir {
     file { $_include_dir:
-      ensure => $directory_ensure,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0700',
+      ensure  => $directory_ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0700',
+      require => Package['lbnl-nhc'],
     }
   }
 
-  if $_sysconfig_path != $nhc::sysconfig_path {
+  if $_sysconfig_path != $::nhc::sysconfig_path {
     file { $_sysconfig_path:
       ensure  => $file_ensure,
       content => template('nhc/sysconfig.erb'),
