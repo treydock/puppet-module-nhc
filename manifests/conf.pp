@@ -1,5 +1,18 @@
-# == Define: nhc::conf
+# @summary Manage NHC configurations
 #
+# 
+# @param ensure
+# @param checks
+# @param settings
+# @param settings_host
+# @param config_overrides
+# @param detached_mode
+# @param detached_mode_fail_nodata
+# @param program_name
+# @param conf_dir
+# @param conf_file
+# @param include_dir
+# @param sysconfig_path
 define nhc::conf (
   Enum['present', 'absent'] $ensure               = 'present',
   Variant[Hash, Array] $checks                    = [],

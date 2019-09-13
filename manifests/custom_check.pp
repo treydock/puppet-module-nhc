@@ -1,5 +1,7 @@
-# == Define: nhc::custom_check
+# @summary Add NHC custom check file
 #
+#
+# @param source
 define nhc::custom_check (
   Optional[String] $source = undef,
 ) {
