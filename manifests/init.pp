@@ -84,14 +84,12 @@ class nhc (
     $_package_require             = Yumrepo[$install_from_repo]
     $_package_source              = undef
     $_package_name                = pick($package_name, 'lbnl-nhc')
-    $_package_provider            = 'yum'
   } else {
     $_default_package_name   = "lbnl-nhc-${package_version}-${package_release}.el${facts['os']['release']['major']}.noarch"
     $_default_package_url    = "https://github.com/mej/nhc/releases/download/${package_version}/${_default_package_name}.rpm"
     $_package_require             = undef
     $_package_source = pick($package_url, $_default_package_url)
     $_package_name = pick($package_name, $_default_package_name)
-    $_package_provider            = 'rpm'
   }
 
   $default_configs = {

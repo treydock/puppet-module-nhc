@@ -14,10 +14,7 @@ describe 'nhc' do
 
       context 'nhc::install' do
         it do
-          is_expected.to contain_package('lbnl-nhc').only_with(ensure: 'installed',
-                                                               name: "lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch",
-                                                               source: source,
-                                                               provider: 'rpm')
+          is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
         end
 
         context 'when install_from_repo defined' do
@@ -34,7 +31,6 @@ describe 'nhc' do
           it do
             is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.2-1.el#{facts[:operatingsystemmajrelease]}",
                                                                  name: 'lbnl-nhc',
-                                                                 provider: 'yum',
                                                                  require: 'Yumrepo[local]')
           end
 
@@ -56,7 +52,7 @@ describe 'nhc' do
         context 'when ensure => "absent"' do
           let(:params) { { ensure: 'absent' } }
 
-          it { is_expected.to contain_package('lbnl-nhc').with_ensure('absent') }
+          it { is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
         end
       end
 
