@@ -46,7 +46,8 @@ describe 'nhc class:' do
       }
 
       class { 'nhc':
-        install_from_repo => 'nhc',
+        install_method => 'repo',
+        repo_name => 'nhc',
       }
       EOS
 

@@ -17,8 +17,8 @@ describe 'nhc' do
           is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
         end
 
-        context 'when install_from_repo defined' do
-          let(:params) { { install_from_repo: 'local' } }
+        context 'when install_method => repo' do
+          let(:params) { { install_method: 'repo', repo_name: 'local' } }
           let(:pre_condition) do
             "yumrepo { 'local':
               descr     => 'local',
@@ -35,18 +35,16 @@ describe 'nhc' do
           end
 
           context 'when package_ensure => "latest"' do
-            let(:params) { { install_from_repo: 'local', package_ensure: 'latest' } }
-            let(:pre_condition) do
-              "yumrepo { 'local':
-                descr     => 'local',
-                baseurl   => 'file:///dne',
-                gpgcheck  => '0',
-                enabled   => '1',
-              }"
-            end
+            let(:params) { { install_method: 'repo', repo_name: 'local', package_ensure: 'latest' } }
 
             it { is_expected.to contain_package('lbnl-nhc').with_ensure('latest') }
           end
+        end
+
+        context 'when install_method => source' do
+          let(:params) { { install_method: 'source' } }
+
+          it { is_expected.to compile.with_all_deps }
         end
 
         context 'when ensure => "absent"' do
