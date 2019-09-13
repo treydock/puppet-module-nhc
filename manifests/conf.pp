@@ -17,6 +17,7 @@
 # @param conf_file
 # @param include_dir
 # @param sysconfig_path
+# @param log_file
 define nhc::conf (
   Enum['present', 'absent'] $ensure               = 'present',
   Variant[Hash, Array] $checks                    = [],
@@ -30,6 +31,7 @@ define nhc::conf (
   Optional[Stdlib::Absolutepath] $conf_file       = undef,
   Optional[Stdlib::Absolutepath] $include_dir     = undef,
   Optional[Stdlib::Absolutepath] $sysconfig_path  = undef,
+  Optional[Stdlib::Absolutepath] $log_file        = undef,
 ) {
 
   case $ensure {
@@ -52,6 +54,7 @@ define nhc::conf (
   $_conf_file = pick($conf_file, "${_conf_dir}/${name}.conf")
   $_include_dir = pick($include_dir, $::nhc::include_dir)
   $_sysconfig_path = pick($sysconfig_path, "/etc/sysconfig/${name}")
+  $_log_file = pick($log_file, "/var/log/${name}.log")
 
   $default_configs = {
     'CONFDIR'                   => $_conf_dir,
@@ -59,6 +62,7 @@ define nhc::conf (
     'DETACHED_MODE'             => $detached_mode,
     'DETACHED_MODE_FAIL_NODATA' => $detached_mode_fail_nodata,
     'INCDIR'                    => $_include_dir,
+    'LOGFILE'                   => $_log_file,
     'NAME'                      => $program_name,
   }
 

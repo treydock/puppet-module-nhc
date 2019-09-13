@@ -63,6 +63,7 @@ describe 'nhc class:' do
           'DETACHED_MODE=0',
           'DETACHED_MODE_FAIL_NODATA=0',
           'INCDIR=/etc/nhc/scripts',
+          'LOGFILE=/var/log/nhc.log',
           'NAME=nhc',
         ]
         expect(content).to match_array(expected)
