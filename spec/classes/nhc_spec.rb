@@ -8,19 +8,16 @@ describe 'nhc' do
 
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to create_class('nhc') }
-      it { is_expected.to contain_class('nhc::params') }
 
-      it { is_expected.to contain_anchor('nhc::start').that_comes_before('Class[nhc::install]') }
       it { is_expected.to contain_class('nhc::install').that_comes_before('Class[nhc::config]') }
-      it { is_expected.to contain_class('nhc::config').that_comes_before('Anchor[nhc::end]') }
-      it { is_expected.to contain_anchor('nhc::end') }
+      it { is_expected.to contain_class('nhc::config') }
 
       context 'nhc::install' do
         it do
-          is_expected.to contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'installed',
-                                                                                                                     name: "lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch",
-                                                                                                                     source: source,
-                                                                                                                     provider: 'rpm')
+          is_expected.to contain_package('lbnl-nhc').only_with(ensure: 'installed',
+                                                               name: "lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch",
+                                                               source: source,
+                                                               provider: 'rpm')
         end
 
         context 'when install_from_repo defined' do
@@ -59,7 +56,7 @@ describe 'nhc' do
         context 'when ensure => "absent"' do
           let(:params) { { ensure: 'absent' } }
 
-          it { is_expected.to contain_package("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+          it { is_expected.to contain_package('lbnl-nhc').with_ensure('absent') }
         end
       end
 
