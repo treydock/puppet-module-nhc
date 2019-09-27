@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Defined Type: nhc::conf
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_defined_types::nhc::conf";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (n)</a> &raquo;
+    <span class='title'><span class='object_link'>Defined Types</span></span>
+     &raquo; 
+    <span class="title">nhc::conf</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Defined Type: nhc::conf</h1>
+<div class="box_info">
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/conf.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  Manage NHC configurations
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Define additional NHC configuration</p>
+</div></p>
+      
+      <pre class="example code"><code>nhc::conf { &#39;nhc-cron&#39;:
+  settings          =&gt; { &#39;NHC_RM&#39; =&gt; &#39;slurm&#39; },
+  settings_host     =&gt; { &#39;c0001&#39; =&gt; { &#39;FOO&#39; =&gt; &#39;bar&#39; }},
+  checks            =&gt; { &#39;*&#39; =&gt; [&#39;check_fs_free /tmp 10%&#39;] },
+  config_overrides  =&gt; { &#39;HOSTNAME&#39; =&gt; &#39;&quot;$HOSTNAME_S&quot;&#39; },
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present', 'absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>State of nhc::conf</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>checks</span>
+      
+      
+        <span class='type'>(<tt>Variant[Hash, Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Checks to add to the configuration file</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>settings</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Settings to add to the configuration file</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>settings_host</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Settings specific to a hosts to add to the configuration file</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>config_overrides</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Overrides for configuration in /etc/sysconfig/$name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>detached_mode</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Value for DETACHED_MODE</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>detached_mode_fail_nodata</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Value for DETACHED_MODE_FAIL_NODATA</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>program_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Value for NAME</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_dir</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to NHC configuration directry. Defaults to <code>/etc/nhc</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path for this configuration file. Defaults to
+<code>/etc/nhc/$name.conf</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>include_dir</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to directory containing NHC checks. Defaults to
+<code>/etc/nhc/scripts</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sysconfig_path</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to sysconfig file. Defaults to <code>/etc/sysconfig/$name</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to log file. Defaults to <code>/var/log/$name.log</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/conf.pp', line 38</span>
+
+define nhc::conf (
+  Enum[&#39;present&#39;, &#39;absent&#39;] $ensure               = &#39;present&#39;,
+  Variant[Hash, Array] $checks                    = [],
+  Hash $settings                                  = {},
+  Hash $settings_host                             = {},
+  Hash $config_overrides                          = {},
+  Boolean $detached_mode                          = false,
+  Boolean $detached_mode_fail_nodata              = false,
+  String $program_name                            = $name,
+  Optional[Stdlib::Absolutepath] $conf_dir        = undef,
+  Optional[Stdlib::Absolutepath] $conf_file       = undef,
+  Optional[Stdlib::Absolutepath] $include_dir     = undef,
+  Optional[Stdlib::Absolutepath] $sysconfig_path  = undef,
+  Optional[Stdlib::Absolutepath] $log_file        = undef,
+) {
+
+  case $ensure {
+    &#39;present&#39;: {
+      $directory_ensure = &#39;directory&#39;
+      $_directory_force = undef
+      $file_ensure      = &#39;file&#39;
+    }
+    &#39;absent&#39;: {
+      $directory_ensure = &#39;absent&#39;
+      $_directory_force = true
+      $file_ensure      = &#39;absent&#39;
+    }
+    default: {}
+  }
+
+  include ::nhc
+
+  $_conf_dir = pick($conf_dir, $::nhc::conf_dir)
+  $_conf_file = pick($conf_file, &quot;${_conf_dir}/${name}.conf&quot;)
+  $_include_dir = pick($include_dir, $::nhc::include_dir)
+  $_sysconfig_path = pick($sysconfig_path, &quot;/etc/sysconfig/${name}&quot;)
+  $_log_file = pick($log_file, &quot;/var/log/${name}.log&quot;)
+
+  $default_configs = {
+    &#39;CONFDIR&#39;                   =&gt; $_conf_dir,
+    &#39;CONFFILE&#39;                  =&gt; $_conf_file,
+    &#39;DETACHED_MODE&#39;             =&gt; $detached_mode,
+    &#39;DETACHED_MODE_FAIL_NODATA&#39; =&gt; $detached_mode_fail_nodata,
+    &#39;INCDIR&#39;                    =&gt; $_include_dir,
+    &#39;LOGFILE&#39;                   =&gt; $_log_file,
+    &#39;NAME&#39;                      =&gt; $program_name,
+  }
+
+  $configs = merge($default_configs, $config_overrides)
+
+  if $_conf_dir != $::nhc::conf_dir {
+    file { $_conf_dir:
+      ensure  =&gt; $directory_ensure,
+      force   =&gt; $_directory_force,
+      owner   =&gt; &#39;root&#39;,
+      group   =&gt; &#39;root&#39;,
+      mode    =&gt; &#39;0700&#39;,
+      require =&gt; Package[&#39;lbnl-nhc&#39;],
+    }
+  }
+
+  if $_conf_file != $::nhc::conf_file {
+    file { $_conf_file:
+      ensure  =&gt; $file_ensure,
+      content =&gt; template(&#39;nhc/nhc.conf.erb&#39;),
+      owner   =&gt; &#39;root&#39;,
+      group   =&gt; &#39;root&#39;,
+      mode    =&gt; &#39;0644&#39;,
+      require =&gt; File[$_conf_dir],
+    }
+  }
+
+  if $_include_dir != $::nhc::include_dir {
+    file { $_include_dir:
+      ensure  =&gt; $directory_ensure,
+      owner   =&gt; &#39;root&#39;,
+      group   =&gt; &#39;root&#39;,
+      mode    =&gt; &#39;0700&#39;,
+      require =&gt; Package[&#39;lbnl-nhc&#39;],
+    }
+  }
+
+  if $_sysconfig_path != $::nhc::sysconfig_path {
+    file { $_sysconfig_path:
+      ensure  =&gt; $file_ensure,
+      content =&gt; template(&#39;nhc/sysconfig.erb&#39;),
+      owner   =&gt; &#39;root&#39;,
+      group   =&gt; &#39;root&#39;,
+      mode    =&gt; &#39;0644&#39;,
+    }
+  }
+
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
