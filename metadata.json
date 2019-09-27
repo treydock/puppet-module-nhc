@@ -1,10 +1,10 @@
 {
   "name": "treydock-nhc",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "treydock",
   "summary": "NHC Puppet module",
   "license": "Apache-2.0",
-  "source": "git://github.com/treydock/puppet-module-nhc.git",
+  "source": "https://github.com/treydock/puppet-module-nhc",
   "project_page": "https://github.com/treydock/puppet-module-nhc",
   "issues_url": "https://github.com/treydock/puppet-module-nhc/issues",
   "dependencies": [
@@ -53,6 +53,11 @@
       "name": "puppet",
       "version_requirement": ">= 5.0.0 < 7.0.0"
     }
+  ],
+  "tags": [
+    "monitoring",
+    "hpc",
+    "batch"
   ],
   "pdk-version": "1.13.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
