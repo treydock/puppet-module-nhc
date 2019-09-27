@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.25.0 <5.0.0"
+      "version_requirement": ">= 4.25.0 <6.0.0"
     },
     {
       "name": "puppetlabs/vcsrepo",
@@ -18,7 +18,7 @@
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 2.0.0 < 4.0.0"
+      "version_requirement": ">= 2.0.0 < 5.0.0"
     },
     {
       "name": "puppet/yum",
@@ -51,7 +51,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 6.0.0"
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     }
   ],
   "pdk-version": "1.13.0",
