@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.0.1](https://github.com/treydock/puppet-module-nhc/tree/v2.0.1) (2019-10-08)
+
+[Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v2.0.0...v2.0.1)
+
+### Fixed
+
+- Remove LOGFILE from sysconfig files by default as it prevents log redirection to stdout [\#13](https://github.com/treydock/puppet-module-nhc/pull/13) ([treydock](https://github.com/treydock))
+
 ## [v2.0.0](https://github.com/treydock/puppet-module-nhc/tree/v2.0.0) (2019-09-27)
 
 [Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/1.1.0...v2.0.0)
