@@ -136,7 +136,6 @@ class nhc (
     'DETACHED_MODE'             => $detached_mode,
     'DETACHED_MODE_FAIL_NODATA' => $detached_mode_fail_nodata,
     'INCDIR'                    => $include_dir,
-    'LOGFILE'                   => $log_file,
     'NAME'                      => $program_name,
   }
 

@@ -79,7 +79,6 @@ define nhc::conf (
     'DETACHED_MODE'             => $detached_mode,
     'DETACHED_MODE_FAIL_NODATA' => $detached_mode_fail_nodata,
     'INCDIR'                    => $_include_dir,
-    'LOGFILE'                   => $_log_file,
     'NAME'                      => $program_name,
   }
 
