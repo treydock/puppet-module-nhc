@@ -100,7 +100,6 @@ describe 'nhc' do
                                   'DETACHED_MODE=0',
                                   'DETACHED_MODE_FAIL_NODATA=0',
                                   'INCDIR=/etc/nhc/scripts',
-                                  'LOGFILE=/var/log/nhc.log',
                                   'NAME=nhc',
                                 ])
         end
