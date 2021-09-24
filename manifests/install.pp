@@ -16,8 +16,10 @@ class nhc::install {
     }
   } else {
     if $nhc::ensure == 'present' {
+      $src_dir = '/usr/local/src/nhc'
+      $sysconfdir = dirname($nhc::conf_dir)
       ensure_packages($::nhc::source_dependencies)
-      vcsrepo { '/usr/local/src/nhc':
+      vcsrepo { $src_dir:
         ensure   => 'latest',
         provider => 'git',
         source   => $::nhc::_install_source,
@@ -25,13 +27,29 @@ class nhc::install {
         require  => Package[$::nhc::source_dependencies],
         notify   => Exec['install-nhc'],
       }
-      $_autogen = '/usr/local/src/nhc/autogen.sh'
-      $_configure = "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=${nhc::libexec_dir}"
-      $_install = 'make install'
+      file { "${src_dir}/puppet-install.sh":
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => join([
+          '#!/bin/bash',
+          "cd ${src_dir}",
+          './autogen.sh',
+          "./configure --prefix=/usr --sysconfdir=${sysconfdir} --libexecdir=${nhc::libexec_dir}",
+          '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+          'make install',
+          '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+          'exit 0',
+          '',
+        ], "\n"),
+        notify  => Exec['install-nhc'],
+        require => Vcsrepo[$src_dir],
+      }
       exec { 'install-nhc':
         path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-        command     => "${_autogen} && ${_configure} && ${_install}",
-        cwd         => '/usr/local/src/nhc',
+        command     => "${src_dir}/puppet-install.sh",
+        cwd         => $src_dir,
         refreshonly => true,
       }
     } else {
