@@ -26,7 +26,7 @@ class nhc::install {
         notify   => Exec['install-nhc'],
       }
       $_autogen = '/usr/local/src/nhc/autogen.sh'
-      $_configure = './configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/libexec'
+      $_configure = "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=${nhc::libexec_dir}"
       $_install = 'make install'
       exec { 'install-nhc':
         path        => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -41,7 +41,7 @@ class nhc::install {
         force   => true,
         purge   => true,
       }
-      file { '/usr/libexec/nhc':
+      file { "${nhc::libexec_dir}/nhc":
         ensure  => 'absent',
         recurse => true,
         force   => true,

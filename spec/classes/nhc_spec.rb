@@ -5,6 +5,13 @@ describe 'nhc' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:source) { "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
+      let(:sysconf_path) do
+        if facts[:os]['family'] == 'Debian'
+          '/etc/default/nhc'
+        else
+          '/etc/sysconfig/nhc'
+        end
+      end
 
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to create_class('nhc') }
@@ -14,10 +21,11 @@ describe 'nhc' do
 
       context 'nhc::install' do
         it do
-          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8'
-            is_expected.to have_yum__install_count(0)
-          else
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
             is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
+          else
+            is_expected.to have_yum__install_count(0)
+            is_expected.to contain_exec('install-nhc')
           end
         end
 
@@ -55,10 +63,10 @@ describe 'nhc' do
           let(:params) { { ensure: 'absent' } }
 
           it { is_expected.to compile.with_all_deps }
-          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8'
-            it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }
-          else
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
             it { is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+          else
+            it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }
           end
         end
       end
@@ -95,15 +103,14 @@ describe 'nhc' do
         end
 
         it do
-          is_expected.to contain_file('/etc/sysconfig/nhc').with(ensure: 'file',
-                                                                 path: '/etc/sysconfig/nhc',
-                                                                 owner: 'root',
-                                                                 group: 'root',
-                                                                 mode: '0644')
+          is_expected.to contain_file(sysconf_path).with(ensure: 'file',
+                                                         owner: 'root',
+                                                         group: 'root',
+                                                         mode: '0644')
         end
 
         it do
-          verify_exact_contents(catalogue, '/etc/sysconfig/nhc', [
+          verify_exact_contents(catalogue, sysconf_path, [
                                   'CONFDIR=/etc/nhc',
                                   'CONFFILE=/etc/nhc/nhc.conf',
                                   'DETACHED_MODE=0',
@@ -134,13 +141,13 @@ describe 'nhc' do
         context 'when detached_mode => true' do
           let(:params) { { detached_mode: true } }
 
-          it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['DETACHED_MODE=1']) }
+          it { verify_contents(catalogue, sysconf_path, ['DETACHED_MODE=1']) }
         end
 
         context 'when detached_mode_fail_nodata => true' do
           let(:params) { { detached_mode_fail_nodata: true } }
 
-          it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['DETACHED_MODE_FAIL_NODATA=1']) }
+          it { verify_contents(catalogue, sysconf_path, ['DETACHED_MODE_FAIL_NODATA=1']) }
         end
 
         context 'when config_overrides is defined' do
@@ -152,7 +159,7 @@ describe 'nhc' do
             }
           end
 
-          it { verify_contents(catalogue, '/etc/sysconfig/nhc', ['HOSTNAME=$HOSTNAME_S']) }
+          it { verify_contents(catalogue, sysconf_path, ['HOSTNAME=$HOSTNAME_S']) }
         end
 
         context 'when settings are defined' do
@@ -246,7 +253,7 @@ describe 'nhc' do
 
           it { is_expected.to contain_file('/etc/nhc').with_ensure('absent') }
           it { is_expected.to contain_file('/etc/nhc/nhc.conf').with_ensure('absent') }
-          it { is_expected.to contain_file('/etc/sysconfig/nhc').with_ensure('absent') }
+          it { is_expected.to contain_file(sysconf_path).with_ensure('absent') }
           it { is_expected.to contain_logrotate__rule('nhc').with_ensure('absent') }
         end
       end

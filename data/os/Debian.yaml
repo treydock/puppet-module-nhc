@@ -1,0 +1,3 @@
+nhc::install_method: source
+nhc::libexec_dir: /usr/lib
+nhc::sysconfig_path: /etc/default/nhc

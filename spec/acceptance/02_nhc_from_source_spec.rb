@@ -72,7 +72,7 @@ describe 'nhc class:' do
       end
     end
 
-    describe file('/etc/sysconfig/nhc') do
+    describe file(sysconf_path) do
       it do
         content = subject.content.split(%r{\n}).reject { |c| c =~ %r{(^#|^$)} } # rubocop:disable RSpec/NamedSubject
         expected = [
