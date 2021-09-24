@@ -5,6 +5,13 @@ describe 'nhc' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:source) { "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
+      let(:libexec_dir) do
+        if facts[:os]['family'] == 'Debian'
+          '/usr/lib'
+        else
+          '/usr/libexec'
+        end
+      end
       let(:sysconf_path) do
         if facts[:os]['family'] == 'Debian'
           '/etc/default/nhc'
@@ -20,13 +27,18 @@ describe 'nhc' do
       it { is_expected.to contain_class('nhc::config') }
 
       context 'nhc::install' do
-        it do
-          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
+        if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
+          it do
             is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
-          else
-            is_expected.to have_yum__install_count(0)
-            is_expected.to contain_exec('install-nhc')
           end
+        else
+          it { is_expected.to have_yum__install_count(0) }
+          it do
+            verify_contents(catalogue, '/usr/local/src/nhc/puppet-install.sh', [
+                              "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=#{libexec_dir}",
+                            ])
+          end
+          it { is_expected.to contain_exec('install-nhc').with_command('/usr/local/src/nhc/puppet-install.sh') }
         end
 
         context 'when install_method => repo' do
