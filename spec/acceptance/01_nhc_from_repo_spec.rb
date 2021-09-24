@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'nhc class:' do
+describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.major') == '7' do
   context 'ensure => absent' do
     it 'runs successfully' do
       pp = <<-EOS

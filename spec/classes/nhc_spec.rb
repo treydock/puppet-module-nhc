@@ -14,7 +14,11 @@ describe 'nhc' do
 
       context 'nhc::install' do
         it do
-          is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8'
+            is_expected.to have_yum__install_count(0)
+          else
+            is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
+          end
         end
 
         context 'when install_method => repo' do
