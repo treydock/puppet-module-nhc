@@ -1,1 +1,6 @@
----
+nhc::program_name: nhc
+nhc::conf_dir: /etc/nhc
+nhc::conf_file: /etc/nhc/nhc.conf
+nhc::include_dir: /etc/nhc/scripts
+nhc::log_file: /var/log/nhc.log
+nhc::sysconfig_path: /etc/sysconfig/nhc

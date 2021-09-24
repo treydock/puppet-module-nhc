@@ -1,8 +1,10 @@
-shared_examples 'nhc-base' do
+shared_examples 'nhc-package' do
   describe package('lbnl-nhc') do
     it { is_expected.to be_installed }
   end
+end
 
+shared_examples 'nhc-base' do
   describe file('/etc/nhc') do
     it { is_expected.to be_directory }
     it { is_expected.to be_mode 700 }

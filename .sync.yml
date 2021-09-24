@@ -3,7 +3,7 @@
   acceptance_matrix:
     set:
       - centos-7
-      - ---centos-8
+      - centos-8
     puppet:
       - puppet6
       - puppet7
@@ -15,7 +15,8 @@ spec/acceptance/nodesets/centos-7.yml:
   packages:
     - git
 spec/acceptance/nodesets/centos-8.yml:
-  delete: true
+  packages:
+    - git
 spec/acceptance/nodesets/debian-9.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
