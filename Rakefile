@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet_litmus/rake_tasks' if Bundler.rubygems.find_name('puppet_litmus').any?
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
@@ -93,5 +95,5 @@ namespace :release do
 end
 
 desc "Release new module version (changelog, reference, commit, tag, gh pages)"
-task :release => [:changelog, "strings:generate:reference", "release:commit", "module:tag", "strings:gh_pages:update"]
+task :release => [:changelog, "strings:generate:reference", "release:commit", "module:tag"]
 
