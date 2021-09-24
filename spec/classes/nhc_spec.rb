@@ -54,7 +54,12 @@ describe 'nhc' do
         context 'when ensure => "absent"' do
           let(:params) { { ensure: 'absent' } }
 
-          it { is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+          it { is_expected.to compile.with_all_deps }
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '8'
+            it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }
+          else
+            it { is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+          end
         end
       end
 
