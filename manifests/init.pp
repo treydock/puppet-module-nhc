@@ -24,6 +24,8 @@
 #   The repo name for NHC, only used with `install_method` of `repo`.
 # @param source_dependencies
 #   The package dependencies for source install.
+# @param libexec_dir
+#   Location for libexec directory, OS dependent.
 # @param checks
 #   NHC checks for nhc.conf
 # @param settings
@@ -59,7 +61,7 @@ class nhc (
   Enum['present', 'absent'] $ensure   = 'present',
 
   # packages
-  Enum['repo','package','source'] $install_method = 'package',
+  Enum['repo','package','source'] $install_method = 'source',
   Optional[String] $package_ensure      = undef,
   Optional[String] $version     = '1.4.2',
   Optional[String] $package_release     = '1',
@@ -68,6 +70,7 @@ class nhc (
   Optional[String] $package_name        = undef,
   Optional[String] $repo_name           = undef,
   Array $source_dependencies            = ['automake','make'],
+  Stdlib::Absolutepath $libexec_dir     = '/usr/libexec',
 
   # NHC configuration
   Variant[Hash, Array] $checks          = [],
@@ -86,12 +89,6 @@ class nhc (
   String $log_rotate_every              = 'weekly',
   Hash $custom_checks                   = {},
 ) {
-
-  $osfamily = dig($facts, 'os', 'family')
-  if ! ($osfamily in ['RedHat']) {
-    fail("Unsupported osfamily: ${osfamily}, module ${module_name} only supports RedHat")
-  }
-
   case $ensure {
     'present': {
       if $install_method == 'repo' {
