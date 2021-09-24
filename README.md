@@ -1,7 +1,7 @@
 # puppet-module-nhc
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/nhc.svg)](https://forge.puppetlabs.com/treydock/nhc)
-[![Build Status](https://travis-ci.org/treydock/puppet-module-nhc.png)](https://travis-ci.org/treydock/puppet-module-nhc)
+[![CI Status](https://github.com/treydock/puppet-module-nhc/workflows/CI/badge.svg?branch=master)](https://github.com/treydock/puppet-module-nhc/actions?query=workflow%3ACI)
 
 #### Table of Contents
 
