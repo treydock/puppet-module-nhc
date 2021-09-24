@@ -6,15 +6,15 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "";
   relpath = '';
 </script>
@@ -67,16 +67,16 @@ src="https://travis-ci.org/treydock/puppet-module-nhc.png"></a></p>
 
 <h4 id="label-Table+of+Contents">Table of Contents</h4>
 <ol><li>
-<p><a href="#label-Overview">Overview</a></p>
+<p><a href="#overview">Overview</a></p>
 </li><li>
-<p><a href="#label-Usage">Usage - Configuration options</a></p>
+<p><a href="#usage">Usage - Configuration options</a></p>
 </li><li>
-<p><a href="#label-Reference">Reference - Parameter and detailed reference to all
+<p><a href="#reference">Reference - Parameter and detailed reference to all
 options</a></p>
 </li><li>
-<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
 </li><li>
-<p><a href="#label-Development">Development - Guide for contributing to the
+<p><a href="#development">Development - Guide for contributing to the
 module</a></p>
 </li></ol>
 
@@ -171,7 +171,8 @@ nhc::package_url: &quot;https://example.com/lbnl-nhc-1.4.2-1.el7.custom.noarch.r
 nhc::package_name: &quot;lbnl-nhc-1.4.2-1.el7.custom.noarch.rpm&quot;
 </code></pre>
 
-<p>It&#39;s possible to install from source:</p>
+<p>It&#39;s possible to install from source (<strong>this is default behavior
+for all but EL7 systems</strong>):</p>
 
 <pre class="code ruby"><code class="ruby">nhc::install_method: source
 </code></pre>
@@ -185,36 +186,10 @@ href="http://treydock.github.io/puppet-module-nhc/">treydock.github.io/puppet-mo
 
 <p>This module has been tested on:</p>
 <ul><li>
-<p>CentOS/RedHat 6 x86_64</p>
-</li><li>
 <p>CentOS/RedHat 7 x86_64</p>
-</li></ul>
-
-<h2 id="label-Development">Development</h2>
-
-<h3 id="label-Testing">Testing</h3>
-
-<p>Testing requires the following dependencies:</p>
-<ul><li>
-<p>rake</p>
 </li><li>
-<p>bundler</p>
+<p>CentOS/RedHat 8 x86_64</p>
 </li></ul>
-
-<p>Install gem dependencies</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
-</code></pre>
-
-<p>Run unit tests</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_spec'>spec</span>
-</code></pre>
-
-<p>If you have Vagrant &gt;= 1.2.0 installed you can run system tests</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_beaker'>beaker</span>
-</code></pre>
 </div></div>
 
       <div id="footer">

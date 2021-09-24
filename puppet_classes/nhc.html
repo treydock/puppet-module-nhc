@@ -6,15 +6,15 @@
 <title>
   Puppet Class: nhc
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::nhc";
   relpath = '../';
 </script>
@@ -120,7 +120,7 @@
         <span class='type'>(<tt>Enum['repo','package','source']</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;package&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;source&#39;</tt>)</em>
       
       
         &mdash;
@@ -259,6 +259,24 @@ of <code>source</code> this is git source URL</p>
         &mdash;
         <div class='inline'>
 <p>The package dependencies for source install.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>libexec_dir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/usr/libexec&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Location for libexec directory, OS dependent.</p>
 </div>
       
     </li>
@@ -536,6 +554,7 @@ of <code>source</code> this is git source URL</p>
 </ul>
 
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -543,8 +562,6 @@ of <code>source</code> this is git source URL</p>
         <pre class="lines">
 
 
-58
-59
 60
 61
 62
@@ -636,19 +653,16 @@ of <code>source</code> this is git source URL</p>
 148
 149
 150
-151
-152
-153
-154</pre>
+151</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 58</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 60</span>
 
 class nhc (
   Enum[&#39;present&#39;, &#39;absent&#39;] $ensure   = &#39;present&#39;,
 
   # packages
-  Enum[&#39;repo&#39;,&#39;package&#39;,&#39;source&#39;] $install_method = &#39;package&#39;,
+  Enum[&#39;repo&#39;,&#39;package&#39;,&#39;source&#39;] $install_method = &#39;source&#39;,
   Optional[String] $package_ensure      = undef,
   Optional[String] $version     = &#39;1.4.2&#39;,
   Optional[String] $package_release     = &#39;1&#39;,
@@ -657,6 +671,7 @@ class nhc (
   Optional[String] $package_name        = undef,
   Optional[String] $repo_name           = undef,
   Array $source_dependencies            = [&#39;automake&#39;,&#39;make&#39;],
+  Stdlib::Absolutepath $libexec_dir     = &#39;/usr/libexec&#39;,
 
   # NHC configuration
   Variant[Hash, Array] $checks          = [],
@@ -675,12 +690,6 @@ class nhc (
   String $log_rotate_every              = &#39;weekly&#39;,
   Hash $custom_checks                   = {},
 ) {
-
-  $osfamily = dig($facts, &#39;os&#39;, &#39;family&#39;)
-  if ! ($osfamily in [&#39;RedHat&#39;]) {
-    fail(&quot;Unsupported osfamily: ${osfamily}, module ${module_name} only supports RedHat&quot;)
-  }
-
   case $ensure {
     &#39;present&#39;: {
       if $install_method == &#39;repo&#39; {
