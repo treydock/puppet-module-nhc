@@ -32,4 +32,5 @@ spec/acceptance/nodesets/ubuntu-1804.yml:
     - git
 spec/acceptance/nodesets/ubuntu-2004.yml:
   packages:
+    - cron
     - git

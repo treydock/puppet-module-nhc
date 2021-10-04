@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.25.0 <7.0.0"
+      "version_requirement": ">= 4.25.0 <9.0.0"
     },
     {
       "name": "puppetlabs/vcsrepo",
@@ -18,7 +18,7 @@
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 2.0.0 <6.0.0"
+      "version_requirement": ">= 2.0.0 <7.0.0"
     },
     {
       "name": "puppet/yum",
@@ -68,5 +68,5 @@
   ],
   "pdk-version": "1.17.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-gad5f473"
+  "template-ref": "heads/master-0-g367250c"
 }
