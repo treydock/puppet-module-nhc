@@ -167,12 +167,12 @@ nhc::repo_name: local-repo
 <p>This is an other example of using a custom package URL.</p>
 
 <pre class="code ruby"><code class="ruby">nhc::install_method: package
-nhc::package_url: &quot;https://example.com/lbnl-nhc-1.4.2-1.el7.custom.noarch.rpm&quot;
-nhc::package_name: &quot;lbnl-nhc-1.4.2-1.el7.custom.noarch.rpm&quot;
+nhc::package_url: &quot;https://example.com/lbnl-nhc-1.4.3-1.el7.custom.noarch.rpm&quot;
+nhc::package_name: &quot;lbnl-nhc-1.4.3-1.el7.custom.noarch.rpm&quot;
 </code></pre>
 
 <p>It&#39;s possible to install from source (<strong>this is default behavior
-for all but EL7 systems</strong>):</p>
+for all but RedHat based systems</strong>):</p>
 
 <pre class="code ruby"><code class="ruby">nhc::install_method: source
 </code></pre>
@@ -181,15 +181,6 @@ for all but EL7 systems</strong>):</p>
 
 <p><a
 href="http://treydock.github.io/puppet-module-nhc/">treydock.github.io/puppet-module-nhc/</a></p>
-
-<h2 id="label-Limitations">Limitations</h2>
-
-<p>This module has been tested on:</p>
-<ul><li>
-<p>CentOS/RedHat 7 x86_64</p>
-</li><li>
-<p>CentOS/RedHat 8 x86_64</p>
-</li></ul>
 </div></div>
 
       <div id="footer">
