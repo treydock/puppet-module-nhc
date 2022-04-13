@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.major') == '7' do
+describe 'nhc class:', if: fact('os.family') == 'RedHat' do
   context 'default parameters' do
     it 'runs successfully' do
       pp = <<-EOS
