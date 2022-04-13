@@ -91,10 +91,10 @@ This is an example of using a local yum repository to install NHC.
 This is an other example of using a custom package URL.
 
     nhc::install_method: package
-    nhc::package_url: "https://example.com/lbnl-nhc-1.4.2-1.el7.custom.noarch.rpm"
-    nhc::package_name: "lbnl-nhc-1.4.2-1.el7.custom.noarch.rpm"
+    nhc::package_url: "https://example.com/lbnl-nhc-1.4.3-1.el7.custom.noarch.rpm"
+    nhc::package_name: "lbnl-nhc-1.4.3-1.el7.custom.noarch.rpm"
 
-It's possible to install from source (**this is default behavior for all but EL7 systems**):
+It's possible to install from source (**this is default behavior for all but RedHat based systems**):
 
     nhc::install_method: source
 
@@ -102,9 +102,3 @@ It's possible to install from source (**this is default behavior for all but EL7
 
 [http://treydock.github.io/puppet-module-nhc/](http://treydock.github.io/puppet-module-nhc/)
 
-## Limitations
-
-This module has been tested on:
-
-* CentOS/RedHat 7 x86_64
-* CentOS/RedHat 8 x86_64

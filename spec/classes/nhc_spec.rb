@@ -4,7 +4,7 @@ describe 'nhc' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:source) { "https://github.com/mej/nhc/releases/download/1.4.2/lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
+      let(:source) { "https://github.com/mej/nhc/releases/download/1.4.3/lbnl-nhc-1.4.3-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
       let(:libexec_dir) do
         if facts[:os]['family'] == 'Debian'
           '/usr/lib'
@@ -27,9 +27,9 @@ describe 'nhc' do
       it { is_expected.to contain_class('nhc::config') }
 
       context 'nhc::install' do
-        if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
+        if facts[:os]['family'] == 'RedHat'
           it do
-            is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
+            is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
           end
         else
           it { is_expected.to have_yum__install_count(0) }
@@ -53,7 +53,7 @@ describe 'nhc' do
           end
 
           it do
-            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.2-1.el#{facts[:operatingsystemmajrelease]}",
+            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.3-1.el#{facts[:operatingsystemmajrelease]}",
                                                                  name: 'lbnl-nhc',
                                                                  require: 'Yumrepo[local]')
           end
@@ -75,8 +75,8 @@ describe 'nhc' do
           let(:params) { { ensure: 'absent' } }
 
           it { is_expected.to compile.with_all_deps }
-          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
-            it { is_expected.to contain_yum__install("lbnl-nhc-1.4.2-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+          if facts[:os]['family'] == 'RedHat'
+            it { is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
           else
             it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }
           end
