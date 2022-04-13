@@ -90,7 +90,7 @@ Data type: `Optional[String]`
 
 The version of NHC to install.
 
-Default value: `'1.4.2'`
+Default value: `'1.4.3'`
 
 ##### <a name="package_release"></a>`package_release`
 

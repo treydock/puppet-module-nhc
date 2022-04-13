@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.0.0](https://github.com/treydock/puppet-module-nhc/tree/v4.0.0) (2022-04-13)
+
+[Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v3.1.0...v4.0.0)
+
+### Changed
+
+- Bump default version to 1.4.3 and default to package install on EL8 [\#24](https://github.com/treydock/puppet-module-nhc/pull/24) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Replace CentOS 8 with Rocky 8 [\#23](https://github.com/treydock/puppet-module-nhc/pull/23) ([treydock](https://github.com/treydock))
+
 ## [v3.1.0](https://github.com/treydock/puppet-module-nhc/tree/v3.1.0) (2021-10-04)
 
 [Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v3.0.0...v3.1.0)
