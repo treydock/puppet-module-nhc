@@ -36,7 +36,12 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
         "8"
       ]
     },
@@ -66,7 +71,7 @@
     "hpc",
     "batch"
   ],
-  "pdk-version": "1.17.0",
+  "pdk-version": "2.1.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g367250c"
+  "template-ref": "heads/master-0-g089be8b"
 }

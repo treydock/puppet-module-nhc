@@ -3,7 +3,7 @@
   acceptance_matrix:
     set:
       - centos-7
-      - centos-8
+      - rocky-8
       - debian-9
       - debian-10
       - ubuntu-1804
@@ -18,7 +18,7 @@ appveyor.yml:
 spec/acceptance/nodesets/centos-7.yml:
   packages:
     - git
-spec/acceptance/nodesets/centos-8.yml:
+spec/acceptance/nodesets/rocky-8.yml:
   packages:
     - git
 spec/acceptance/nodesets/debian-9.yml:
