@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'nhc class:' do
   context 'when installed from source' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'nhc':
         install_method => 'source',
       }
-      EOS
+      PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -26,7 +28,7 @@ describe 'nhc class:' do
 
   context 'when nhc_settings and nhc_checks defined' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'nhc':
         install_method => 'source',
         settings => {
@@ -37,7 +39,7 @@ describe 'nhc class:' do
           'check_fs_mount_rw -t tmpfs -f /tmp',
         ]
       }
-      EOS
+      PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -51,7 +53,7 @@ describe 'nhc class:' do
         expected = [
           '* || export MARK_OFFLINE=0',
           '* || check_fs_mount_rw -f /',
-          '* || check_fs_mount_rw -t tmpfs -f /tmp',
+          '* || check_fs_mount_rw -t tmpfs -f /tmp'
         ]
         expect(content).to match_array(expected)
       end
@@ -66,7 +68,7 @@ describe 'nhc class:' do
           'DETACHED_MODE=0',
           'DETACHED_MODE_FAIL_NODATA=0',
           'INCDIR=/etc/nhc/scripts',
-          'NAME=nhc',
+          'NAME=nhc'
         ]
         expect(content).to match_array(expected)
       end

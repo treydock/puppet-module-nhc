@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'nhc-package' do
   describe package('lbnl-nhc') do
     it { is_expected.to be_installed }

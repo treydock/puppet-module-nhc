@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nhc::custom_check' do
@@ -13,7 +15,7 @@ describe 'nhc::custom_check' do
 
       let :params do
         {
-          source: 'puppet:///site/foobar.nhc',
+          source: 'puppet:///site/foobar.nhc'
         }
       end
 

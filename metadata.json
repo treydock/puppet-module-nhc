@@ -10,19 +10,19 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.25.0 <9.0.0"
+      "version_requirement": ">= 4.25.0 <10.0.0"
     },
     {
       "name": "puppetlabs/vcsrepo",
-      "version_requirement": ">= 1.0.0 <6.0.0"
+      "version_requirement": ">= 1.0.0 <7.0.0"
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 2.0.0 <7.0.0"
+      "version_requirement": ">= 2.0.0 <8.0.0"
     },
     {
       "name": "puppet/yum",
-      "version_requirement": ">= 1.0.0 <6.0.0"
+      "version_requirement": ">= 1.0.0 <8.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -46,16 +46,20 @@
       ]
     },
     {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "9",
         "10"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04",
         "20.04"
       ]
     }
@@ -63,7 +67,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.0.0 < 8.0.0"
+      "version_requirement": ">= 7.0.0 < 9.0.0"
     }
   ],
   "tags": [
@@ -71,7 +75,7 @@
     "hpc",
     "batch"
   ],
-  "pdk-version": "2.1.0",
+  "pdk-version": "2.7.1",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g089be8b"
+  "template-ref": "heads/master-0-g70732db"
 }
