@@ -6,7 +6,7 @@
 <title>
   Puppet Class: nhc
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
   <div class="examples">
@@ -125,8 +126,7 @@
       
         &mdash;
         <div class='inline'>
-<p>The method used to install NHC. Using <code>repo</code> will require the
-<code>Yumrepo</code> resource if <code>repo_name</code> is defined.</p>
+<p>The method used to install NHC. Using <code>repo</code> will require the <code>Yumrepo</code> resource if <code>repo_name</code> is defined.</p>
 </div>
       
     </li>
@@ -144,8 +144,7 @@
       
         &mdash;
         <div class='inline'>
-<p>The ensure state of package if using <code>install_method</code> of
-<code>repo</code> or <code>package</code>.</p>
+<p>The ensure state of package if using <code>install_method</code> of <code>repo</code> or <code>package</code>.</p>
 </div>
       
     </li>
@@ -155,7 +154,7 @@
         <span class='name'>version</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;1.4.3&#39;</tt>)</em>
@@ -173,7 +172,7 @@
         <span class='name'>package_release</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;1&#39;</tt>)</em>
@@ -181,8 +180,7 @@
       
         &mdash;
         <div class='inline'>
-<p>The package release NHC to install. Not used if <code>install_method</code>
-is <code>source</code>.</p>
+<p>The package release NHC to install. Not used if <code>install_method</code> is <code>source</code>.</p>
 </div>
       
     </li>
@@ -200,9 +198,7 @@ is <code>source</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>The source of install. For <code>install_method</code> of
-<code>package</code> this is URL to package For <code>install_method</code>
-of <code>source</code> this is git source URL</p>
+<p>The source of install. For <code>install_method</code> of <code>package</code> this is URL to package For <code>install_method</code> of <code>source</code> this is git source URL</p>
 </div>
       
     </li>
@@ -220,8 +216,7 @@ of <code>source</code> this is git source URL</p>
       
         &mdash;
         <div class='inline'>
-<p>Name of the NHC package, not used with <code>install_method</code> of
-<code>source</code>.</p>
+<p>Name of the NHC package, not used with <code>install_method</code> of <code>source</code>.</p>
 </div>
       
     </li>
@@ -239,8 +234,7 @@ of <code>source</code> this is git source URL</p>
       
         &mdash;
         <div class='inline'>
-<p>The repo name for NHC, only used with <code>install_method</code> of
-<code>repo</code>.</p>
+<p>The repo name for NHC, only used with <code>install_method</code> of <code>repo</code>.</p>
 </div>
       
     </li>
@@ -652,8 +646,7 @@ of <code>source</code> this is git source URL</p>
 147
 148
 149
-150
-151</pre>
+150</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 60</span>
@@ -664,10 +657,10 @@ class nhc (
   # packages
   Enum[&#39;repo&#39;,&#39;package&#39;,&#39;source&#39;] $install_method = &#39;source&#39;,
   Optional[String] $package_ensure      = undef,
-  Optional[String] $version     = &#39;1.4.3&#39;,
-  Optional[String] $package_release     = &#39;1&#39;,
+  String $version = &#39;1.4.3&#39;,
+  String $package_release = &#39;1&#39;,
   Optional[Variant[Stdlib::HTTPUrl,Stdlib::HTTPSUrl]]
-    $install_source                     = undef,
+  $install_source                     = undef,
   Optional[String] $package_name        = undef,
   Optional[String] $repo_name           = undef,
   Array $source_dependencies            = [&#39;automake&#39;,&#39;make&#39;],
@@ -739,16 +732,15 @@ class nhc (
 
   $configs = merge($default_configs, $config_overrides)
 
-  contain ::nhc::install
-  contain ::nhc::config
+  contain nhc::install
+  contain nhc::config
 
   Class[&#39;nhc::install&#39;]
   -&gt; Class[&#39;nhc::config&#39;]
 
   $custom_checks.each |$name, $params| {
-    ::nhc::custom_check { $name: * =&gt; $params }
+    nhc::custom_check { $name: * =&gt; $params }
   }
-
 }</pre>
       </td>
     </tr>

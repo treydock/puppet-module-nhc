@@ -6,7 +6,7 @@
 <title>
   Puppet Class: nhc::config
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -79,6 +79,7 @@
 
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -155,23 +156,23 @@ class nhc::config {
   assert_private()
 
   # Define template variables here so that nhc::conf can reuse template
-  $configs        = $::nhc::configs
-  $settings       = $::nhc::settings
-  $settings_host  = $::nhc::settings_host
-  $checks         = $::nhc::checks
+  $configs        = $nhc::configs
+  $settings       = $nhc::settings
+  $settings_host  = $nhc::settings_host
+  $checks         = $nhc::checks
 
   file { &#39;/etc/nhc&#39;:
-    ensure =&gt; $::nhc::directory_ensure,
-    path   =&gt; $::nhc::conf_dir,
-    force  =&gt; $::nhc::_directory_force,
+    ensure =&gt; $nhc::directory_ensure,
+    path   =&gt; $nhc::conf_dir,
+    force  =&gt; $nhc::_directory_force,
     owner  =&gt; &#39;root&#39;,
     group  =&gt; &#39;root&#39;,
     mode   =&gt; &#39;0700&#39;,
   }
 
   file { &#39;/etc/nhc/nhc.conf&#39;:
-    ensure  =&gt; $::nhc::file_ensure,
-    path    =&gt; $::nhc::conf_file,
+    ensure  =&gt; $nhc::file_ensure,
+    path    =&gt; $nhc::conf_file,
     content =&gt; template(&#39;nhc/nhc.conf.erb&#39;),
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
@@ -180,8 +181,8 @@ class nhc::config {
   }
 
   file { &#39;/etc/nhc/scripts&#39;:
-    ensure  =&gt; $::nhc::directory_ensure,
-    path    =&gt; $::nhc::include_dir,
+    ensure  =&gt; $nhc::directory_ensure,
+    path    =&gt; $nhc::include_dir,
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0700&#39;,
@@ -189,20 +190,20 @@ class nhc::config {
   }
 
   file { $nhc::sysconfig_path:
-    ensure  =&gt; $::nhc::file_ensure,
+    ensure  =&gt; $nhc::file_ensure,
     content =&gt; template(&#39;nhc/sysconfig.erb&#39;),
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0644&#39;,
   }
 
-  if $::nhc::manage_logrotate {
+  if $nhc::manage_logrotate {
     logrotate::rule { &#39;nhc&#39;:
-      ensure       =&gt; $::nhc::ensure,
-      path         =&gt; $::nhc::log_file,
+      ensure       =&gt; $nhc::ensure,
+      path         =&gt; $nhc::log_file,
       missingok    =&gt; true,
       ifempty      =&gt; false,
-      rotate_every =&gt; $::nhc::log_rotate_every,
+      rotate_every =&gt; $nhc::log_rotate_every,
     }
   }
 }</pre>

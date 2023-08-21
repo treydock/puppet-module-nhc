@@ -6,7 +6,7 @@
 <title>
   Puppet Class: nhc::install
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -79,6 +79,7 @@
 
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -163,8 +164,7 @@
 70
 71
 72
-73
-74</pre>
+73</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/install.pp', line 2</span>
@@ -172,29 +172,29 @@
 class nhc::install {
   assert_private()
 
-  if $::nhc::install_method == &#39;repo&#39; {
+  if $nhc::install_method == &#39;repo&#39; {
     package { &#39;lbnl-nhc&#39;:
-      ensure  =&gt; $::nhc::_package_ensure,
-      name    =&gt; $::nhc::_package_name,
-      require =&gt; $::nhc::_package_require,
+      ensure  =&gt; $nhc::_package_ensure,
+      name    =&gt; $nhc::_package_name,
+      require =&gt; $nhc::_package_require,
     }
-  } elsif $::nhc::install_method == &#39;package&#39; {
-    yum::install { $::nhc::_package_name:
-      ensure  =&gt; $::nhc::ensure,
-      source  =&gt; $::nhc::_install_source,
-      require =&gt; $::nhc::_package_require,
+  } elsif $nhc::install_method == &#39;package&#39; {
+    yum::install { $nhc::_package_name:
+      ensure  =&gt; $nhc::ensure,
+      source  =&gt; $nhc::_install_source,
+      require =&gt; $nhc::_package_require,
     }
   } else {
     if $nhc::ensure == &#39;present&#39; {
       $src_dir = &#39;/usr/local/src/nhc&#39;
       $sysconfdir = dirname($nhc::conf_dir)
-      ensure_packages($::nhc::source_dependencies)
+      ensure_packages($nhc::source_dependencies)
       vcsrepo { $src_dir:
         ensure   =&gt; &#39;latest&#39;,
         provider =&gt; &#39;git&#39;,
-        source   =&gt; $::nhc::_install_source,
-        revision =&gt; $::nhc::version,
-        require  =&gt; Package[$::nhc::source_dependencies],
+        source   =&gt; $nhc::_install_source,
+        revision =&gt; $nhc::version,
+        require  =&gt; Package[$nhc::source_dependencies],
         notify   =&gt; Exec[&#39;install-nhc&#39;],
       }
       file { &quot;${src_dir}/puppet-install.sh&quot;:
@@ -203,15 +203,15 @@ class nhc::install {
         group   =&gt; &#39;root&#39;,
         mode    =&gt; &#39;0755&#39;,
         content =&gt; join([
-          &#39;#!/bin/bash&#39;,
-          &quot;cd ${src_dir}&quot;,
-          &#39;./autogen.sh&#39;,
-          &quot;./configure --prefix=/usr --sysconfdir=${sysconfdir} --libexecdir=${nhc::libexec_dir}&quot;,
-          &#39;[ $? -ne 0 ] &amp;&amp; { rm -f $0; exit 1; }&#39;,
-          &#39;make install&#39;,
-          &#39;[ $? -ne 0 ] &amp;&amp; { rm -f $0; exit 1; }&#39;,
-          &#39;exit 0&#39;,
-          &#39;&#39;,
+            &#39;#!/bin/bash&#39;,
+            &quot;cd ${src_dir}&quot;,
+            &#39;./autogen.sh&#39;,
+            &quot;./configure --prefix=/usr --sysconfdir=${sysconfdir} --libexecdir=${nhc::libexec_dir}&quot;,
+            &#39;[ $? -ne 0 ] &amp;&amp; { rm -f $0; exit 1; }&#39;,
+            &#39;make install&#39;,
+            &#39;[ $? -ne 0 ] &amp;&amp; { rm -f $0; exit 1; }&#39;,
+            &#39;exit 0&#39;,
+            &#39;&#39;,
         ], &quot;\n&quot;),
         notify  =&gt; Exec[&#39;install-nhc&#39;],
         require =&gt; Vcsrepo[$src_dir],
@@ -240,7 +240,6 @@ class nhc::install {
       }
     }
   }
-
 }</pre>
       </td>
     </tr>
