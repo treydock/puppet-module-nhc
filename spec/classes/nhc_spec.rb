@@ -29,7 +29,7 @@ describe 'nhc' do
       it { is_expected.to contain_class('nhc::config') }
 
       describe 'nhc::install' do
-        if facts[:os]['family'] == 'RedHat'
+        if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i < 9
           it do
             is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch").with(ensure: 'present', source: source)
           end
@@ -80,7 +80,7 @@ describe 'nhc' do
 
           it { is_expected.to compile.with_all_deps }
 
-          if facts[:os]['family'] == 'RedHat'
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i < 9
             it { is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch").with_ensure('absent') }
           else
             it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }

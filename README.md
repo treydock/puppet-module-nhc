@@ -21,7 +21,7 @@ This module manages the installation and configuration of [LBNL Node Health CHec
 
 Configure a host with NHC.
 
-    include ::nhc
+    include nhc
 
 This is an example of using Hiera to define the default checks installed with NHC.
 
