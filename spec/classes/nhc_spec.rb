@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nhc' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:source) { "https://github.com/mej/nhc/releases/download/1.4.3/lbnl-nhc-1.4.3-1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm" }
+      let(:source) { "https://github.com/mej/nhc/releases/download/1.4.3/lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch.rpm" }
       let(:libexec_dir) do
         if facts[:os]['family'] == 'Debian'
           '/usr/lib'
@@ -26,18 +28,20 @@ describe 'nhc' do
       it { is_expected.to contain_class('nhc::install').that_comes_before('Class[nhc::config]') }
       it { is_expected.to contain_class('nhc::config') }
 
-      context 'nhc::install' do
+      describe 'nhc::install' do
         if facts[:os]['family'] == 'RedHat'
           it do
-            is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:operatingsystemmajrelease]}.noarch").only_with(ensure: 'present', source: source)
+            is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch").with(ensure: 'present', source: source)
           end
         else
           it { is_expected.to have_yum__install_count(0) }
+
           it do
             verify_contents(catalogue, '/usr/local/src/nhc/puppet-install.sh', [
-                              "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=#{libexec_dir}",
+                              "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=#{libexec_dir}"
                             ])
           end
+
           it { is_expected.to contain_exec('install-nhc').with_command('/usr/local/src/nhc/puppet-install.sh') }
         end
 
@@ -53,7 +57,7 @@ describe 'nhc' do
           end
 
           it do
-            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.3-1.el#{facts[:operatingsystemmajrelease]}",
+            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.3-1.el#{facts[:os]['release']['major']}",
                                                                  name: 'lbnl-nhc',
                                                                  require: 'Yumrepo[local]')
           end
@@ -75,15 +79,16 @@ describe 'nhc' do
           let(:params) { { ensure: 'absent' } }
 
           it { is_expected.to compile.with_all_deps }
+
           if facts[:os]['family'] == 'RedHat'
-            it { is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:operatingsystemmajrelease]}.noarch").with_ensure('absent') }
+            it { is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch").with_ensure('absent') }
           else
             it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }
           end
         end
       end
 
-      context 'nhc::config' do
+      describe 'nhc::config' do
         it do
           is_expected.to contain_file('/etc/nhc').with(ensure: 'directory',
                                                        path: '/etc/nhc',
@@ -128,7 +133,7 @@ describe 'nhc' do
                                   'DETACHED_MODE=0',
                                   'DETACHED_MODE_FAIL_NODATA=0',
                                   'INCDIR=/etc/nhc/scripts',
-                                  'NAME=nhc',
+                                  'NAME=nhc'
                                 ])
         end
 
@@ -146,7 +151,7 @@ describe 'nhc' do
                             '  missingok',
                             '  notifempty',
                             '  weekly',
-                            '}',
+                            '}'
                           ])
         end
 
@@ -166,8 +171,8 @@ describe 'nhc' do
           let(:params) do
             {
               config_overrides: {
-                'HOSTNAME'  => '$HOSTNAME_S',
-              },
+                'HOSTNAME' => '$HOSTNAME_S'
+              }
             }
           end
 
@@ -178,8 +183,8 @@ describe 'nhc' do
           let(:params) do
             {
               settings: {
-                'HOSTNAME'  => '$HOSTNAME_S',
-              },
+                'HOSTNAME' => '$HOSTNAME_S'
+              }
             }
           end
 
@@ -187,7 +192,7 @@ describe 'nhc' do
             content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
             puts content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
-                                    '* || export HOSTNAME=$HOSTNAME_S',
+                                    '* || export HOSTNAME=$HOSTNAME_S'
                                   ])
           end
         end
@@ -196,11 +201,11 @@ describe 'nhc' do
           let(:params) do
             {
               settings: {
-                'HOSTNAME'  => '$HOSTNAME_S',
+                'HOSTNAME' => '$HOSTNAME_S'
               },
               settings_host: {
-                'foo' => { 'MARK_OFFLINE' => false },
-              },
+                'foo' => { 'MARK_OFFLINE' => false }
+              }
             }
           end
 
@@ -209,7 +214,7 @@ describe 'nhc' do
             puts content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || export HOSTNAME=$HOSTNAME_S',
-                                    'foo || export MARK_OFFLINE=0',
+                                    'foo || export MARK_OFFLINE=0'
                                   ])
           end
         end
@@ -219,15 +224,15 @@ describe 'nhc' do
             {
               checks: [
                 'check_fs_mount_rw -f /',
-                'check_fs_mount_rw -t tmpfs -f /tmp',
-              ],
+                'check_fs_mount_rw -t tmpfs -f /tmp'
+              ]
             }
           end
 
           it do
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || check_fs_mount_rw -f /',
-                                    '* || check_fs_mount_rw -t tmpfs -f /tmp',
+                                    '* || check_fs_mount_rw -t tmpfs -f /tmp'
                                   ])
           end
         end
@@ -238,13 +243,13 @@ describe 'nhc' do
               checks: {
                 '*' => [
                   'check_fs_mount_rw -f /',
-                  'check_fs_mount_rw -t tmpfs -f /tmp',
+                  'check_fs_mount_rw -t tmpfs -f /tmp'
                 ],
                 'foo.bar' => [
-                  'check_hw_physmem_free 1MB',
+                  'check_hw_physmem_free 1MB'
                 ],
-                'foo.baz' => 'check_hw_swap_free 1MB',
-              },
+                'foo.baz' => 'check_hw_swap_free 1MB'
+              }
             }
           end
 
@@ -255,7 +260,7 @@ describe 'nhc' do
                                     '* || check_fs_mount_rw -f /',
                                     '* || check_fs_mount_rw -t tmpfs -f /tmp',
                                     'foo.bar || check_hw_physmem_free 1MB',
-                                    'foo.baz || check_hw_swap_free 1MB',
+                                    'foo.baz || check_hw_swap_free 1MB'
                                   ])
           end
         end
@@ -269,6 +274,6 @@ describe 'nhc' do
           it { is_expected.to contain_logrotate__rule('nhc').with_ensure('absent') }
         end
       end
-    end # end os context
-  end # end on_supported_os
-end # end describe nhc
+    end
+  end
+end

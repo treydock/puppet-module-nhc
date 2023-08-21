@@ -1,7 +1,7 @@
 # File managed by Puppet, do not edit!
 <% @configs.keys.sort.each do |key| -%>
 <% value = @configs[key] -%>
-<% if scope.function_is_bool([value]) -%>
+<% if !!value == value -%>
 <%= key %>=<%= value ? "1" : "0" %>
 <% else -%>
 <%= key %>=<%= value %>

@@ -63,10 +63,10 @@ class nhc (
   # packages
   Enum['repo','package','source'] $install_method = 'source',
   Optional[String] $package_ensure      = undef,
-  Optional[String] $version     = '1.4.3',
-  Optional[String] $package_release     = '1',
+  String $version = '1.4.3',
+  String $package_release = '1',
   Optional[Variant[Stdlib::HTTPUrl,Stdlib::HTTPSUrl]]
-    $install_source                     = undef,
+  $install_source                     = undef,
   Optional[String] $package_name        = undef,
   Optional[String] $repo_name           = undef,
   Array $source_dependencies            = ['automake','make'],
@@ -138,14 +138,13 @@ class nhc (
 
   $configs = merge($default_configs, $config_overrides)
 
-  contain ::nhc::install
-  contain ::nhc::config
+  contain nhc::install
+  contain nhc::config
 
   Class['nhc::install']
   -> Class['nhc::config']
 
   $custom_checks.each |$name, $params| {
-    ::nhc::custom_check { $name: * => $params }
+    nhc::custom_check { $name: * => $params }
   }
-
 }

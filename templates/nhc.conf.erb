@@ -16,7 +16,7 @@
 
 <%- @settings.keys.sort.each do |setting| -%>
   <%- value = @settings[setting] -%>
-  <%- if scope.function_is_bool([value]) -%>
+  <%- if !!value == value -%>
 * || export <%= setting %>=<%= value ? "1" : "0" %>
   <%- else -%>
 * || export <%= setting %>=<%= value %>
@@ -25,7 +25,7 @@
 <%- @settings_host.keys.sort.each do |host| -%>
   <%- @settings_host[host].keys.sort.each do |setting| -%>
     <%- value = @settings_host[host][setting] -%>
-    <%- if scope.function_is_bool([value]) -%>
+    <%- if !!value == value -%>
 <%= host %> || export <%= setting %>=<%= value ? "1" : "0" %>
     <%- else -%>
 <%= host %> || export <%= setting %>=<%= value %>

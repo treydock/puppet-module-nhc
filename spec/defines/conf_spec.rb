@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nhc::conf' do
@@ -14,15 +16,15 @@ describe 'nhc::conf' do
       let :params do
         {
           settings: {
-            'HOSTNAME' => '$HOSTNAME_S',
+            'HOSTNAME' => '$HOSTNAME_S'
           },
           settings_host: {
-            'foo' => { 'MARK_OFFLINE' => false },
+            'foo' => { 'MARK_OFFLINE' => false }
           },
           checks: [
             'check_fs_mount_rw -f /',
-            'check_fs_mount_rw -t tmpfs -f /tmp',
-          ],
+            'check_fs_mount_rw -t tmpfs -f /tmp'
+          ]
         }
       end
 
@@ -40,7 +42,7 @@ describe 'nhc::conf' do
                                 '* || export HOSTNAME=$HOSTNAME_S',
                                 'foo || export MARK_OFFLINE=0',
                                 '* || check_fs_mount_rw -f /',
-                                '* || check_fs_mount_rw -t tmpfs -f /tmp',
+                                '* || check_fs_mount_rw -t tmpfs -f /tmp'
                               ])
       end
 
