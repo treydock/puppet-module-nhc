@@ -7,13 +7,13 @@
 ### Classes
 
 * [`nhc`](#nhc): Manage Node Health Check (NHC)
-* [`nhc::config`](#nhcconfig): private class
-* [`nhc::install`](#nhcinstall): private class
+* [`nhc::config`](#nhc--config): private class
+* [`nhc::install`](#nhc--install): private class
 
 ### Defined types
 
-* [`nhc::conf`](#nhcconf): Manage NHC configurations
-* [`nhc::custom_check`](#nhccustom_check): Add NHC custom check file
+* [`nhc::conf`](#nhc--conf): Manage NHC configurations
+* [`nhc::custom_check`](#nhc--custom_check): Add NHC custom check file
 
 ## Classes
 
@@ -33,33 +33,33 @@ include ::nhc
 
 The following parameters are available in the `nhc` class:
 
-* [`ensure`](#ensure)
-* [`install_method`](#install_method)
-* [`package_ensure`](#package_ensure)
-* [`version`](#version)
-* [`package_release`](#package_release)
-* [`install_source`](#install_source)
-* [`package_name`](#package_name)
-* [`repo_name`](#repo_name)
-* [`source_dependencies`](#source_dependencies)
-* [`libexec_dir`](#libexec_dir)
-* [`checks`](#checks)
-* [`settings`](#settings)
-* [`settings_host`](#settings_host)
-* [`config_overrides`](#config_overrides)
-* [`detached_mode`](#detached_mode)
-* [`detached_mode_fail_nodata`](#detached_mode_fail_nodata)
-* [`program_name`](#program_name)
-* [`conf_dir`](#conf_dir)
-* [`conf_file`](#conf_file)
-* [`include_dir`](#include_dir)
-* [`log_file`](#log_file)
-* [`sysconfig_path`](#sysconfig_path)
-* [`manage_logrotate`](#manage_logrotate)
-* [`log_rotate_every`](#log_rotate_every)
-* [`custom_checks`](#custom_checks)
+* [`ensure`](#-nhc--ensure)
+* [`install_method`](#-nhc--install_method)
+* [`package_ensure`](#-nhc--package_ensure)
+* [`version`](#-nhc--version)
+* [`package_release`](#-nhc--package_release)
+* [`install_source`](#-nhc--install_source)
+* [`package_name`](#-nhc--package_name)
+* [`repo_name`](#-nhc--repo_name)
+* [`source_dependencies`](#-nhc--source_dependencies)
+* [`libexec_dir`](#-nhc--libexec_dir)
+* [`checks`](#-nhc--checks)
+* [`settings`](#-nhc--settings)
+* [`settings_host`](#-nhc--settings_host)
+* [`config_overrides`](#-nhc--config_overrides)
+* [`detached_mode`](#-nhc--detached_mode)
+* [`detached_mode_fail_nodata`](#-nhc--detached_mode_fail_nodata)
+* [`program_name`](#-nhc--program_name)
+* [`conf_dir`](#-nhc--conf_dir)
+* [`conf_file`](#-nhc--conf_file)
+* [`include_dir`](#-nhc--include_dir)
+* [`log_file`](#-nhc--log_file)
+* [`sysconfig_path`](#-nhc--sysconfig_path)
+* [`manage_logrotate`](#-nhc--manage_logrotate)
+* [`log_rotate_every`](#-nhc--log_rotate_every)
+* [`custom_checks`](#-nhc--custom_checks)
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-nhc--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -67,7 +67,7 @@ State of NHC resources
 
 Default value: `'present'`
 
-##### <a name="install_method"></a>`install_method`
+##### <a name="-nhc--install_method"></a>`install_method`
 
 Data type: `Enum['repo','package','source']`
 
@@ -76,31 +76,31 @@ Using `repo` will require the `Yumrepo` resource if `repo_name` is defined.
 
 Default value: `'source'`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-nhc--package_ensure"></a>`package_ensure`
 
 Data type: `Optional[String]`
 
 The ensure state of package if using `install_method` of `repo` or `package`.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="version"></a>`version`
+##### <a name="-nhc--version"></a>`version`
 
-Data type: `Optional[String]`
+Data type: `String`
 
 The version of NHC to install.
 
 Default value: `'1.4.3'`
 
-##### <a name="package_release"></a>`package_release`
+##### <a name="-nhc--package_release"></a>`package_release`
 
-Data type: `Optional[String]`
+Data type: `String`
 
 The package release NHC to install. Not used if `install_method` is `source`.
 
 Default value: `'1'`
 
-##### <a name="install_source"></a>`install_source`
+##### <a name="-nhc--install_source"></a>`install_source`
 
 Data type: `Optional[Variant[Stdlib::HTTPUrl,Stdlib::HTTPSUrl]]`
 
@@ -108,25 +108,25 @@ The source of install.
 For `install_method` of `package` this is URL to package
 For `install_method` of `source` this is git source URL
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="package_name"></a>`package_name`
+##### <a name="-nhc--package_name"></a>`package_name`
 
 Data type: `Optional[String]`
 
 Name of the NHC package, not used with `install_method` of `source`.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="repo_name"></a>`repo_name`
+##### <a name="-nhc--repo_name"></a>`repo_name`
 
 Data type: `Optional[String]`
 
 The repo name for NHC, only used with `install_method` of `repo`.
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source_dependencies"></a>`source_dependencies`
+##### <a name="-nhc--source_dependencies"></a>`source_dependencies`
 
 Data type: `Array`
 
@@ -134,7 +134,7 @@ The package dependencies for source install.
 
 Default value: `['automake','make']`
 
-##### <a name="libexec_dir"></a>`libexec_dir`
+##### <a name="-nhc--libexec_dir"></a>`libexec_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -142,7 +142,7 @@ Location for libexec directory, OS dependent.
 
 Default value: `'/usr/libexec'`
 
-##### <a name="checks"></a>`checks`
+##### <a name="-nhc--checks"></a>`checks`
 
 Data type: `Variant[Hash, Array]`
 
@@ -150,7 +150,7 @@ NHC checks for nhc.conf
 
 Default value: `[]`
 
-##### <a name="settings"></a>`settings`
+##### <a name="-nhc--settings"></a>`settings`
 
 Data type: `Hash`
 
@@ -158,7 +158,7 @@ Settings to add to nhc.conf
 
 Default value: `{}`
 
-##### <a name="settings_host"></a>`settings_host`
+##### <a name="-nhc--settings_host"></a>`settings_host`
 
 Data type: `Hash`
 
@@ -166,7 +166,7 @@ Host specific settings for nhc.conf
 
 Default value: `{}`
 
-##### <a name="config_overrides"></a>`config_overrides`
+##### <a name="-nhc--config_overrides"></a>`config_overrides`
 
 Data type: `Hash`
 
@@ -174,23 +174,23 @@ Settings to add to /etc/sysconfig/nhc
 
 Default value: `{}`
 
-##### <a name="detached_mode"></a>`detached_mode`
+##### <a name="-nhc--detached_mode"></a>`detached_mode`
 
 Data type: `Boolean`
 
 Value for DETACHED_MODE
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="detached_mode_fail_nodata"></a>`detached_mode_fail_nodata`
+##### <a name="-nhc--detached_mode_fail_nodata"></a>`detached_mode_fail_nodata`
 
 Data type: `Boolean`
 
 Value for DETACHED_MODE_FAIL_NODATA
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="program_name"></a>`program_name`
+##### <a name="-nhc--program_name"></a>`program_name`
 
 Data type: `String`
 
@@ -198,7 +198,7 @@ Value for NAME
 
 Default value: `'nhc'`
 
-##### <a name="conf_dir"></a>`conf_dir`
+##### <a name="-nhc--conf_dir"></a>`conf_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -206,7 +206,7 @@ Path to NHC configuration directry
 
 Default value: `'/etc/nhc'`
 
-##### <a name="conf_file"></a>`conf_file`
+##### <a name="-nhc--conf_file"></a>`conf_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -214,7 +214,7 @@ Path for this configuration file
 
 Default value: `'/etc/nhc/nhc.conf'`
 
-##### <a name="include_dir"></a>`include_dir`
+##### <a name="-nhc--include_dir"></a>`include_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -222,7 +222,7 @@ Path to directory containing NHC checks
 
 Default value: `'/etc/nhc/scripts'`
 
-##### <a name="log_file"></a>`log_file`
+##### <a name="-nhc--log_file"></a>`log_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -230,7 +230,7 @@ Path to log file
 
 Default value: `'/var/log/nhc.log'`
 
-##### <a name="sysconfig_path"></a>`sysconfig_path`
+##### <a name="-nhc--sysconfig_path"></a>`sysconfig_path`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -238,15 +238,15 @@ Path to sysconfig file
 
 Default value: `'/etc/sysconfig/nhc'`
 
-##### <a name="manage_logrotate"></a>`manage_logrotate`
+##### <a name="-nhc--manage_logrotate"></a>`manage_logrotate`
 
 Data type: `Boolean`
 
 Boolean that sets if logrotate resources should be managed
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="log_rotate_every"></a>`log_rotate_every`
+##### <a name="-nhc--log_rotate_every"></a>`log_rotate_every`
 
 Data type: `String`
 
@@ -254,7 +254,7 @@ Frequency of logrotation
 
 Default value: `'weekly'`
 
-##### <a name="custom_checks"></a>`custom_checks`
+##### <a name="-nhc--custom_checks"></a>`custom_checks`
 
 Data type: `Hash`
 
@@ -262,17 +262,17 @@ Hash passed to `nhc::custom_check`
 
 Default value: `{}`
 
-### <a name="nhcconfig"></a>`nhc::config`
+### <a name="nhc--config"></a>`nhc::config`
 
 private class
 
-### <a name="nhcinstall"></a>`nhc::install`
+### <a name="nhc--install"></a>`nhc::install`
 
 private class
 
 ## Defined types
 
-### <a name="nhcconf"></a>`nhc::conf`
+### <a name="nhc--conf"></a>`nhc::conf`
 
 Manage NHC configurations
 
@@ -293,21 +293,21 @@ nhc::conf { 'nhc-cron':
 
 The following parameters are available in the `nhc::conf` defined type:
 
-* [`ensure`](#ensure)
-* [`checks`](#checks)
-* [`settings`](#settings)
-* [`settings_host`](#settings_host)
-* [`config_overrides`](#config_overrides)
-* [`detached_mode`](#detached_mode)
-* [`detached_mode_fail_nodata`](#detached_mode_fail_nodata)
-* [`program_name`](#program_name)
-* [`conf_dir`](#conf_dir)
-* [`conf_file`](#conf_file)
-* [`include_dir`](#include_dir)
-* [`sysconfig_path`](#sysconfig_path)
-* [`log_file`](#log_file)
+* [`ensure`](#-nhc--conf--ensure)
+* [`checks`](#-nhc--conf--checks)
+* [`settings`](#-nhc--conf--settings)
+* [`settings_host`](#-nhc--conf--settings_host)
+* [`config_overrides`](#-nhc--conf--config_overrides)
+* [`detached_mode`](#-nhc--conf--detached_mode)
+* [`detached_mode_fail_nodata`](#-nhc--conf--detached_mode_fail_nodata)
+* [`program_name`](#-nhc--conf--program_name)
+* [`conf_dir`](#-nhc--conf--conf_dir)
+* [`conf_file`](#-nhc--conf--conf_file)
+* [`include_dir`](#-nhc--conf--include_dir)
+* [`sysconfig_path`](#-nhc--conf--sysconfig_path)
+* [`log_file`](#-nhc--conf--log_file)
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-nhc--conf--ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -315,7 +315,7 @@ State of nhc::conf
 
 Default value: `'present'`
 
-##### <a name="checks"></a>`checks`
+##### <a name="-nhc--conf--checks"></a>`checks`
 
 Data type: `Variant[Hash, Array]`
 
@@ -323,7 +323,7 @@ Checks to add to the configuration file
 
 Default value: `[]`
 
-##### <a name="settings"></a>`settings`
+##### <a name="-nhc--conf--settings"></a>`settings`
 
 Data type: `Hash`
 
@@ -331,7 +331,7 @@ Settings to add to the configuration file
 
 Default value: `{}`
 
-##### <a name="settings_host"></a>`settings_host`
+##### <a name="-nhc--conf--settings_host"></a>`settings_host`
 
 Data type: `Hash`
 
@@ -339,7 +339,7 @@ Settings specific to a hosts to add to the configuration file
 
 Default value: `{}`
 
-##### <a name="config_overrides"></a>`config_overrides`
+##### <a name="-nhc--conf--config_overrides"></a>`config_overrides`
 
 Data type: `Hash`
 
@@ -347,23 +347,23 @@ Overrides for configuration in /etc/sysconfig/$name
 
 Default value: `{}`
 
-##### <a name="detached_mode"></a>`detached_mode`
+##### <a name="-nhc--conf--detached_mode"></a>`detached_mode`
 
 Data type: `Boolean`
 
 Value for DETACHED_MODE
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="detached_mode_fail_nodata"></a>`detached_mode_fail_nodata`
+##### <a name="-nhc--conf--detached_mode_fail_nodata"></a>`detached_mode_fail_nodata`
 
 Data type: `Boolean`
 
 Value for DETACHED_MODE_FAIL_NODATA
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="program_name"></a>`program_name`
+##### <a name="-nhc--conf--program_name"></a>`program_name`
 
 Data type: `String`
 
@@ -371,47 +371,47 @@ Value for NAME
 
 Default value: `$name`
 
-##### <a name="conf_dir"></a>`conf_dir`
+##### <a name="-nhc--conf--conf_dir"></a>`conf_dir`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 Path to NHC configuration directry. Defaults to `/etc/nhc`
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="conf_file"></a>`conf_file`
+##### <a name="-nhc--conf--conf_file"></a>`conf_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 Path for this configuration file. Defaults to `/etc/nhc/$name.conf`
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="include_dir"></a>`include_dir`
+##### <a name="-nhc--conf--include_dir"></a>`include_dir`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 Path to directory containing NHC checks. Defaults to `/etc/nhc/scripts`
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="sysconfig_path"></a>`sysconfig_path`
+##### <a name="-nhc--conf--sysconfig_path"></a>`sysconfig_path`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 Path to sysconfig file. Defaults to `/etc/sysconfig/$name`
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="log_file"></a>`log_file`
+##### <a name="-nhc--conf--log_file"></a>`log_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 Path to log file. Defaults to `/var/log/$name.log`
 
-Default value: ``undef``
+Default value: `undef`
 
-### <a name="nhccustom_check"></a>`nhc::custom_check`
+### <a name="nhc--custom_check"></a>`nhc::custom_check`
 
 Add NHC custom check file
 
@@ -429,13 +429,13 @@ nhc::custom_check { 'osc_gpfs':
 
 The following parameters are available in the `nhc::custom_check` defined type:
 
-* [`source`](#source)
+* [`source`](#-nhc--custom_check--source)
 
-##### <a name="source"></a>`source`
+##### <a name="-nhc--custom_check--source"></a>`source`
 
 Data type: `Optional[String]`
 
 The source of the custom check
 
-Default value: ``undef``
+Default value: `undef`
 

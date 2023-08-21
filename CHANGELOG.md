@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.0.0](https://github.com/treydock/puppet-module-nhc/tree/v5.0.0) (2023-08-21)
+
+[Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v4.0.0...v5.0.0)
+
+### Changed
+
+- BREAKING: Major updates - see description [\#25](https://github.com/treydock/puppet-module-nhc/pull/25) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Support EL9 [\#26](https://github.com/treydock/puppet-module-nhc/pull/26) ([treydock](https://github.com/treydock))
+
 ## [v4.0.0](https://github.com/treydock/puppet-module-nhc/tree/v4.0.0) (2022-04-13)
 
 [Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v3.1.0...v4.0.0)
