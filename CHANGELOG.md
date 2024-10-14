@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.0.0](https://github.com/treydock/puppet-module-nhc/tree/v6.0.0) (2024-10-14)
+
+[Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v5.0.0...v6.0.0)
+
+### UNCATEGORIZED PRS; GO LABEL THEM
+
+- Major updates - READ DESCRIPTION [\#27](https://github.com/treydock/puppet-module-nhc/pull/27) ([treydock](https://github.com/treydock))
+
 ## [v5.0.0](https://github.com/treydock/puppet-module-nhc/tree/v5.0.0) (2023-08-21)
 
 [Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v4.0.0...v5.0.0)
