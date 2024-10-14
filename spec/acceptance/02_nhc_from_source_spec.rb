@@ -53,7 +53,7 @@ describe 'nhc class:' do
         expected = [
           '* || export MARK_OFFLINE=0',
           '* || check_fs_mount_rw -f /',
-          '* || check_fs_mount_rw -t tmpfs -f /tmp'
+          '* || check_fs_mount_rw -t tmpfs -f /tmp',
         ]
         expect(content).to match_array(expected)
       end
@@ -68,7 +68,7 @@ describe 'nhc class:' do
           'DETACHED_MODE=0',
           'DETACHED_MODE_FAIL_NODATA=0',
           'INCDIR=/etc/nhc/scripts',
-          'NAME=nhc'
+          'NAME=nhc',
         ]
         expect(content).to match_array(expected)
       end

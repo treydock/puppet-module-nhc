@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'nhc::conf' do
   on_supported_os.each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
@@ -16,15 +16,15 @@ describe 'nhc::conf' do
       let :params do
         {
           settings: {
-            'HOSTNAME' => '$HOSTNAME_S'
+            'HOSTNAME' => '$HOSTNAME_S',
           },
           settings_host: {
-            'foo' => { 'MARK_OFFLINE' => false }
+            'foo' => { 'MARK_OFFLINE' => false },
           },
           checks: [
             'check_fs_mount_rw -f /',
-            'check_fs_mount_rw -t tmpfs -f /tmp'
-          ]
+            'check_fs_mount_rw -t tmpfs -f /tmp',
+          ],
         }
       end
 
@@ -34,7 +34,7 @@ describe 'nhc::conf' do
         is_expected.to contain_file('/etc/nhc/nhc-cron.conf').with(ensure: 'file',
                                                                    owner: 'root',
                                                                    group: 'root',
-                                                                   mode: '0644')
+                                                                   mode: '0644',)
       end
 
       it do
@@ -42,15 +42,15 @@ describe 'nhc::conf' do
                                 '* || export HOSTNAME=$HOSTNAME_S',
                                 'foo || export MARK_OFFLINE=0',
                                 '* || check_fs_mount_rw -f /',
-                                '* || check_fs_mount_rw -t tmpfs -f /tmp'
-                              ])
+                                '* || check_fs_mount_rw -t tmpfs -f /tmp',
+                              ],)
       end
 
       it 'manages sysconfig file' do
         is_expected.to contain_file('/etc/sysconfig/nhc-cron').with(ensure: 'file',
                                                                     owner: 'root',
                                                                     group: 'root',
-                                                                    mode: '0644')
+                                                                    mode: '0644',)
       end
     end
   end

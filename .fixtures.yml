@@ -10,5 +10,8 @@ fixtures:
       repo: puppet/logrotate
     yum:
       repo: puppet/yum
+    # Needed by logrotate
+    systemd:
+      repo: puppet/systemd
   symlinks:
     nhc: "#{source_dir}"

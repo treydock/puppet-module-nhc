@@ -81,7 +81,7 @@ define nhc::conf (
     'NAME'                      => $program_name,
   }
 
-  $configs = merge($default_configs, $config_overrides)
+  $configs = $default_configs + $config_overrides
 
   if $_conf_dir != $nhc::conf_dir {
     file { $_conf_dir:

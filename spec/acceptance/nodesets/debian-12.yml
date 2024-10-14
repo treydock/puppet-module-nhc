@@ -1,10 +1,10 @@
 HOSTS:
-  debian10:
+  debian12:
     roles:
       - agent
-    platform: debian-10-amd64
+    platform: debian-12-amd64
     hypervisor: docker
-    image: debian:10
+    image: debian:12
     docker_preserve_image: true
     docker_cmd:
       - '/sbin/init'
@@ -18,7 +18,7 @@ HOSTS:
       - LANG=en_US.UTF-8
       - LANGUAGE=en_US.UTF-8
       - LC_ALL=en_US.UTF-8
-    docker_container_name: 'nhc-debian10'
+    docker_container_name: 'nhc-debian12'
 CONFIG:
   log_level: debug
   type: foss

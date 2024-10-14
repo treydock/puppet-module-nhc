@@ -136,7 +136,7 @@ class nhc (
     'NAME'                      => $program_name,
   }
 
-  $configs = merge($default_configs, $config_overrides)
+  $configs = $default_configs + $config_overrides
 
   contain nhc::install
   contain nhc::config
