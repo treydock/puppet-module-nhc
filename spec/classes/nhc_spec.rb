@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'nhc' do
   on_supported_os.each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) { facts }
       let(:source) { "https://github.com/mej/nhc/releases/download/1.4.3/lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch.rpm" }
       let(:libexec_dir) do
@@ -38,8 +38,8 @@ describe 'nhc' do
 
           it do
             verify_contents(catalogue, '/usr/local/src/nhc/puppet-install.sh', [
-                              "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=#{libexec_dir}"
-                            ])
+                              "./configure --prefix=/usr --sysconfdir=/etc --libexecdir=#{libexec_dir}",
+                            ],)
           end
 
           it { is_expected.to contain_exec('install-nhc').with_command('/usr/local/src/nhc/puppet-install.sh') }
@@ -59,7 +59,7 @@ describe 'nhc' do
           it do
             is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.3-1.el#{facts[:os]['release']['major']}",
                                                                  name: 'lbnl-nhc',
-                                                                 require: 'Yumrepo[local]')
+                                                                 require: 'Yumrepo[local]',)
           end
 
           context 'when package_ensure => "latest"' do
@@ -94,7 +94,7 @@ describe 'nhc' do
                                                        path: '/etc/nhc',
                                                        owner: 'root',
                                                        group: 'root',
-                                                       mode: '0700')
+                                                       mode: '0700',)
         end
 
         it do
@@ -103,7 +103,7 @@ describe 'nhc' do
                                                                 owner: 'root',
                                                                 group: 'root',
                                                                 mode: '0644',
-                                                                require: 'File[/etc/nhc]')
+                                                                require: 'File[/etc/nhc]',)
         end
 
         it do
@@ -116,14 +116,14 @@ describe 'nhc' do
                                                                owner: 'root',
                                                                group: 'root',
                                                                mode: '0700',
-                                                               require: 'File[/etc/nhc]')
+                                                               require: 'File[/etc/nhc]',)
         end
 
         it do
           is_expected.to contain_file(sysconf_path).with(ensure: 'file',
                                                          owner: 'root',
                                                          group: 'root',
-                                                         mode: '0644')
+                                                         mode: '0644',)
         end
 
         it do
@@ -133,8 +133,8 @@ describe 'nhc' do
                                   'DETACHED_MODE=0',
                                   'DETACHED_MODE_FAIL_NODATA=0',
                                   'INCDIR=/etc/nhc/scripts',
-                                  'NAME=nhc'
-                                ])
+                                  'NAME=nhc',
+                                ],)
         end
 
         it 'manages logrotate::rule[nhc]' do
@@ -142,7 +142,7 @@ describe 'nhc' do
                                                              path: '/var/log/nhc.log',
                                                              missingok: 'true',
                                                              ifempty: 'false',
-                                                             rotate_every: 'weekly')
+                                                             rotate_every: 'weekly',)
         end
 
         it 'File[/etc/logrotate.d/nhc] should have valid contents' do
@@ -151,8 +151,8 @@ describe 'nhc' do
                             '  missingok',
                             '  notifempty',
                             '  weekly',
-                            '}'
-                          ])
+                            '}',
+                          ],)
         end
 
         context 'when detached_mode => true' do
@@ -171,8 +171,8 @@ describe 'nhc' do
           let(:params) do
             {
               config_overrides: {
-                'HOSTNAME' => '$HOSTNAME_S'
-              }
+                'HOSTNAME' => '$HOSTNAME_S',
+              },
             }
           end
 
@@ -183,29 +183,8 @@ describe 'nhc' do
           let(:params) do
             {
               settings: {
-                'HOSTNAME' => '$HOSTNAME_S'
-              }
-            }
-          end
-
-          it do
-            content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
-            puts content.split(%r{\n})
-            verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
-                                    '* || export HOSTNAME=$HOSTNAME_S'
-                                  ])
-          end
-        end
-
-        context 'when host settings are defined' do
-          let(:params) do
-            {
-              settings: {
-                'HOSTNAME' => '$HOSTNAME_S'
+                'HOSTNAME' => '$HOSTNAME_S',
               },
-              settings_host: {
-                'foo' => { 'MARK_OFFLINE' => false }
-              }
             }
           end
 
@@ -214,8 +193,29 @@ describe 'nhc' do
             puts content.split(%r{\n})
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || export HOSTNAME=$HOSTNAME_S',
-                                    'foo || export MARK_OFFLINE=0'
-                                  ])
+                                  ],)
+          end
+        end
+
+        context 'when host settings are defined' do
+          let(:params) do
+            {
+              settings: {
+                'HOSTNAME' => '$HOSTNAME_S',
+              },
+              settings_host: {
+                'foo' => { 'MARK_OFFLINE' => false },
+              },
+            }
+          end
+
+          it do
+            content = catalogue.resource('file', '/etc/nhc/nhc.conf').send(:parameters)[:content]
+            puts content.split(%r{\n})
+            verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
+                                    '* || export HOSTNAME=$HOSTNAME_S',
+                                    'foo || export MARK_OFFLINE=0',
+                                  ],)
           end
         end
 
@@ -224,16 +224,16 @@ describe 'nhc' do
             {
               checks: [
                 'check_fs_mount_rw -f /',
-                'check_fs_mount_rw -t tmpfs -f /tmp'
-              ]
+                'check_fs_mount_rw -t tmpfs -f /tmp',
+              ],
             }
           end
 
           it do
             verify_exact_contents(catalogue, '/etc/nhc/nhc.conf', [
                                     '* || check_fs_mount_rw -f /',
-                                    '* || check_fs_mount_rw -t tmpfs -f /tmp'
-                                  ])
+                                    '* || check_fs_mount_rw -t tmpfs -f /tmp',
+                                  ],)
           end
         end
 
@@ -243,13 +243,13 @@ describe 'nhc' do
               checks: {
                 '*' => [
                   'check_fs_mount_rw -f /',
-                  'check_fs_mount_rw -t tmpfs -f /tmp'
+                  'check_fs_mount_rw -t tmpfs -f /tmp',
                 ],
                 'foo.bar' => [
-                  'check_hw_physmem_free 1MB'
+                  'check_hw_physmem_free 1MB',
                 ],
-                'foo.baz' => 'check_hw_swap_free 1MB'
-              }
+                'foo.baz' => 'check_hw_swap_free 1MB',
+              },
             }
           end
 
@@ -260,8 +260,8 @@ describe 'nhc' do
                                     '* || check_fs_mount_rw -f /',
                                     '* || check_fs_mount_rw -t tmpfs -f /tmp',
                                     'foo.bar || check_hw_physmem_free 1MB',
-                                    'foo.baz || check_hw_swap_free 1MB'
-                                  ])
+                                    'foo.baz || check_hw_swap_free 1MB',
+                                  ],)
           end
         end
 

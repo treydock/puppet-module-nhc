@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'nhc::custom_check' do
   on_supported_os.each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
@@ -15,7 +15,7 @@ describe 'nhc::custom_check' do
 
       let :params do
         {
-          source: 'puppet:///site/foobar.nhc'
+          source: 'puppet:///site/foobar.nhc',
         }
       end
 
@@ -24,7 +24,7 @@ describe 'nhc::custom_check' do
                                                                         owner: 'root',
                                                                         group: 'root',
                                                                         mode: '0644',
-                                                                        source: 'puppet:///site/foobar.nhc')
+                                                                        source: 'puppet:///site/foobar.nhc',)
       end
     end
   end
