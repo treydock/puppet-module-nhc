@@ -18,7 +18,7 @@ class nhc::install {
     if $nhc::ensure == 'present' {
       $src_dir = '/usr/local/src/nhc'
       $sysconfdir = dirname($nhc::conf_dir)
-      ensure_packages($nhc::source_dependencies)
+      stdlib::ensure_packages($nhc::source_dependencies)
       vcsrepo { $src_dir:
         ensure   => 'latest',
         provider => 'git',
