@@ -148,7 +148,7 @@ class nhc (
     nhc::custom_check { $name: * => $params }
   }
 
-  file { '/var/nhc/run':
+  file { '/var/run/nhc':
     ensure => $directory_ensure,
     force  => $_directory_force,
     owner  => 'root',
