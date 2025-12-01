@@ -36,6 +36,13 @@ class nhc::config {
     require => File['/etc/nhc'],
   }
 
+  file { '/var/run/nhc':
+    ensure => $directory_ensure,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
   file { $nhc::sysconfig_path:
     ensure  => $nhc::file_ensure,
     content => template('nhc/sysconfig.erb'),
