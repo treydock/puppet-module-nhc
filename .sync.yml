@@ -4,9 +4,11 @@
     set:
       - el8
       - el9
+      - el10
       - debian-11
       - debian-12
       - ubuntu-2204
+      - ubuntu-2404
     puppet:
       - puppet8
 .gitlab-ci.yml:
@@ -28,7 +30,8 @@ spec/acceptance/nodesets/el9.yml:
   packages:
     - git
 spec/acceptance/nodesets/el10.yml:
-  delete: true
+  packages:
+    - git
 spec/acceptance/nodesets/debian-11.yml:
   packages:
     - git
@@ -40,4 +43,6 @@ spec/acceptance/nodesets/ubuntu-2204.yml:
     - cron
     - git
 spec/acceptance/nodesets/ubuntu-2404.yml:
-  delete: true
+  packages:
+    - cron
+    - git

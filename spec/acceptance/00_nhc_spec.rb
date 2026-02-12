@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.major') != '9' do
+describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.major') !~ %r{^(9|10)$} do
   context 'with default parameters' do
     it 'runs successfully' do
       pp = <<-PP
