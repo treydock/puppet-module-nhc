@@ -2,7 +2,6 @@
 .github/workflows/ci.yaml:
   acceptance_matrix:
     set:
-      - ---el7
       - el8
       - el9
       - debian-11
@@ -10,7 +9,6 @@
       - ubuntu-2004
       - ubuntu-2204
     puppet:
-      - puppet7
       - puppet8
 .gitlab-ci.yml:
   delete: true
@@ -24,15 +22,14 @@ appveyor.yml:
           Enabled: false
         RSpec/RepeatedExampleGroupBody:
           Enabled: false
-spec/acceptance/nodesets/el7.yml:
-  packages:
-    - git
 spec/acceptance/nodesets/el8.yml:
   packages:
     - git
 spec/acceptance/nodesets/el9.yml:
   packages:
     - git
+spec/acceptance/nodesets/el10.yml:
+  delete: true
 spec/acceptance/nodesets/debian-11.yml:
   packages:
     - git
@@ -47,3 +44,5 @@ spec/acceptance/nodesets/ubuntu-2204.yml:
   packages:
     - cron
     - git
+spec/acceptance/nodesets/ubuntu-2404.yml:
+  delete: true
