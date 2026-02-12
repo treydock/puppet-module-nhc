@@ -2,11 +2,26 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.0.0](https://github.com/treydock/puppet-module-nhc/tree/v7.0.0) (2026-02-12)
+
+[Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v6.0.0...v7.0.0)
+
+### Changed
+
+- Drop Ubuntu 20.04 support [\#32](https://github.com/treydock/puppet-module-nhc/pull/32) ([treydock](https://github.com/treydock))
+- Drop Puppet 7 support [\#30](https://github.com/treydock/puppet-module-nhc/pull/30) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Add support for EL10 and Ubutnu 24.04 [\#33](https://github.com/treydock/puppet-module-nhc/pull/33) ([treydock](https://github.com/treydock))
+- Support vcsrepo 7.x [\#31](https://github.com/treydock/puppet-module-nhc/pull/31) ([treydock](https://github.com/treydock))
+- Allow logrotate \<9 [\#29](https://github.com/treydock/puppet-module-nhc/pull/29) ([optiz0r](https://github.com/optiz0r))
+
 ## [v6.0.0](https://github.com/treydock/puppet-module-nhc/tree/v6.0.0) (2024-10-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v5.0.0...v6.0.0)
 
-### UNCATEGORIZED PRS; GO LABEL THEM
+### Changed
 
 - Major updates - READ DESCRIPTION [\#27](https://github.com/treydock/puppet-module-nhc/pull/27) ([treydock](https://github.com/treydock))
 
