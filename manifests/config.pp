@@ -37,7 +37,7 @@ class nhc::config {
   }
 
   file { '/var/run/nhc':
-    ensure => $directory_ensure,
+    ensure => $nhc::directory_ensure,
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
