@@ -5,7 +5,6 @@
       - el8
       - el9
       - el10
-      - debian-11
       - debian-12
       - ubuntu-2204
       - ubuntu-2404
@@ -33,11 +32,12 @@ spec/acceptance/nodesets/el10.yml:
   packages:
     - git
 spec/acceptance/nodesets/debian-11.yml:
-  packages:
-    - git
+  delete: true
 spec/acceptance/nodesets/debian-12.yml:
   packages:
     - git
+spec/acceptance/nodesets/debian-13.yml:
+  delete: true
 spec/acceptance/nodesets/ubuntu-2204.yml:
   packages:
     - cron
@@ -46,3 +46,5 @@ spec/acceptance/nodesets/ubuntu-2404.yml:
   packages:
     - cron
     - git
+spec/acceptance/nodesets/ubuntu-2604.yml:
+  delete: true
