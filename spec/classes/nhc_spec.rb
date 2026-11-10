@@ -6,7 +6,8 @@ describe 'nhc' do
   on_supported_os.each do |os, facts|
     context "when #{os}" do
       let(:facts) { facts }
-      let(:source) { "https://github.com/mej/nhc/releases/download/1.4.3/lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch.rpm" }
+      let(:version) { '1.5' }
+      let(:source) { "https://github.com/mej/nhc/releases/download/#{version}/lbnl-nhc-#{version}-1.el#{facts[:os]['release']['major']}.noarch.rpm" }
       let(:libexec_dir) do
         if facts[:os]['family'] == 'Debian'
           '/usr/lib'
@@ -29,9 +30,9 @@ describe 'nhc' do
       it { is_expected.to contain_class('nhc::config') }
 
       describe 'nhc::install' do
-        if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i < 9
+        if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i < 10
           it do
-            is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch").with(ensure: 'present', source: source)
+            is_expected.to contain_yum__install("lbnl-nhc-#{version}-1.el#{facts[:os]['release']['major']}.noarch").with(ensure: 'present', source: source)
           end
         else
           it { is_expected.to have_yum__install_count(0) }
@@ -57,7 +58,7 @@ describe 'nhc' do
           end
 
           it do
-            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "1.4.3-1.el#{facts[:os]['release']['major']}",
+            is_expected.to contain_package('lbnl-nhc').only_with(ensure: "#{version}-1.el#{facts[:os]['release']['major']}",
                                                                  name: 'lbnl-nhc',
                                                                  require: 'Yumrepo[local]',)
           end
@@ -80,8 +81,8 @@ describe 'nhc' do
 
           it { is_expected.to compile.with_all_deps }
 
-          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i < 9
-            it { is_expected.to contain_yum__install("lbnl-nhc-1.4.3-1.el#{facts[:os]['release']['major']}.noarch").with_ensure('absent') }
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'].to_i < 10
+            it { is_expected.to contain_yum__install("lbnl-nhc-#{version}-1.el#{facts[:os]['release']['major']}.noarch").with_ensure('absent') }
           else
             it { is_expected.to contain_file('/usr/sbin/nhc').with_ensure('absent') }
           end
@@ -94,7 +95,7 @@ describe 'nhc' do
                                                        path: '/etc/nhc',
                                                        owner: 'root',
                                                        group: 'root',
-                                                       mode: '0700',)
+                                                       mode: '0755',)
         end
 
         it do
@@ -115,7 +116,7 @@ describe 'nhc' do
                                                                path: '/etc/nhc/scripts',
                                                                owner: 'root',
                                                                group: 'root',
-                                                               mode: '0700',
+                                                               mode: '0755',
                                                                require: 'File[/etc/nhc]',)
         end
 

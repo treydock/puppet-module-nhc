@@ -63,7 +63,7 @@ class nhc (
   # packages
   Enum['repo','package','source'] $install_method = 'source',
   Optional[String] $package_ensure      = undef,
-  String $version = '1.4.3',
+  String $version = '1.5',
   String $package_release = '1',
   Optional[Variant[Stdlib::HTTPUrl,Stdlib::HTTPSUrl]]
   $install_source                     = undef,

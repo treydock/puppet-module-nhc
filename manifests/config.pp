@@ -14,7 +14,7 @@ class nhc::config {
     force  => $nhc::_directory_force,
     owner  => 'root',
     group  => 'root',
-    mode   => '0700',
+    mode   => '0755',
   }
 
   file { '/etc/nhc/nhc.conf':
@@ -32,7 +32,7 @@ class nhc::config {
     path    => $nhc::include_dir,
     owner   => 'root',
     group   => 'root',
-    mode    => '0700',
+    mode    => '0755',
     require => File['/etc/nhc'],
   }
 
@@ -40,7 +40,7 @@ class nhc::config {
     ensure => $nhc::directory_ensure,
     owner  => 'root',
     group  => 'root',
-    mode   => '0700',
+    mode   => '0755',
   }
 
   file { $nhc::sysconfig_path:

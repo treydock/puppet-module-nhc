@@ -89,7 +89,7 @@ define nhc::conf (
       force   => $_directory_force,
       owner   => 'root',
       group   => 'root',
-      mode    => '0700',
+      mode    => '0755',
       require => Package['lbnl-nhc'],
     }
   }
@@ -110,7 +110,7 @@ define nhc::conf (
       ensure  => $directory_ensure,
       owner   => 'root',
       group   => 'root',
-      mode    => '0700',
+      mode    => '0755',
       require => Package['lbnl-nhc'],
     }
   }

@@ -9,14 +9,14 @@ end
 shared_examples 'nhc-base' do
   describe file('/etc/nhc') do
     it { is_expected.to be_directory }
-    it { is_expected.to be_mode 700 }
+    it { is_expected.to be_mode 755 }
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_grouped_into 'root' }
   end
 
   describe file('/etc/nhc/scripts') do
     it { is_expected.to be_directory }
-    it { is_expected.to be_mode 700 }
+    it { is_expected.to be_mode 755 }
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_grouped_into 'root' }
   end
