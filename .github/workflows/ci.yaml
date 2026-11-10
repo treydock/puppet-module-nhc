@@ -17,14 +17,18 @@ jobs:
       matrix:
         include:
           - ruby: 3.2
-            puppet: 8
+            openvox: 8
+            fixtures: .fixtures.yml
+            allow_failure: false
+          - ruby: 4.0
+            openvox: 9
             fixtures: .fixtures.yml
             allow_failure: false
     env:
       BUNDLE_WITHOUT: system_tests:release
-      PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
+      OPENVOX_GEM_VERSION: "~> ${{ matrix.openvox }}.0"
       FIXTURES_YML: ${{ matrix.fixtures }}
-    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    name: OpenVox ${{ matrix.openvox }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v3
       - name: Setup ruby
@@ -33,9 +37,8 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
           cache-version: 3
-          bundler: '2.4.13'
       - name: Validate
-        run: bundle exec rake check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint
+        run: bundle exec rake check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint
       - name: Run tests
         run: bundle exec rake parallel_spec
   acceptance:
@@ -51,12 +54,13 @@ jobs:
           - "debian-12"
           - "ubuntu-2204"
           - "ubuntu-2404"
-        puppet:
-          - "puppet8"
+        openvox:
+          - "openvox8"
+          - "openvox9"
     env:
-      BUNDLE_WITHOUT: development:release
+      BUNDLE_WITHOUT: release
       BEAKER_debug: true
-    name: ${{ matrix.puppet }} ${{ matrix.set }}
+    name: ${{ matrix.openvox }} ${{ matrix.set }}
     steps:
       - name: Enable IPv6 on docker
         run: |
@@ -81,5 +85,5 @@ jobs:
       - name: Run tests
         run: bundle exec rake beaker
         env:
-          BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet }}
+          BEAKER_PUPPET_COLLECTION: ${{ matrix.openvox }}
           BEAKER_set: ${{ matrix.set }}
