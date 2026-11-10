@@ -2,7 +2,9 @@
 
 require 'spec_helper_acceptance'
 
-describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.major') !~ %r{^(9|10)$} do
+describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.major') !~ %r{^(10)$} do
+  let(:version) { '1.5' }
+
   context 'when installed from repo' do
     it 'runs successfully' do
       pp = <<-PP
@@ -17,8 +19,8 @@ describe 'nhc class:', if: fact('os.family') == 'RedHat' && fact('os.release.maj
       file { '/opt/nhc-repo': ensure => 'directory' }->
       exec { 'wget nhc':
         path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-        command => 'wget -O /opt/nhc-repo/lbnl-nhc-1.4.3-1.el#{fact('operatingsystemmajrelease')}.noarch.rpm https://github.com/mej/nhc/releases/download/1.4.3/lbnl-nhc-1.4.3-1.el#{fact('operatingsystemmajrelease')}.noarch.rpm',
-        creates => '/opt/nhc-repo/lbnl-nhc-1.4.3-1.el#{fact('operatingsystemmajrelease')}.noarch.rpm',
+        command => 'wget -O /opt/nhc-repo/lbnl-nhc-#{version}-1.el#{fact('operatingsystemmajrelease')}.noarch.rpm https://github.com/mej/nhc/releases/download/#{version}/lbnl-nhc-#{version}-1.el#{fact('operatingsystemmajrelease')}.noarch.rpm',
+        creates => '/opt/nhc-repo/lbnl-nhc-#{version}-1.el#{fact('operatingsystemmajrelease')}.noarch.rpm',
       }~>
       exec { 'createrepo-nhc':
         path        => '/usr/bin:/bin:/usr/sbin:/sbin',
