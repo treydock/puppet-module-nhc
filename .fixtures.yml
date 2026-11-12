@@ -13,5 +13,3 @@ fixtures:
     # Needed by logrotate
     systemd:
       repo: puppet/systemd
-  symlinks:
-    nhc: "#{source_dir}"
