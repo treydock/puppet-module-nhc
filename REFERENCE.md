@@ -23,7 +23,7 @@ Manage Node Health Check (NHC)
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 include ::nhc
@@ -90,7 +90,7 @@ Data type: `String`
 
 The version of NHC to install.
 
-Default value: `'1.4.3'`
+Default value: `'1.5'`
 
 ##### <a name="-nhc--package_release"></a>`package_release`
 
@@ -438,4 +438,3 @@ Data type: `Optional[String]`
 The source of the custom check
 
 Default value: `undef`
-

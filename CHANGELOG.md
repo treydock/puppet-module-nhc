@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.0.0](https://github.com/treydock/puppet-module-nhc/tree/v9.0.0) (2026-11-12)
+
+[Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v8.0.0...v9.0.0)
+
+### Changed
+
+- Switch to support OpenVox 8 and 9 [\#36](https://github.com/treydock/puppet-module-nhc/pull/36) ([treydock](https://github.com/treydock))
+- Upgrade to NHC 1.5 by default [\#35](https://github.com/treydock/puppet-module-nhc/pull/35) ([treydock](https://github.com/treydock))
+
 ## [v8.0.0](https://github.com/treydock/puppet-module-nhc/tree/v8.0.0) (2026-10-19)
 
 [Full Changelog](https://github.com/treydock/puppet-module-nhc/compare/v7.0.1...v8.0.0)
